@@ -1,0 +1,82 @@
+/* Openxp Typography System - Visual Hierarchy */
+
+/* Heading 1 - Page Titles */
+.h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* Heading 2 - Section Titles */
+.h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+/* Heading 3 - Subsection Titles */
+.h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* Heading 4 - Card/Component Titles */
+.h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* Heading 5 - Smaller Titles */
+.h5 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* Body Text - Large (introductions, key info) */
+.body-lg {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* Body Text - Regular (main content) */
+.body-md {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* Body Text - Small (captions, descriptions) */
+.body-sm {
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Caption Text - For small details */
+.caption {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Label Text - For form labels, badges */
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.025em;
+}
+
+/* Button Text */
+.btn-text {
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+}
