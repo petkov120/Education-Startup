@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Openxp</title>
+     <!-- Tailwind CDN (GLOBAL) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+ <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/typography.css" />
+    <style>
+      body {
+        font-family: "Open Sans", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Arial, sans-serif;
+      }
+    </style>
+  </head>
+
+
+   
+ 
+  <body>
+
+<script>
+  document.addEventListener("click", (e) => {
+    const acc = e.target.closest(".acc");
+    if (!acc) return;
+
+    const body = acc.querySelector(".acc-body");
+    if (!body) return;
+
+    const isClosed = body.classList.contains("hidden");
+
+    if (isClosed) {
+      // OPEN
+      body.classList.remove("hidden");
+
+      // CARD STYLES go on the WHOLE acc
+      acc.classList.add(
+        "bg-white",
+        "shadow-lg",
+        "p-6"
+      );
+      acc.classList.remove("border-b");
+    } else {
+      // CLOSE
+      body.classList.add("hidden");
+
+      acc.classList.remove(
+        "bg-white",
+        "shadow-lg",
+        "rounded-xl",
+        "p-6"
+      );
+      acc.classList.add("border-b");
+    }
+  });
+</script>
+
+    <div id="hero"></div>
+    <div id="features"></div>
+    <div id="courses"></div>
+    <div id="community"></div>
+    <div id="testimonial"></div>
+     <div id="newsletter"></div>
+     <div id="footer"></div>
+
+    <script>
+      async function inject(id, file) {
+        const el = document.getElementById(id);
+        el.innerHTML = await (await fetch(file)).text();
+      }
+      inject("hero", "./components/landing-page/hero.html");
+      inject("features", "./components/landing-page/features.html");
+      inject("courses", "./components/landing-page/courses.html");  
+      inject("community", "./components/landing-page/community.html");   
+      inject("testimonial", "./components/landing-page/testimonial.html"); 
+      inject("newsletter", "./components/landing-page/newsletter.html");  
+      inject ("footer", "./components/landing-page/footer.html"); 
+    </script>
+  </body>
+</html>
