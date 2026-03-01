@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Openxp - Check your email</title>
+    <!-- Tailwind CDN (GLOBAL) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/typography.css" />
+    <style>
+      body {
+        font-family: "Open Sans", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Arial, sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-[#F5F7FB]">
+    <section class="min-h-screen flex flex-col items-center justify-center px-8 py-12">
+      <!-- Logo -->
+      <div class="w-full max-w-md mb-8">
+        <a href="/index.html">
+          <img src="/Images/purple.png" alt="Openxp Logo" class="h-auto w-30" />
+        </a>
+      </div>
+
+      <!-- Main Content + Loader wrapper -->
+      <div class="w-full max-w-md relative">
+        <!-- Loader aligned with card width (middle step active) -->
+        <div class="flex gap-1 w-full mb-6">
+          <div class="h-1 bg-gray-300 flex-1"></div>
+          <div class="h-1 bg-[#2B0A6B] flex-1"></div>
+          <div class="h-1 bg-gray-300 flex-1"></div>
+        </div>
+
+        <!-- Card -->
+        <div class="flex flex-col items-center gap-4 bg-white rounded-lg shadow-sm px-8 py-10">
+          <h1 class="text-black h1 text-center">Check your email</h1>
+
+          <p class="text-black body-md text-center">
+            Please check your email in order to successfully reset your password.
+          </p>
+
+          <!-- Confetti icon -->
+          <img
+            src="/Images/svg-gobbler (94) 1.png"
+            alt="Celebration"
+            class="w-20 h-20"
+          />
+
+          <!-- Confirm timer -->
+          <p class="text-base text-gray-700">
+            Confirm within
+            <span id="countdown" class="font-semibold text-red-500">00:57s</span>
+          </p>
+
+          <!-- Helper text + resend -->
+          <p class="text-sm text-gray-600 text-center">
+            Did you receive this email? check your inbox or
+            <a href="#" class="text-[#2B0A6B] font-medium hover:underline">
+              Resend email
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Simple front-end countdown that redirects to reset password
+      let remaining = 57;
+      const countdownEl = document.getElementById("countdown");
+
+      function formatTime(seconds) {
+        const s = String(seconds).padStart(2, "0");
+        return `00:${s}s`;
+      }
+
+      countdownEl.textContent = formatTime(remaining);
+
+      const intervalId = setInterval(() => {
+        remaining -= 1;
+
+        if (remaining <= 0) {
+          clearInterval(intervalId);
+          window.location.href = "resetpassword.html";
+          return;
+        }
+
+        countdownEl.textContent = formatTime(remaining);
+      }, 1000);
+    </script>
+  </body>
+</html>
+
+

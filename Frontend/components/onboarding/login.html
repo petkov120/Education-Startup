@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Openxp - Login</title>
+    <!-- Tailwind CDN (GLOBAL) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/typography.css" />
+    <style>
+      body {
+        font-family: "Open Sans", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Arial, sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-[#F5F7FB]">
+    <section class="min-h-screen grid grid-cols-1 md:grid-cols-2 overflow-x-hidden">
+      <!-- LEFT: Login form -->
+      <div class="w-full min-w-0 h-full flex flex-col  gap-4 px-8 md:px-20 lg:px-24 py-12 bg-[#F5F7FB]">
+        <a href="/index.html">
+          <img src="/Images/purple.png" alt="Openxp Logo" class="h-auto w-30" />
+        </a>
+
+        <h1 class="text-black h1">Login</h1>
+        <p class="text-black body-md">
+          Welcome back! Please enter your details.
+        </p>
+
+        <form id="login-form" class="flex flex-col gap-6 mt-6">
+            <input
+            id="email"
+            type="email"
+            placeholder="Email Address"
+            class="w-full px-4 py-3 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2B0A6B]"
+          />
+
+          <!-- Password with eye icon -->
+          <div class="relative w-full h-11">
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+              class="w-full h-full px-4 pr-12 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2B0A6B]"
+            />
+
+            <button
+              type="button"
+              class="absolute right-3 top-0 bottom-0 flex items-center text-gray-500 hover:text-gray-700"
+              aria-label="Toggle password visibility"
+            >
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Remember + Forgot password -->
+          <div class="flex items-center justify-between text-sm text-gray-700">
+            <label class="inline-flex items-center gap-2">
+              <input
+                type="checkbox"
+                class="h-4 w-4 rounded border-gray-300 text-[#2B0A6B] focus:ring-[#2B0A6B]"
+              />
+              <span>Remember for 30 days</span>
+            </label>
+
+            <a href="forgotpassword.html" class="font-medium text-[#2B0A6B] hover:underline">
+              Forgot password
+            </a>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-[#2B0A6B] text-white px-4 py-3 rounded-md hover:bg-[#3C127F] transition"
+          >
+            Login
+          </button>
+        </form>
+        <div id="login-message" role="alert" class="mt-2 text-sm min-h-[1.25rem] px-3 py-2 rounded-md hidden" aria-live="polite"></div>
+
+        <p class="mt-8 text-center text-sm text-gray-600">
+          Don’t have an account?
+          <a href="onboard.html" class="font-medium text-[#2B0A6B] hover:underline">
+            Sign up
+          </a>
+        </p>
+      </div>
+
+      <!-- RIGHT: image (same as onboarding) -->
+      <div class="block md:block relative bg-red-200 h-64 md:h-auto">
+        <img
+          src="/Images/Classroom.png"
+          alt="Classroom"
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
+    </section>
+
+    <!-- Supabase Auth for login -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = 'https://nquzuszxlmycgftfbxno.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xdXp1c3p4bG15Y2dmdGZieG5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNTk2OTQsImV4cCI6MjA4NzYzNTY5NH0.QyNjwy61dJfKbWS4Zl6dtIT-CYH_xr_ZykrWJOB7-QY';
+
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        const msgEl = document.getElementById('login-message');
+        msgEl.textContent = '';
+        msgEl.className = 'mt-2 text-sm min-h-[1.25rem] px-3 py-2 rounded-md hidden';
+        msgEl.classList.remove('bg-red-50', 'border-red-200', 'text-red-700', 'bg-green-50', 'border-green-200', 'text-green-700');
+
+        function showError(message) {
+          msgEl.textContent = message;
+          msgEl.classList.remove('hidden', 'bg-green-50', 'border-green-200', 'text-green-700');
+          msgEl.classList.add('bg-red-50', 'border', 'border-red-200', 'text-red-700');
+        }
+
+        function showSuccess(message) {
+          msgEl.textContent = message;
+          msgEl.classList.remove('hidden', 'bg-red-50', 'border-red-200', 'text-red-700');
+          msgEl.classList.add('bg-green-50', 'border', 'border-green-200', 'text-green-700');
+        }
+
+        if (!email || !password) {
+          showError('Please enter email and password.');
+          return;
+        }
+
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (error) {
+          if (error.message && error.message.toLowerCase().includes('email not confirmed')) {
+            showError('Please confirm your email before signing in. Check your inbox.');
+          } else if (error.message && error.message.toLowerCase().includes('invalid')) {
+            showError('Invalid email or password. Please check your credentials or sign up.');
+          } else {
+            showError(error.message || 'Something went wrong. Please try again.');
+          }
+          return;
+        }
+
+        showSuccess('Login successful! Redirecting…');
+        window.location.href = '/index.html';
+      });
+    </script>
+  </body>
+</html>
+
+
