@@ -12,7 +12,7 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles/typography.css" />
+    <link rel="stylesheet" href="../../../styles/typography.css" />
     <style>
       body {
         font-family: "Open Sans", system-ui, -apple-system, BlinkMacSystemFont,
@@ -133,12 +133,11 @@
       </div>
     </section>
 
-    <!-- Step 8: Supabase JS client (for Auth signUp) -->
+    <!-- Supabase config (gitignored, local only) -->
+    <script src="config.js"></script>
+    <!-- Supabase JS client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-      // Replace with your values from Supabase Dashboard → Settings → API
-      const SUPABASE_URL = 'https://nquzuszxlmycgftfbxno.supabase.co';   // e.g. https://xxxxx.supabase.co
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xdXp1c3p4bG15Y2dmdGZieG5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNTk2OTQsImV4cCI6MjA4NzYzNTY5NH0.QyNjwy61dJfKbWS4Zl6dtIT-CYH_xr_ZykrWJOB7-QY';
 
       const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
