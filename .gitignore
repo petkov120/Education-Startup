@@ -1,0 +1,14 @@
+# Environment variables - never commit these
+backend/.env
+.env
+
+# Supabase config - contains API keys, never commit
+Frontend/components/onboarding/config.js
+
+# Node modules
+node_modules/
+backend/node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
