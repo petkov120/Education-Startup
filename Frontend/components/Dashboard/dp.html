@@ -23,6 +23,52 @@
           "Segoe UI", Arial, sans-serif;
       }
 
+      /* Sidebar collapse */
+      #dashboard-root.sidebar-collapsed aside {
+        width: 4rem;
+      }
+
+      #dashboard-root.sidebar-collapsed aside .sidebar-brand-text {
+        display: none;
+      }
+
+      #dashboard-root.sidebar-collapsed aside .sidebar-label {
+        display: none;
+      }
+
+      #dashboard-root.sidebar-collapsed aside nav {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      #dashboard-root.sidebar-collapsed aside a {
+        justify-content: center;
+        width: 2.75rem;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      #dashboard-root.sidebar-collapsed #sidebar-toggle-icon {
+        display: none;
+      }
+
+      #dashboard-root.sidebar-collapsed .sidebar-header {
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .sidebar-tooltip {
+        display: none;
+        pointer-events: none;
+      }
+
+      #dashboard-root.sidebar-collapsed .sidebar-tooltip {
+        display: block;
+      }
+
       /* Fullscreen loader */
       #dashboard-loader {
         position: fixed;
@@ -93,116 +139,172 @@
       <aside
         class="hidden md:flex md:flex-col w-64 bg-white border-r border-slate-200"
       >
-        <!-- Logo / product -->
-        <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-200">
-          <div
-            class="h-9 w-9 rounded-lg bg-[#2B0A6B] flex items-center justify-center"
-          >
-            <img
-              src="/Images/cool%201.png"
-              alt="Openxp"
-              class="h-7 w-7 object-contain"
-            />
+        <!-- Logo / product + sidebar toggle -->
+        <div
+          id="sidebar-toggle"
+          class="sidebar-header flex items-center justify-between px-6 py-5 border-b border-slate-200 cursor-pointer"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="h-9 w-9 rounded-lg bg-[#2B0A6B] flex items-center justify-center"
+            >
+              <img
+                src="/Images/cool%201.png"
+                alt="Openxp"
+                class="h-7 w-7 object-contain"
+              />
+            </div>
+            <div class="flex flex-col sidebar-brand-text">
+              <span class="text-sm font-semibold text-slate-900 tracking-tight">
+                Openxp
+              </span>
+              <span class="text-[11px] text-slate-500">Study Dashboard</span>
+            </div>
           </div>
-          <div class="flex flex-col">
-            <span class="text-sm font-semibold text-slate-900 tracking-tight">
-              Openxp
-            </span>
-            <span class="text-[11px] text-slate-500">Study Dashboard</span>
-          </div>
+
+          <!-- Collapse / expand indicator (visible when expanded) -->
+          <img
+            id="sidebar-toggle-icon"
+            src="/Images/side-bar.png"
+            alt=""
+            class="h-4 w-4 object-contain"
+            aria-hidden="true"
+          />
         </div>
 
         <!-- Nav (only items with existing SVG icons) -->
-        <nav class="flex-1 px-4 py-5 space-y-1 text-sm text-slate-700">
+        <nav class="flex-1 px-4 py-5 space-y-3 text-sm text-slate-700">
           <!-- Home (active) -->
           <a
             href="#"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#2B0A6B] text-white shadow-sm"
+            title="Home"
+            class="relative group flex items-center gap-3 px-3 py-4 rounded-lg bg-[#2B0A6B] text-white shadow-sm"
           >
             <img
               src="/Images/dashboard-icons/home.svg"
               alt="Home"
               class="h-4 w-4 filter brightness-0 invert"
             />
-            <span class="font-medium">Home</span>
+            <span class="font-medium sidebar-label">Home</span>
+            <span
+              class="sidebar-tooltip absolute left-full ml-2 rounded bg-slate-900 px-2 py-1 text-[11px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              Home
+            </span>
           </a>
 
           <!-- Exam Prep -->
           <a
             href="#"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
+            title="Exam Prep"
+            class="relative group flex items-center gap-3 px-3 py-4 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
           >
             <img
               src="/Images/dashboard-icons/Exam%20Prep.svg"
               alt="Exam Prep"
               class="h-4 w-4"
             />
-            <span>Exam Prep</span>
+            <span class="sidebar-label">Exam Prep</span>
+            <span
+              class="sidebar-tooltip absolute left-full ml-2 rounded bg-slate-900 px-2 py-1 text-[11px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              Exam Prep
+            </span>
           </a>
 
           <!-- Resources (ChalkboardTeacher) -->
           <a
             href="#"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
+            title="Resources"
+            class="relative group flex items-center gap-3 px-3 py-4 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
           >
             <img
               src="/Images/dashboard-icons/ChalkboardTeacher.svg"
               alt="Resources"
               class="h-4 w-4"
             />
-            <span>Resources</span>
+            <span class="sidebar-label">Resources</span>
+            <span
+              class="sidebar-tooltip absolute left-full ml-2 rounded bg-slate-900 px-2 py-1 text-[11px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              Resources
+            </span>
           </a>
 
           <!-- My Learning (Student) -->
           <a
             href="#"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
+            title="My Learning"
+            class="relative group flex items-center gap-3 px-3 py-4 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
           >
             <img
               src="/Images/dashboard-icons/Student.svg"
               alt="My Learning"
               class="h-4 w-4"
             />
-            <span>My Learning</span>
+            <span class="sidebar-label">My Learning</span>
+            <span
+              class="sidebar-tooltip absolute left-full ml-2 rounded bg-slate-900 px-2 py-1 text-[11px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              My Learning
+            </span>
           </a>
 
           <!-- AI Buddy (Robot) -->
           <a
             href="#"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
+            title="AI Buddy"
+            class="relative group flex items-center gap-3 px-3 py-4 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
           >
             <img
               src="/Images/dashboard-icons/Robot.svg"
               alt="AI Buddy"
               class="h-4 w-4"
             />
-            <span>AI Buddy</span>
+            <span class="sidebar-label">AI Buddy</span>
+            <span
+              class="sidebar-tooltip absolute left-full ml-2 rounded bg-slate-900 px-2 py-1 text-[11px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              AI Buddy
+            </span>
           </a>
 
-          <!-- Analytics (Vector) -->
+          <!-- Resources (Vector) -->
           <a
             href="#"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
+            title="Resources"
+            class="relative group flex items-center gap-3 px-3 py-4 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
           >
             <img
               src="/Images/dashboard-icons/Vector.svg"
-              alt="Analytics"
+              alt="Resources"
               class="h-4 w-4"
             />
-            <span>Analytics</span>
+            <span class="sidebar-label">Resources</span>
+            <span
+              class="sidebar-tooltip absolute left-full ml-2 rounded bg-slate-900 px-2 py-1 text-[11px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              Resources
+            </span>
           </a>
 
           <!-- Settings (Gear) -->
           <a
             href="#"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
+            title="Settings"
+            class="relative group flex items-center gap-3 px-3 py-4 rounded-lg text-slate-800 hover:bg-slate-100 hover:text-slate-900"
           >
             <img
               src="/Images/dashboard-icons/Gear.svg"
               alt="Settings"
               class="h-4 w-4"
             />
-            <span>Settings</span>
+            <span class="sidebar-label">Settings</span>
+            <span
+              class="sidebar-tooltip absolute left-full ml-2 rounded bg-slate-900 px-2 py-1 text-[11px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              Settings
+            </span>
           </a>
         </nav>
       </aside>
@@ -254,21 +356,7 @@
         <!-- Content -->
         <section class="flex-1 px-4 md:px-8 py-6 space-y-6">
           <!-- Metrics row -->
-          <div class="grid gap-4 md:grid-cols-4">
-            <div
-              class="rounded-xl bg-white border border-slate-200 px-4 py-3 flex flex-col gap-1"
-            >
-              <p class="text-xs text-slate-500">Study sessions</p>
-              <p class="text-2xl font-semibold text-slate-900">24</p>
-              <p class="text-xs text-emerald-600">+6 this week</p>
-            </div>
-            <div
-              class="rounded-xl bg-white border border-slate-200 px-4 py-3 flex flex-col gap-1"
-            >
-              <p class="text-xs text-slate-500">Questions answered</p>
-              <p class="text-2xl font-semibold text-slate-900">1,280</p>
-              <p class="text-xs text-emerald-600">Accuracy 78%</p>
-            </div>
+          <div class="grid gap-4 md:grid-cols-2">
             <div
               class="rounded-xl bg-white border border-slate-200 px-4 py-3 flex flex-col gap-1"
             >
@@ -292,201 +380,363 @@
             </div>
           </div>
 
-          <!-- Main grid -->
-          <div class="grid gap-4 lg:grid-cols-3">
-            <!-- Upcoming & quick actions -->
-            <div class="space-y-4 lg:col-span-2">
+          <!-- Two-column inner layout -->
+          <div
+            class="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-start"
+          >
+            <!-- Left column: Time Spending + Leaderboards in one card -->
+            <div>
               <section
-                class="rounded-xl bg-white border border-slate-200 px-4 py-4"
+                class="rounded-xl bg-white border border-slate-200 px-6 py-5 space-y-6"
               >
-                <div class="flex items-center justify-between mb-3">
-                  <h2 class="text-sm font-semibold text-slate-900">
-                    Upcoming study sessions
-                  </h2>
+                <!-- Header -->
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <h2 class="text-sm font-semibold text-slate-900">
+                      Time Spending
+                    </h2>
+                    <p class="mt-1 text-2xl font-semibold text-slate-900">
+                      7hrs 25m
+                    </p>
+                    <p class="text-xs text-slate-500">Date: 12/08/24</p>
+                  </div>
                   <button
-                    class="text-xs font-medium text-[#2B0A6B] hover:underline"
+                    class="inline-flex items-center gap-1 rounded-full border border-slate-200 px-3 py-1 text-xs text-slate-600 hover:bg-slate-50"
                   >
-                    View calendar
+                    <span>Weekly</span>
+                    <span>▾</span>
                   </button>
                 </div>
 
-                <div class="space-y-3 text-sm">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                      <span
-                        class="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs font-semibold"
-                        >MON</span
+                <!-- Chart + summary -->
+                <div class="flex flex-col gap-6 lg:flex-row lg:items-stretch">
+                  <!-- Hoverable bar chart -->
+                  <div class="flex-1 flex flex-col justify-between">
+                    <div class="relative flex items-end gap-3 h-40">
+                      <!-- baseline -->
+                      <div
+                        class="pointer-events-none absolute inset-x-0 bottom-0 border-t border-slate-100"
+                      ></div>
+
+                      <!-- Mon -->
+                      <div
+                        class="relative flex-1 flex flex-col items-center gap-1 group"
                       >
-                      <div>
-                        <p class="font-medium text-slate-900">
-                          Chemistry revision – Organic
-                        </p>
-                        <p class="text-xs text-slate-500">
-                          7:00 PM • 45 min focused session
-                        </p>
+                        <div class="relative flex items-end h-full">
+                          <div
+                            class="w-6 rounded-t-md bg-slate-100"
+                            style="height: 45%"
+                          ></div>
+                          <div
+                            class="pointer-events-none absolute bottom-full mb-2 rounded bg-slate-900 px-2 py-1 text-[10px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            1hr 10mins · Mon
+                          </div>
+                        </div>
+                        <span class="text-[11px] text-slate-500">Mon</span>
+                      </div>
+
+                      <!-- Tue -->
+                      <div
+                        class="relative flex-1 flex flex-col items-center gap-1 group"
+                      >
+                        <div class="relative flex items-end h-full">
+                          <div
+                            class="w-6 rounded-t-md bg-slate-100"
+                            style="height: 55%"
+                          ></div>
+                          <div
+                            class="pointer-events-none absolute bottom-full mb-2 rounded bg-slate-900 px-2 py-1 text-[10px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            1hr 40mins · Tue
+                          </div>
+                        </div>
+                        <span class="text-[11px] text-slate-500">Tue</span>
+                      </div>
+
+                      <!-- Wed -->
+                      <div
+                        class="relative flex-1 flex flex-col items-center gap-1 group"
+                      >
+                        <div class="relative flex items-end h-full">
+                          <div
+                            class="w-6 rounded-t-md bg-slate-100"
+                            style="height: 50%"
+                          ></div>
+                          <div
+                            class="pointer-events-none absolute bottom-full mb-2 rounded bg-slate-900 px-2 py-1 text-[10px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            1hr 30mins · Wed
+                          </div>
+                        </div>
+                        <span class="text-[11px] text-slate-500">Wed</span>
+                      </div>
+
+                      <!-- Thu (highlight) -->
+                      <div
+                        class="relative flex-1 flex flex-col items-center gap-1 group"
+                      >
+                        <div class="relative flex items-end h-full">
+                          <div
+                            class="w-6 rounded-t-md bg-[#F97316]"
+                            style="height: 85%"
+                          ></div>
+                          <div
+                            class="pointer-events-none absolute bottom-full mb-2 rounded bg-slate-900 px-2 py-1 text-[10px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            6hrs 10mins · Thu
+                          </div>
+                        </div>
+                        <span class="text-[11px] text-slate-500">Thu</span>
+                      </div>
+
+                      <!-- Fri -->
+                      <div
+                        class="relative flex-1 flex flex-col items-center gap-1 group"
+                      >
+                        <div class="relative flex items-end h-full">
+                          <div
+                            class="w-6 rounded-t-md bg-slate-100"
+                            style="height: 35%"
+                          ></div>
+                          <div
+                            class="pointer-events-none absolute bottom-full mb-2 rounded bg-slate-900 px-2 py-1 text-[10px] font-medium text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            45mins · Fri
+                          </div>
+                        </div>
+                        <span class="text-[11px] text-slate-500">Fri</span>
                       </div>
                     </div>
-                    <button
-                      class="text-xs px-3 py-1 rounded-full border border-slate-200 hover:bg-slate-50"
-                    >
-                      Start plan
-                    </button>
                   </div>
 
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                      <span
-                        class="h-8 w-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center text-xs font-semibold"
-                        >TUE</span
-                      >
-                      <div>
-                        <p class="font-medium text-slate-900">
-                          Practice test – Past questions
-                        </p>
-                        <p class="text-xs text-slate-500">
-                          5:30 PM • 40 questions timed
-                        </p>
-                      </div>
+                  <!-- Time summary -->
+                  <div class="w-full lg:w-52 flex flex-col gap-3 text-xs">
+                    <div class="space-y-1">
+                      <p class="text-slate-500">Study Duration</p>
+                      <p class="text-sm font-semibold text-slate-900">
+                        2hrs 40mins
+                      </p>
                     </div>
-                    <button
-                      class="text-xs px-3 py-1 rounded-full border border-slate-200 hover:bg-slate-50"
-                    >
-                      Preview
-                    </button>
-                  </div>
-
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                      <span
-                        class="h-8 w-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs font-semibold"
-                        >WED</span
-                      >
-                      <div>
-                        <p class="font-medium text-slate-900">
-                          Group session – Scholarship prep
-                        </p>
-                        <p class="text-xs text-slate-500">
-                          6:00 PM • Live with mentor
-                        </p>
-                      </div>
+                    <div class="space-y-1">
+                      <p class="text-slate-500">Total Test Taken</p>
+                      <p class="text-sm font-semibold text-slate-900">40</p>
                     </div>
-                    <button
-                      class="text-xs px-3 py-1 rounded-full border border-slate-200 hover:bg-slate-50"
-                    >
-                      Join link
-                    </button>
+                    <div class="space-y-1">
+                      <p class="text-slate-500">Average Test Score</p>
+                      <p class="text-sm font-semibold text-slate-900">80%</p>
+                    </div>
                   </div>
                 </div>
-              </section>
 
-              <section
-                class="rounded-xl bg-white border border-slate-200 px-4 py-4"
-              >
-                <h2 class="text-sm font-semibold text-slate-900 mb-3">
-                  Quick actions
-                </h2>
-                <div class="grid gap-3 sm:grid-cols-3 text-sm">
-                  <button
-                    class="h-10 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 flex items-center justify-center gap-2"
-                  >
-                    <span>➕</span>
-                    <span>New study plan</span>
-                  </button>
-                  <button
-                    class="h-10 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 flex items-center justify-center gap-2"
-                  >
-                    <span>📝</span>
-                    <span>Start practice</span>
-                  </button>
-                  <button
-                    class="h-10 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 flex items-center justify-center gap-2"
-                  >
-                    <span>📥</span>
-                    <span>Import questions</span>
-                  </button>
+                <!-- Divider -->
+                <div class="h-px bg-slate-100"></div>
+
+                <!-- Local Leaderboards inside same card -->
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-semibold text-slate-900">
+                      Local Leaderboards
+                    </h3>
+                    <button
+                      class="text-xs font-medium text-[#2B0A6B] hover:underline"
+                    >
+                      View all
+                    </button>
+                  </div>
+
+                  <div class="overflow-x-auto">
+                    <table class="min-w-full text-xs md:text-sm text-left">
+                      <thead>
+                        <tr class="border-b border-slate-200 text-slate-500">
+                          <th class="py-2 pr-4 font-normal">Rank</th>
+                          <th class="py-2 pr-4 font-normal">Name</th>
+                          <th class="py-2 pr-4 font-normal">Trophy pts</th>
+                          <th class="py-2 pr-4 font-normal">Tests taken</th>
+                          <th class="py-2 pr-0 font-normal">
+                            Avg score/test
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-slate-100">
+                        <tr>
+                          <td class="py-2 pr-4 text-slate-900 font-medium">
+                            1
+                          </td>
+                          <td class="py-2 pr-4 text-slate-900">
+                            Mathew Samson
+                          </td>
+                          <td class="py-2 pr-4 text-slate-700">3900</td>
+                          <td class="py-2 pr-4 text-slate-700">100</td>
+                          <td class="py-2 pr-0 text-slate-700">78%</td>
+                        </tr>
+                        <tr>
+                          <td class="py-2 pr-4 text-slate-900 font-medium">
+                            2
+                          </td>
+                          <td class="py-2 pr-4 text-slate-900">Felix Adara</td>
+                          <td class="py-2 pr-4 text-slate-700">3500</td>
+                          <td class="py-2 pr-4 text-slate-700">200</td>
+                          <td class="py-2 pr-0 text-slate-700">75%</td>
+                        </tr>
+                        <tr>
+                          <td class="py-2 pr-4 text-slate-900 font-medium">
+                            3
+                          </td>
+                          <td class="py-2 pr-4 text-slate-900">Sarah Lawal</td>
+                          <td class="py-2 pr-4 text-slate-700">3000</td>
+                          <td class="py-2 pr-4 text-slate-700">95</td>
+                          <td class="py-2 pr-0 text-slate-700">70%</td>
+                        </tr>
+                        <tr>
+                          <td class="py-2 pr-4 text-slate-900 font-medium">
+                            4
+                          </td>
+                          <td class="py-2 pr-4 text-slate-900">
+                            Idris Micheal
+                          </td>
+                          <td class="py-2 pr-4 text-slate-700">2900</td>
+                          <td class="py-2 pr-4 text-slate-700">70</td>
+                          <td class="py-2 pr-0 text-slate-700">69%</td>
+                        </tr>
+                        <tr>
+                          <td class="py-2 pr-4 text-slate-900 font-medium">
+                            5
+                          </td>
+                          <td class="py-2 pr-4 text-slate-900">Jamiu Alone</td>
+                          <td class="py-2 pr-4 text-slate-700">2000</td>
+                          <td class="py-2 pr-4 text-slate-700">65</td>
+                          <td class="py-2 pr-0 text-slate-700">50%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </section>
             </div>
 
-            <!-- Progress overview -->
-            <section
-              class="rounded-xl bg-white border border-slate-200 px-4 py-4 space-y-4"
-            >
-              <div class="flex items-center justify-between">
-                <h2 class="text-sm font-semibold text-slate-900">
-                  Weekly progress
-                </h2>
-                <span class="text-xs text-slate-500">Last 7 days</span>
-              </div>
+            <!-- Right column: profile + stats + schedule -->
+            <aside class="space-y-6">
+              <!-- Profile card -->
+              <section
+                class="rounded-xl bg-white border border-slate-200 px-5 py-5 flex flex-col items-center text-center gap-3"
+              >
+                <div
+                  class="h-20 w-20 rounded-full bg-slate-200 overflow-hidden flex items-center justify-center"
+                >
+                  <span class="text-lg font-semibold text-slate-600">SL</span>
+                </div>
+                <div>
+                  <h2 class="text-sm font-semibold text-slate-900">
+                    Sarah Lawal
+                  </h2>
+                  <p class="text-xs text-slate-500">@sl1000</p>
+                </div>
+                <button
+                  class="mt-1 inline-flex items-center justify-center rounded-full border border-slate-200 px-4 py-1.5 text-xs font-medium text-[#2B0A6B] hover:bg-slate-50"
+                >
+                  View Profile
+                </button>
 
-              <!-- Simple bar chart -->
-              <div class="flex items-end gap-2 h-32">
-                <div class="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    class="w-6 rounded-t-md bg-[#2B0A6B]"
-                    style="height: 70%"
-                  ></div>
-                  <span class="text-[11px] text-slate-500">Mon</span>
+                <div class="mt-3 grid w-full grid-cols-3 gap-3 text-xs">
+                  <div class="flex flex-col gap-0.5">
+                    <span class="text-slate-500">Rank</span>
+                    <span class="text-base font-semibold text-slate-900">
+                      3rd
+                    </span>
+                  </div>
+                  <div class="flex flex-col gap-0.5">
+                    <span class="text-slate-500">Tests taken</span>
+                    <span class="text-base font-semibold text-slate-900">
+                      95
+                    </span>
+                  </div>
+                  <div class="flex flex-col gap-0.5">
+                    <span class="text-slate-500">Avg score/test</span>
+                    <span class="text-base font-semibold text-slate-900">
+                      70%
+                    </span>
+                  </div>
                 </div>
-                <div class="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    class="w-6 rounded-t-md bg-[#2B0A6B]/80"
-                    style="height: 55%"
-                  ></div>
-                  <span class="text-[11px] text-slate-500">Tue</span>
-                </div>
-                <div class="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    class="w-6 rounded-t-md bg-[#2B0A6B]/70"
-                    style="height: 85%"
-                  ></div>
-                  <span class="text-[11px] text-slate-500">Wed</span>
-                </div>
-                <div class="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    class="w-6 rounded-t-md bg-[#2B0A6B]/90"
-                    style="height: 60%"
-                  ></div>
-                  <span class="text-[11px] text-slate-500">Thu</span>
-                </div>
-                <div class="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    class="w-6 rounded-t-md bg-[#2B0A6B]"
-                    style="height: 90%"
-                  ></div>
-                  <span class="text-[11px] text-slate-500">Fri</span>
-                </div>
-                <div class="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    class="w-6 rounded-t-md bg-[#2B0A6B]/70"
-                    style="height: 40%"
-                  ></div>
-                  <span class="text-[11px] text-slate-500">Sat</span>
-                </div>
-                <div class="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    class="w-6 rounded-t-md bg-[#2B0A6B]/60"
-                    style="height: 50%"
-                  ></div>
-                  <span class="text-[11px] text-slate-500">Sun</span>
-                </div>
-              </div>
+              </section>
 
-              <div class="space-y-2 text-xs text-slate-600">
-                <p class="flex items-center justify-between">
-                  <span>Average daily focus time</span>
-                  <span class="font-semibold text-slate-900">1h 20m</span>
-                </p>
-                <p class="flex items-center justify-between">
-                  <span>Practice tests completed</span>
-                  <span class="font-semibold text-slate-900">4</span>
-                </p>
-                <p class="flex items-center justify-between">
-                  <span>Scholarship readiness</span>
-                  <span class="font-semibold text-emerald-600">On track ✅</span>
-                </p>
-              </div>
-            </section>
+              <!-- Upcoming schedules -->
+              <section
+                class="rounded-xl bg-white border border-slate-200 px-5 py-5 space-y-4"
+              >
+                <h3 class="text-sm font-semibold text-slate-900">
+                  Upcoming schedules
+                </h3>
+
+                <div class="space-y-3 text-xs">
+                  <div class="flex gap-3 items-stretch">
+                    <div
+                      class="flex flex-col items-center justify-center rounded-md border border-slate-200 px-3 py-2 min-w-[72px]"
+                    >
+                      <span class="text-[11px] text-slate-500">August</span>
+                      <span class="text-sm font-semibold text-slate-900">
+                        21st
+                      </span>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center gap-0.5">
+                      <p class="text-xs font-medium text-slate-900">
+                        Mathematics
+                      </p>
+                      <p class="text-[11px] text-slate-500">WAEC</p>
+                      <p class="text-[11px] text-slate-500">
+                        9:30AM – 12PM
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex gap-3 items-stretch">
+                    <div
+                      class="flex flex-col items-center justify-center rounded-md border border-slate-200 px-3 py-2 min-w-[72px]"
+                    >
+                      <span class="text-[11px] text-slate-500">August</span>
+                      <span class="text-sm font-semibold text-slate-900">
+                        21st
+                      </span>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center gap-0.5">
+                      <p class="text-xs font-medium text-slate-900">
+                        Mathematics
+                      </p>
+                      <p class="text-[11px] text-slate-500">JAMB</p>
+                      <p class="text-[11px] text-slate-500">
+                        9:30AM – 12PM
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex gap-3 items-stretch">
+                    <div
+                      class="flex flex-col items-center justify-center rounded-md border border-slate-200 px-3 py-2 min-w-[72px]"
+                    >
+                      <span class="text-[11px] text-slate-500">August</span>
+                      <span class="text-sm font-semibold text-slate-900">
+                        23rd
+                      </span>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center gap-0.5">
+                      <p class="text-xs font-medium text-slate-900">
+                        Mathematics
+                      </p>
+                      <p class="text-[11px] text-slate-500">JAMB</p>
+                      <p class="text-[11px] text-slate-500">
+                        9:30AM – 12PM
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  class="mt-1 inline-flex w-full items-center justify-center rounded-md bg-[#F97316] px-4 py-2 text-xs font-semibold text-white hover:bg-[#ea6a10]"
+                >
+                  View schedules
+                </button>
+              </section>
+            </aside>
           </div>
         </section>
       </main>
@@ -506,10 +756,22 @@
         }, 300);
       }
 
+      function setupSidebarToggle() {
+        const toggle = document.getElementById("sidebar-toggle");
+        const root = document.getElementById("dashboard-root");
+
+        if (!toggle || !root) return;
+
+        toggle.addEventListener("click", () => {
+          root.classList.toggle("sidebar-collapsed");
+        });
+      }
+
       // For now, reveal dashboard shortly after load.
       // Later, call showDashboard() after your Supabase auth/data calls resolve.
       window.addEventListener("load", () => {
         setTimeout(showDashboard, 800);
+        setupSidebarToggle();
       });
     </script>
   </body>
