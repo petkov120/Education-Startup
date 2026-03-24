@@ -18,6 +18,8 @@ class ProfileSettingsSheet extends HTMLElement {
     this.pendingFile = null;
     this.currentAvatarUrl = null;
     this.userId = null;
+    /** True while upload + DB save runs (blocks dismiss via backdrop/Escape) */
+    this._saving = false;
   }
 
   connectedCallback() {
@@ -107,9 +109,15 @@ class ProfileSettingsSheet extends HTMLElement {
               <button
                 type="button"
                 id="profile-sheet-save"
-                class="w-full rounded-xl bg-[#2B0A6B] py-2.5 text-sm font-semibold text-white hover:bg-[#3d1299] transition-colors disabled:opacity-60"
+                class="w-full rounded-xl bg-[#2B0A6B] py-2.5 text-sm font-semibold text-white hover:bg-[#3d1299] transition-colors disabled:opacity-90 disabled:cursor-wait inline-flex items-center justify-center gap-2 min-h-[42px]"
+                aria-live="polite"
               >
-                Save changes
+                <span
+                  data-profile-sheet-save-spinner
+                  class="hidden h-4 w-4 shrink-0 rounded-full border-2 border-white/25 border-t-white animate-spin"
+                  aria-hidden="true"
+                ></span>
+                <span data-profile-sheet-save-label>Save changes</span>
               </button>
               <button
                 type="button"
@@ -128,7 +136,9 @@ class ProfileSettingsSheet extends HTMLElement {
   bindEvents() {
     this.querySelector("[data-profile-sheet-close]")?.addEventListener("click", () => this.close());
     this.backdrop?.addEventListener("click", (e) => {
-      if (e.target === this.backdrop) this.close();
+      if (e.target !== this.backdrop) return;
+      if (this._saving) return;
+      this.close();
     });
     this.fileInput?.addEventListener("change", () => this.onFileChange());
     this.saveBtn?.addEventListener("click", () => this.save());
@@ -137,6 +147,7 @@ class ProfileSettingsSheet extends HTMLElement {
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
       if (!this.backdrop?.classList.contains("open")) return;
+      if (this._saving) return;
       this.close();
     });
   }
@@ -157,6 +168,26 @@ class ProfileSettingsSheet extends HTMLElement {
     }
     this.errorEl.textContent = msg;
     this.errorEl.classList.remove("hidden");
+  }
+
+  /** Spinner + label + disable related controls while save/upload runs */
+  setSavingState(isSaving) {
+    this._saving = isSaving;
+    if (!this.saveBtn) return;
+    this.saveBtn.disabled = isSaving;
+    this.saveBtn.setAttribute("aria-busy", isSaving ? "true" : "false");
+
+    const spinner = this.saveBtn.querySelector("[data-profile-sheet-save-spinner]");
+    const label = this.saveBtn.querySelector("[data-profile-sheet-save-label]");
+    if (spinner) spinner.classList.toggle("hidden", !isSaving);
+    if (label) label.textContent = isSaving ? "Saving…" : "Save changes";
+
+    if (this.signOutBtn) this.signOutBtn.disabled = isSaving;
+    if (this.formUsername) this.formUsername.disabled = isSaving;
+    if (this.fileInput) this.fileInput.disabled = isSaving;
+
+    const closeBtn = this.querySelector("[data-profile-sheet-close]");
+    if (closeBtn) closeBtn.disabled = isSaving;
   }
 
   onFileChange() {
@@ -309,7 +340,7 @@ class ProfileSettingsSheet extends HTMLElement {
 
     let avatarUrl = profile?.avatar_url || this.currentAvatarUrl || null;
 
-    this.saveBtn.disabled = true;
+    this.setSavingState(true);
     try {
       if (this.pendingFile) {
         const bucket = getBucket();
@@ -334,6 +365,7 @@ class ProfileSettingsSheet extends HTMLElement {
 
       const payload = {
         user_id: user.id,
+        email: user.email,
         full_name: fullName,
         username: usernameRaw,
         avatar_url: avatarUrl,
@@ -360,7 +392,7 @@ class ProfileSettingsSheet extends HTMLElement {
       console.error(e);
       this.showError(e.message || "Something went wrong.");
     } finally {
-      this.saveBtn.disabled = false;
+      this.setSavingState(false);
     }
   }
 
