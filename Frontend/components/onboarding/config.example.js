@@ -3,3 +3,6 @@
 // config.js is gitignored - never commit your real keys.
 const SUPABASE_URL = 'https://your-project-ref.supabase.co';
 const SUPABASE_ANON_KEY = 'your-publishable-anon-key-here';
+
+// Optional: Storage bucket for profile avatars (defaults to "avatars" in profile-settings-sheet.js)
+// const SUPABASE_AVATARS_BUCKET = 'avatars';
