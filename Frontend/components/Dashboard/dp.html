@@ -185,6 +185,85 @@
         opacity: 1;
       }
 
+      /* ── Profile settings (right-hand sheet) ── */
+      .profile-sheet-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(2px);
+        z-index: 70;
+        justify-content: flex-end;
+        align-items: stretch;
+      }
+
+      .profile-sheet-backdrop.open {
+        display: flex;
+      }
+
+      .profile-sheet-panel {
+        width: 100%;
+        max-width: 400px;
+        background: #fff;
+        height: 100%;
+        box-shadow: -8px 0 24px rgba(0, 0, 0, 0.12);
+        transform: translateX(100%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .profile-sheet-backdrop.open .profile-sheet-panel {
+        transform: translateX(0);
+      }
+
+      .profile-sheet-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        border-bottom: 1px solid #e2e8f0;
+        flex-shrink: 0;
+      }
+
+      .profile-sheet-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #0f172a;
+      }
+
+      .profile-sheet-close {
+        border: none;
+        background: transparent;
+        padding: 8px;
+        border-radius: 10px;
+        cursor: pointer;
+        color: #64748b;
+      }
+
+      .profile-sheet-close:hover {
+        background: #f1f5f9;
+      }
+
+      .profile-sheet-close:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .profile-sheet-close:disabled:hover {
+        background: transparent;
+      }
+
+      .profile-sheet-body {
+        padding: 24px;
+        flex: 1;
+      }
+
+      .profile-sheet-avatar-preview {
+        overflow: hidden;
+      }
+
       .modal-input {
         width: 100%;
         border: 1px solid #e2e8f0;
@@ -451,17 +530,19 @@
               <span class="text-[13px] font-bold tabular-nums text-slate-900 leading-none">7</span>
             </button>
 
-            <!-- Profile pill -->
-            <div class="flex items-center gap-3 cursor-pointer">
-              <div
-                class="h-9 px-3 rounded-full flex items-center justify-center text-sm font-bold text-white bg-[#6D28D9]"
+            <!-- Profile pill (avatar opens settings sheet) -->
+            <div class="flex items-center gap-3">
+              <button
+                type="button"
                 id="profile-avatar"
+                class="h-9 min-w-9 rounded-full flex items-center justify-center text-sm font-bold text-white bg-[#6D28D9] overflow-hidden shrink-0 border-0 cursor-pointer px-3 hover:opacity-95 transition-opacity"
+                aria-label="Profile settings"
               >
                 SL
-              </div>
-              <div class="flex flex-col leading-tight">
-                <span class="text-xs font-semibold text-slate-900" id="profile-name"></span>
-                <span class="text-[11px] text-slate-400" id="profile-handle"></span>
+              </button>
+              <div class="flex flex-col leading-tight min-w-0">
+                <span class="text-xs font-semibold text-slate-900 truncate" id="profile-name"></span>
+                <span class="text-[11px] text-slate-400 truncate" id="profile-handle"></span>
               </div>
             </div>
           </div>
@@ -705,10 +786,33 @@
       </div>
     </div>
 
+    <profile-settings-sheet></profile-settings-sheet>
+
     <script type="module" src="./sidebar-rail.js"></script>
+    <script type="module" src="./profile-settings-sheet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../onboarding/config.js"></script>
     <script>
+      /** Header avatar: photo from Storage URL or initials fallback */
+      function renderProfileAvatarButton(avatarEl, avatarUrl, initials) {
+        if (!avatarEl) return;
+        avatarEl.classList.remove("px-3", "p-0.5");
+        if (avatarUrl) {
+          avatarEl.classList.add("p-0.5");
+          avatarEl.replaceChildren();
+          const img = document.createElement("img");
+          img.src = avatarUrl;
+          img.alt = "";
+          img.className = "h-8 w-8 rounded-full object-cover";
+          img.width = 32;
+          img.height = 32;
+          avatarEl.appendChild(img);
+        } else {
+          avatarEl.classList.add("px-3");
+          avatarEl.textContent = initials;
+        }
+      }
+
       /* ── Dynamic user profile (Supabase) ── */
       async function setupUserProfile() {
         const nameEl = document.getElementById("profile-name");
@@ -733,14 +837,15 @@
           const metaUsername = meta.username || "";
 
           // Prefer DB row, but if it doesn't exist yet, fall back to user_metadata.
-          const { data: profile, error: profileError } = await supabaseClient
+          const { data: profile } = await supabaseClient
             .from("profiles")
-            .select("full_name, username")
+            .select("full_name, username, avatar_url")
             .eq("user_id", userId)
             .maybeSingle();
 
           const fullName = profile?.full_name || metaFullName;
           const username = profile?.username || metaUsername;
+          const avatarUrl = profile?.avatar_url || null;
 
           nameEl.textContent = fullName || "";
           handleEl.textContent = username ? `@${username}` : "";
@@ -756,11 +861,13 @@
                 ? source.slice(0, 2).toUpperCase()
                 : "SL";
 
-          avatarEl.textContent = initials;
+          renderProfileAvatarButton(avatarEl, avatarUrl, initials);
         } catch (e) {
           console.error("Failed to load dashboard profile:", e);
         }
       }
+
+      window.refreshDashboardProfile = setupUserProfile;
 
       /* ── Loader ── */
       function showDashboard() {
@@ -772,6 +879,12 @@
           loader.style.display = "none";
           root.classList.remove("hidden");
         }, 300);
+      }
+
+      function isProfileSheetOpen() {
+        const sheet = document.querySelector("profile-settings-sheet");
+        const bd = sheet?.querySelector?.("[data-profile-sheet-backdrop]");
+        return bd?.classList?.contains("open");
       }
 
       /* ── Schedule modal ── */
@@ -791,14 +904,24 @@
         });
 
         document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") closeModal();
+          if (e.key !== "Escape") return;
+          if (isProfileSheetOpen()) return;
+          closeModal();
         });
+      }
+
+      function setupProfileSheetTrigger() {
+        const trigger = document.getElementById("profile-avatar");
+        const sheet = document.querySelector("profile-settings-sheet");
+        if (!trigger || !sheet || typeof sheet.open !== "function") return;
+        trigger.addEventListener("click", () => sheet.open());
       }
 
       window.addEventListener("load", () => {
         setTimeout(showDashboard, 800);
         setupUserProfile();
         setupScheduleModal();
+        setupProfileSheetTrigger();
       });
     </script>
   </body>
