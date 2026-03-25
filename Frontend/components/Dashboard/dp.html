@@ -38,6 +38,13 @@
         color: var(--title);
       }
 
+      body.openxp-embed dashboard-sidebar {
+        display: none !important;
+      }
+      body.openxp-embed #dashboard-root {
+        padding-left: 0 !important;
+      }
+
       /* ── Hover-expand sidebar ── */
       #sidebar {
         position: fixed;
@@ -868,6 +875,9 @@
   </head>
 
   <body class="bg-[var(--dashboard-bg)]">
+    <script>
+      if (window.parent !== window) document.body.classList.add("openxp-embed");
+    </script>
     <!-- Loader overlay -->
     <div id="dashboard-loader">
       <div class="loader-inner">
@@ -1005,14 +1015,16 @@
                 </div>
               </div>
 
-              <div class="rounded-2xl px-5 py-4 text-white flex flex-col justify-between"
+              <div
+                   id="todays-focus-card"
+                   class="rounded-2xl px-5 py-4 text-white flex flex-col justify-between"
                    style="background: linear-gradient(145deg, #2B0A6B 0%, #3b158e 100%); min-height: 132px;">
                 <div>
-                  <p class="text-[10px] uppercase tracking-widest font-semibold" style="color: rgba(255,255,255,0.65);">Today's focus</p>
-                  <h3 class="text-[30px] leading-[1.05] tracking-[-0.02em] font-semibold mt-1">Math Mock #4</h3>
-                  <p class="text-[13px] mt-1" style="color: rgba(255,255,255,0.72);">Exam in 1 day - make it count.</p>
+                  <p id="todays-focus-label" class="text-[10px] uppercase tracking-widest font-semibold" style="color: rgba(255,255,255,0.65);">Today's focus</p>
+                  <h3 id="todays-focus-title" class="text-[30px] leading-[1.05] tracking-[-0.02em] font-semibold mt-1">Math Mock #4</h3>
+                  <p id="todays-focus-subtitle" class="text-[13px] mt-1" style="color: rgba(255,255,255,0.72);">Exam in 1 day - make it count.</p>
                 </div>
-                <button class="mt-3 w-full rounded-xl bg-white text-[#2B0A6B] text-sm font-semibold py-2">Start Now</button>
+                <button id="todays-focus-action" class="mt-3 w-full rounded-xl bg-white text-[#2B0A6B] text-sm font-semibold py-2">Start Now</button>
               </div>
             </div>
           </div>
@@ -1454,12 +1466,184 @@
         const backdrop = document.getElementById("schedule-modal-backdrop");
         const openBtn  = document.getElementById("open-schedule-modal");
         const closeBtn = document.getElementById("cancel-schedule-modal");
+        const form = document.getElementById("schedule-form");
+        const subjectInput = document.getElementById("sch-subject");
+        const dateInput = document.getElementById("sch-date");
+        const timeInput = document.getElementById("sch-time");
+        const upcomingList = document.getElementById("upcoming-exams-list");
+
+        const focusTitle = document.getElementById("todays-focus-title");
+        const focusSubtitle = document.getElementById("todays-focus-subtitle");
+        const focusAction = document.getElementById("todays-focus-action");
         const typeSelect = document.getElementById("sch-type");
         const typeShell = document.getElementById("sch-type-select");
         const typeTrigger = document.getElementById("sch-type-trigger");
         const typeMenu = document.getElementById("sch-type-menu");
 
-        if (!backdrop || !openBtn || !closeBtn) return;
+        if (!backdrop || !openBtn || !closeBtn || !form || !typeSelect || !subjectInput || !dateInput || !timeInput || !upcomingList) return;
+
+        const STORAGE_KEY = "openxp:schedules:v1";
+
+        function safeJsonParse(str, fallback) {
+          try { return JSON.parse(str); } catch { return fallback; }
+        }
+
+        function uid() {
+          return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        }
+
+        function toLocalDateTime(dateStr, timeStr) {
+          if (!dateStr) return null;
+          const t = (timeStr || "").trim() || "09:00";
+          const d = new Date(`${dateStr}T${t}`);
+          return Number.isNaN(d.getTime()) ? null : d;
+        }
+
+        function monthAbbrev(d) {
+          return d.toLocaleString(undefined, { month: "short" });
+        }
+
+        function daysDiff(from, to) {
+          const a = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+          const b = new Date(to.getFullYear(), to.getMonth(), to.getDate());
+          return Math.round((b - a) / (24 * 60 * 60 * 1000));
+        }
+
+        function relativeLabel(dt) {
+          const now = new Date();
+          const diff = daysDiff(now, dt);
+          if (diff === 0) return "Today";
+          if (diff === 1) return "Tomorrow";
+          if (diff > 1) return `${diff} days left`;
+          if (diff === -1) return "Yesterday";
+          return `${Math.abs(diff)} days ago`;
+        }
+
+        function paletteForExam(examType) {
+          const val = (examType || "").toUpperCase();
+          if (val === "WAEC") {
+            return { chipBg: "bg-violet-50", chipMon: "text-violet-500", chipDay: "text-violet-700", tagBg: "bg-violet-100", tagText: "text-violet-700" };
+          }
+          if (val === "JAMB") {
+            return { chipBg: "bg-blue-50", chipMon: "text-blue-500", chipDay: "text-blue-700", tagBg: "bg-blue-100", tagText: "text-blue-700" };
+          }
+          return { chipBg: "bg-emerald-50", chipMon: "text-emerald-500", chipDay: "text-emerald-700", tagBg: "bg-emerald-100", tagText: "text-emerald-700" };
+        }
+
+        function seedIfEmpty(items) {
+          if (items.length) return items;
+          const now = new Date();
+          const addDays = (n) => {
+            const d = new Date(now);
+            d.setDate(d.getDate() + n);
+            return d.toISOString().slice(0, 10);
+          };
+          const seeded = [
+            { id: uid(), subject: "Mathematics", examType: "WAEC", date: addDays(1), time: "09:00", createdAt: Date.now() },
+            { id: uid(), subject: "Physics", examType: "JAMB", date: addDays(5), time: "09:00", createdAt: Date.now() },
+            { id: uid(), subject: "Chemistry", examType: "WAEC", date: addDays(8), time: "09:00", createdAt: Date.now() },
+          ];
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
+          return seeded;
+        }
+
+        function loadSchedules() {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          const items = Array.isArray(safeJsonParse(raw, [])) ? safeJsonParse(raw, []) : [];
+          return seedIfEmpty(items).filter(Boolean);
+        }
+
+        function saveSchedules(items) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+        }
+
+        function normalizeSchedule(item) {
+          const subject = (item.subject || "").trim();
+          const examType = (item.examType || "").trim();
+          const date = (item.date || "").trim();
+          const time = (item.time || "").trim();
+          const dt = toLocalDateTime(date, time);
+          if (!subject || !examType || !date || !dt) return null;
+          return { ...item, subject, examType, date, time };
+        }
+
+        function getSortedUpcoming(items) {
+          const normalized = items.map(normalizeSchedule).filter(Boolean);
+          normalized.sort((a, b) => {
+            const da = toLocalDateTime(a.date, a.time);
+            const db = toLocalDateTime(b.date, b.time);
+            return (da?.getTime?.() || 0) - (db?.getTime?.() || 0);
+          });
+          return normalized;
+        }
+
+        function renderUpcoming(items) {
+          const upcoming = getSortedUpcoming(items);
+          if (!upcoming.length) {
+            upcomingList.innerHTML = `<p class="text-sm text-[var(--muted)] py-3">No upcoming exams yet.</p>`;
+            return;
+          }
+
+          upcomingList.innerHTML = upcoming.slice(0, 6).map((ex) => {
+            const dt = toLocalDateTime(ex.date, ex.time);
+            const pal = paletteForExam(ex.examType);
+            const rel = dt ? relativeLabel(dt) : "";
+            const mon = dt ? monthAbbrev(dt) : "";
+            const day = dt ? dt.getDate() : "";
+            const safeExam = (ex.examType || "").replace(/"/g, "&quot;");
+            const safeSub = (ex.subject || "").replace(/"/g, "&quot;");
+            return `
+              <div class="flex gap-3 items-center py-3 first:pt-0 last:pb-0">
+                <div class="flex flex-col items-center justify-center rounded-xl ${pal.chipBg} px-3 py-2.5 min-w-[60px] shrink-0">
+                  <span class="text-[10px] ${pal.chipMon} font-semibold uppercase tracking-wide">${mon}</span>
+                  <span class="text-base font-bold ${pal.chipDay}">${day}</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="upcoming-title font-semibold text-[var(--title)] truncate">${ex.subject}</p>
+                  <p class="text-[13px] text-[var(--body)] mt-0.5">${ex.examType} · ${rel}</p>
+                </div>
+                <button
+                  class="rounded-lg ${pal.tagBg} ${pal.tagText} text-xs font-semibold px-3 py-1 shrink-0 hover:opacity-90 transition-opacity"
+                  data-practice-open
+                  data-exam="${safeExam}"
+                  data-subject="${safeSub}"
+                  type="button"
+                >Prep</button>
+              </div>
+            `;
+          }).join("");
+        }
+
+        function updateTodaysFocus(items) {
+          if (!focusTitle || !focusSubtitle || !focusAction) return;
+          const upcoming = getSortedUpcoming(items);
+          const next = upcoming[0];
+          if (!next) {
+            focusTitle.textContent = "No upcoming exams";
+            focusSubtitle.textContent = "Add an exam to get a focus plan.";
+            focusAction.textContent = "Add exam";
+            focusAction.removeAttribute("data-practice-open");
+            focusAction.removeAttribute("data-exam");
+            focusAction.removeAttribute("data-subject");
+            focusAction.addEventListener?.("click", openModal, { once: true });
+            return;
+          }
+
+          const dt = toLocalDateTime(next.date, next.time);
+          const rel = dt ? relativeLabel(dt) : "";
+          focusTitle.textContent = next.subject;
+          focusSubtitle.textContent = `${next.examType} · ${rel} — make it count.`;
+          focusAction.textContent = "Prep now";
+          focusAction.setAttribute("data-practice-open", "");
+          focusAction.dataset.exam = next.examType;
+          focusAction.dataset.subject = next.subject;
+        }
+
+        function refreshUpcomingUI() {
+          const items = loadSchedules();
+          renderUpcoming(items);
+          updateTodaysFocus(items);
+        }
 
         function openTypeMenu() {
           if (!typeShell || !typeTrigger) return;
@@ -1492,6 +1676,35 @@
 
         openBtn.addEventListener("click", openModal);
         closeBtn.addEventListener("click", closeModal);
+
+        form.addEventListener("submit", () => {
+          const subject = (subjectInput.value || "").trim();
+          const examType = (typeSelect.value || "").trim();
+          const date = (dateInput.value || "").trim();
+          const time = (timeInput.value || "").trim();
+
+          if (!subject || !examType || !date) {
+            showDashboardToast("Add subject, type, and date first.");
+            return;
+          }
+
+          const dt = toLocalDateTime(date, time);
+          if (!dt) {
+            showDashboardToast("Pick a valid date/time.");
+            return;
+          }
+
+          const items = loadSchedules();
+          const next = { id: uid(), subject, examType, date, time, createdAt: Date.now() };
+          items.push(next);
+          saveSchedules(items);
+          refreshUpcomingUI();
+
+          form.reset();
+          selectType("");
+          closeModal();
+          showDashboardToast("Exam saved.");
+        });
 
         backdrop.addEventListener("click", (e) => {
           if (e.target === backdrop) closeModal();
@@ -1542,6 +1755,9 @@
             }
           });
         }
+
+        // Initial render on load (and keeps hardcoded HTML from becoming stale)
+        refreshUpcomingUI();
       }
 
       function setupProfileSheetTrigger() {
