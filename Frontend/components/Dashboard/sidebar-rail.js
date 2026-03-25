@@ -3,19 +3,49 @@ class DashboardSidebar extends HTMLElement {
     const activeItem = (this.getAttribute("active-item") || "home").toLowerCase();
 
     const navItems = [
-      { id: "home", label: "Home", icon: "/Images/dashboard-icons/home.svg" },
-      { id: "exam-prep", label: "Exam Prep", icon: "/Images/dashboard-icons/Exam Prep.svg" },
-      { id: "resources", label: "Resources", icon: "/Images/dashboard-icons/ChalkboardTeacher.svg" },
-      { id: "my-learning", label: "My Learning", icon: "/Images/dashboard-icons/Student.svg" },
-      { id: "ai-buddy", label: "AI Buddy", icon: "/Images/dashboard-icons/Robot.svg" },
-      { id: "analytics", label: "Analytics", icon: "/Images/dashboard-icons/Vector.svg" },
+      {
+        id: "home",
+        label: "Home",
+        icon: "/Images/dashboard-icons/home.svg",
+        href: "/Frontend/components/Dashboard/dp.html",
+      },
+      {
+        id: "exam-prep",
+        label: "Exam Prep",
+        icon: "/Images/dashboard-icons/Exam Prep.svg",
+        href: "/Frontend/components/exam-prep/index.html",
+      },
+      {
+        id: "resources",
+        label: "Resources",
+        icon: "/Images/dashboard-icons/ChalkboardTeacher.svg",
+        href: "#",
+      },
+      {
+        id: "my-learning",
+        label: "My Learning",
+        icon: "/Images/dashboard-icons/Student.svg",
+        href: "/Frontend/components/learning-path/index.html",
+      },
+      {
+        id: "ai-buddy",
+        label: "AI Buddy",
+        icon: "/Images/dashboard-icons/Robot.svg",
+        href: "#",
+      },
+      {
+        id: "analytics",
+        label: "Analytics",
+        icon: "/Images/dashboard-icons/Vector.svg",
+        href: "#",
+      },
     ];
 
     const navLinks = navItems
       .map((item) => {
         const activeClass = item.id === activeItem ? " active" : "";
         return `
-          <a href="#" class="nav-item${activeClass}" aria-label="${item.label}">
+          <a href="${item.href}" class="nav-item${activeClass}" aria-label="${item.label}">
             <img src="${item.icon}" alt="" />
             <span class="nav-label">${item.label}</span>
           </a>
