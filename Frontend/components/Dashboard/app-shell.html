@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Openxp</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../styles/typography.css" />
+
+    <style>
+      :root {
+        --dashboard-bg: #f7f8fc;
+        --brand: #1a0a45;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", "Open Sans", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Arial, sans-serif;
+        background: var(--dashboard-bg);
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      #sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 74px;
+        background: var(--brand);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        flex-direction: column;
+        padding: 14px 10px;
+        gap: 4px;
+        z-index: 40;
+        overflow: hidden;
+        transition: width 0.22s ease-in-out;
+      }
+
+      #sidebar:hover {
+        width: 220px;
+      }
+
+      #dashboard-root {
+        padding-left: 74px;
+      }
+
+      .sidebar-logo-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 2px 2px 14px 2px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        margin-bottom: 8px;
+        min-width: 198px;
+      }
+
+      .sidebar-logo-text {
+        opacity: 0;
+        transition: opacity 0.1s ease 0s;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      #sidebar:hover .sidebar-logo-text {
+        opacity: 1;
+        transition-delay: 0.1s;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 9px 8px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.15s ease, color 0.15s ease;
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.74);
+        min-width: 198px;
+        white-space: nowrap;
+      }
+
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+
+      .nav-item.active {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+      }
+
+      .nav-item img {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        filter: brightness(0) saturate(100%) invert(100%);
+      }
+
+      .nav-item.active img {
+        filter: brightness(0) invert(1);
+      }
+
+      .nav-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        opacity: 0;
+        transition: opacity 0.1s ease 0s;
+        overflow: hidden;
+      }
+
+      #sidebar:hover .nav-label {
+        opacity: 1;
+        transition-delay: 0.1s;
+      }
+
+      .nav-spacer {
+        flex: 1;
+      }
+
+      #app-shell-frame-wrap {
+        flex: 1;
+        min-width: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #app-shell-frame {
+        flex: 1;
+        width: 100%;
+        min-height: 100vh;
+        border: 0;
+        background: var(--dashboard-bg);
+      }
+
+      @media (max-width: 768px) {
+        #dashboard-root {
+          padding-left: 0;
+        }
+        #sidebar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-[var(--dashboard-bg)]">
+    <div id="dashboard-root" class="min-h-screen flex bg-[var(--dashboard-bg)]">
+      <dashboard-sidebar
+        active-item="home"
+        data-shell-base="/Frontend/components/Dashboard/app-shell.html"
+      ></dashboard-sidebar>
+
+      <div id="app-shell-frame-wrap">
+        <iframe
+          id="app-shell-frame"
+          title="Openxp content"
+          name="openxp-app-shell"
+        ></iframe>
+      </div>
+    </div>
+
+    <script type="module" src="./sidebar-rail.js"></script>
+    <script type="module" src="./app-shell-router.js"></script>
+  </body>
+</html>
