@@ -1,6 +1,17 @@
 class DashboardSidebar extends HTMLElement {
+  static observedAttributes = ["active-item"];
+
   connectedCallback() {
+    this.render();
+  }
+
+  attributeChangedCallback() {
+    this.render();
+  }
+
+  render() {
     const activeItem = (this.getAttribute("active-item") || "home").toLowerCase();
+    const shellBase = (this.getAttribute("data-shell-base") || "").trim();
 
     const navItems = [
       {
@@ -10,10 +21,10 @@ class DashboardSidebar extends HTMLElement {
         href: "/Frontend/components/Dashboard/dp.html",
       },
       {
-        id: "exam-prep",
-        label: "Exam Prep",
+        id: "exam-home",
+        label: "Exam Home",
         icon: "/Images/dashboard-icons/Exam Prep.svg",
-        href: "/Frontend/components/exam-prep/index.html",
+        href: "/Frontend/components/exam-prep/exam-home.html",
       },
       {
         id: "resources",
@@ -44,8 +55,12 @@ class DashboardSidebar extends HTMLElement {
     const navLinks = navItems
       .map((item) => {
         const activeClass = item.id === activeItem ? " active" : "";
+        const href =
+          shellBase && item.href !== "#" && ["home", "exam-home", "my-learning"].includes(item.id)
+            ? `${shellBase}#${item.id}`
+            : item.href;
         return `
-          <a href="${item.href}" class="nav-item${activeClass}" aria-label="${item.label}">
+          <a href="${href}" class="nav-item${activeClass}" aria-label="${item.label}" data-nav-id="${item.id}">
             <img src="${item.icon}" alt="" />
             <span class="nav-label">${item.label}</span>
           </a>
