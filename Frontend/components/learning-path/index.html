@@ -36,6 +36,16 @@
         color: var(--title);
       }
 
+      body.openxp-embed dashboard-sidebar {
+        display: none !important;
+      }
+      body.openxp-embed #dashboard-root {
+        padding-left: 0 !important;
+      }
+      body.openxp-embed .openxp-embed-hide {
+        display: none !important;
+      }
+
       #sidebar {
         position: fixed;
         top: 0;
@@ -154,6 +164,9 @@
   </head>
 
   <body class="bg-[var(--dashboard-bg)]">
+    <script>
+      if (window.parent !== window) document.body.classList.add("openxp-embed");
+    </script>
     <div id="dashboard-root" class="min-h-screen flex bg-[var(--dashboard-bg)] text-slate-900">
       <dashboard-sidebar active-item="my-learning"></dashboard-sidebar>
 
@@ -168,7 +181,7 @@
             </div>
             <a
               href="/Frontend/components/Dashboard/dp.html"
-              class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              class="openxp-embed-hide rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               Back to Dashboard
             </a>
