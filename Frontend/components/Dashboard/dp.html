@@ -142,7 +142,7 @@
         transition: opacity 0.1s ease 0s;
         overflow: hidden;
       }
-
+      
       #sidebar:hover .nav-label {
         opacity: 1;
         transition-delay: 0.1s;
@@ -282,10 +282,398 @@
 
       .modal-label {
         display: block;
-        font-size: 0.75rem;
-        font-weight: 600;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
         color: #64748b;
-        margin-bottom: 6px;
+        margin-bottom: 7px;
+      }
+
+      .select-enhanced {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding-right: 42px;
+        background-image:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%23475569' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
+          linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,0.92) 100%);
+        background-repeat: no-repeat, no-repeat;
+        background-position: right 13px center, 0 0;
+        background-size: 18px 18px, 100% 100%;
+        border-color: #d9e1ed;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.82);
+      }
+
+      .select-enhanced:hover {
+        border-color: #c7d2e0;
+      }
+
+      .select-enhanced:focus {
+        border-color: #2b0a6b;
+        box-shadow: 0 0 0 3px rgba(43, 10, 107, 0.08), inset 0 1px 0 rgba(255,255,255,0.85);
+      }
+
+      /* Hide the native select visually when using the custom dropdown.
+         (Keeps the real value for form submission.) */
+      #sch-type-select > select#sch-type {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      #sch-type-select .custom-select-btn {
+        position: relative;
+        z-index: 1;
+      }
+
+      .custom-select {
+        position: relative;
+      }
+
+      .custom-select-btn {
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid #d9e1ed;
+        border-radius: 10px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,0.92) 100%);
+        padding: 10px 40px 10px 14px;
+        text-align: left;
+        font-size: 0.875rem;
+        color: #334155;
+        position: relative;
+        transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease, transform 0.16s ease;
+      }
+
+      .custom-select-btn:hover {
+        border-color: rgba(167, 139, 250, 0.9);
+        background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(245,243,255,0.92) 100%);
+        box-shadow:
+          0 12px 22px rgba(43, 10, 107, 0.12),
+          0 0 0 3px rgba(167, 139, 250, 0.14),
+          inset 0 1px 0 rgba(255,255,255,0.86);
+        transform: translateY(-1px);
+      }
+
+      .custom-select-btn:focus-visible,
+      .custom-select.open .custom-select-btn {
+        border-color: #2b0a6b;
+        box-shadow: 0 0 0 3px rgba(43, 10, 107, 0.08), inset 0 1px 0 rgba(255,255,255,0.85);
+        outline: none;
+      }
+
+      .custom-select-btn::after {
+        content: "";
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        width: 18px;
+        height: 18px;
+        transform: translateY(-50%);
+        background: center / 18px 18px no-repeat
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%23475569' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        transition: transform 0.16s ease;
+      }
+
+      .custom-select.open .custom-select-btn::after {
+        transform: translateY(-50%) rotate(180deg);
+      }
+
+      .custom-select-btn[data-placeholder="true"] {
+        color: #64748b;
+      }
+
+      .custom-select-menu {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% + 6px);
+        background: #fff;
+        border: 1px solid #d9e1ed;
+        border-radius: 12px;
+        box-shadow: 0 16px 28px rgba(15, 23, 42, 0.14);
+        padding: 6px;
+        z-index: 80;
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+        pointer-events: none;
+        transition: opacity 0.14s ease, transform 0.14s ease;
+      }
+
+      .custom-select.open .custom-select-menu {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+      }
+
+      .custom-select-option {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        border-radius: 8px;
+        padding: 9px 10px;
+        text-align: left;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #334155;
+        cursor: pointer;
+        transition: background-color 0.12s ease, color 0.12s ease;
+      }
+
+      .custom-select-option:hover,
+      .custom-select-option.active {
+        background: #f5f3ff;
+        color: #4c1d95;
+      }
+
+      /* ── Practice mode modal ── */
+      #practice-modal-backdrop,
+      #add-practice-modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        backdrop-filter: blur(2px);
+        z-index: 65;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #practice-modal-backdrop.open,
+      #add-practice-modal-backdrop.open {
+        display: flex;
+      }
+
+      #practice-modal,
+      #add-practice-modal {
+        background: #fff;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 460px;
+        margin: 16px;
+        padding: 22px;
+        transform: translateY(16px);
+        opacity: 0;
+        transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease;
+      }
+
+      #practice-modal-backdrop.open #practice-modal,
+      #add-practice-modal-backdrop.open #add-practice-modal {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .mode-choice {
+        border: 1px solid #e8ddff;
+        border-radius: 12px;
+        background: #fff;
+        padding: 12px;
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 0.15s ease, background-color 0.15s ease;
+      }
+
+      .mode-choice.active {
+        border-color: #f59e0b;
+        background: #fff8eb;
+      }
+
+      .modal-close-btn {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        color: #64748b;
+        transition: all 0.16s ease;
+      }
+
+      .modal-close-btn:hover {
+        background: #f8fafc;
+        color: #334155;
+        border-color: #cbd5e1;
+        transform: translateY(-1px);
+      }
+
+      .modal-close-btn:active {
+        transform: translateY(0);
+      }
+
+      .modal-close-btn:focus-visible {
+        outline: 2px solid #a78bfa;
+        outline-offset: 1px;
+      }
+
+      .modal-close-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .fluid-panel-wrap {
+        position: relative;
+        margin-top: 12px;
+      }
+
+      .fluid-panel {
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-8px) scale(0.985);
+        filter: blur(2px);
+        transition:
+          max-height 0.36s cubic-bezier(0.2, 0.8, 0.2, 1),
+          opacity 0.24s ease,
+          transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+          filter 0.24s ease;
+        pointer-events: none;
+      }
+
+      .fluid-panel.open {
+        max-height: 280px;
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+        pointer-events: auto;
+      }
+
+      @keyframes chip-rise-in {
+        from {
+          opacity: 0;
+          transform: translateY(6px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .chips-animating .topic-chip,
+      .chips-animating .year-chip,
+      .chips-animating .difficulty-chip {
+        animation: chip-rise-in 0.24s ease both;
+        animation-delay: var(--chip-delay, 0ms);
+      }
+
+      .fluid-panel-body {
+        border: 1px solid #e9e7f3;
+        border-radius: 14px;
+        background: #fcfcff;
+        padding: 13px;
+      }
+
+      .topic-chip,
+      .year-chip {
+        border: 1px solid #e4e7f2;
+        border-radius: 12px;
+        background: #fff;
+        color: #334155;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        line-height: 1;
+        padding: 9px 12px;
+        box-shadow: 0 1px 1px rgba(15, 23, 42, 0.04);
+        transition: transform 0.14s ease, border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+      }
+
+      .topic-chip:hover,
+      .year-chip:hover {
+        transform: translateY(-1px);
+        border-color: #c9cfe2;
+        background: #f8faff;
+      }
+
+      .topic-chip.active,
+      .year-chip.active {
+        border-color: #5b2cb6;
+        background: linear-gradient(135deg, #5b2cb6 0%, #7c3aed 100%);
+        color: #fff;
+        box-shadow: 0 6px 16px rgba(91, 44, 182, 0.22);
+      }
+
+      .difficulty-chip {
+        border: 1px solid #dbe3ee;
+        border-radius: 10px;
+        background: #f8fafc;
+        color: #334155;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1;
+        padding: 9px 11px;
+        transition: transform 0.14s ease, border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+      }
+
+      .difficulty-chip:hover {
+        transform: translateY(-1px);
+        border-color: #c5d2e4;
+        background: #f1f5f9;
+      }
+
+      .difficulty-chip[data-difficulty="Easy"].active {
+        border-color: #16a34a;
+        background: #ecfdf3;
+        color: #166534;
+        box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.06);
+      }
+
+      .difficulty-chip[data-difficulty="Medium"].active {
+        border-color: #f59e0b;
+        background: #fff8eb;
+        color: #b45309;
+        box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.08);
+      }
+
+      .difficulty-chip[data-difficulty="Hard"].active {
+        border-color: #e11d48;
+        background: #fff1f2;
+        color: #be123c;
+        box-shadow: 0 0 0 1px rgba(225, 29, 72, 0.07);
+      }
+
+      .topic-chip:focus-visible,
+      .year-chip:focus-visible,
+      .difficulty-chip:focus-visible {
+        outline: 2px solid #a78bfa;
+        outline-offset: 1px;
+      }
+
+      .card-clickable {
+        cursor: pointer;
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+      }
+
+      .card-clickable:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(15,23,42,0.08);
+      }
+
+      #dashboard-toast {
+        position: fixed;
+        left: 50%;
+        bottom: 20px;
+        transform: translateX(-50%) translateY(16px);
+        background: #1f2937;
+        color: #fff;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 90;
+        transition: opacity 0.18s ease, transform 0.18s ease;
+      }
+
+      #dashboard-toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
       }
 
       /* Fullscreen loader */
@@ -504,45 +892,47 @@
       <main class="flex-1 flex flex-col min-h-screen">
         <!-- Top bar -->
         <header
-          class="flex items-center justify-between gap-4 px-6 md:px-10 bg-white border-b border-slate-100"
+          class="bg-white border-b border-slate-100"
           style="height: 77px;"
         >
-          <div>
-            <h1 class="text-[30px] leading-[1.05] font-semibold text-[var(--title)] tracking-[-0.02em]">
-              Good morning
-            </h1>
-            <p class="text-[13px] text-[var(--muted)] mt-1">Ready to smash some practice questions today</p>
-          </div>
+          <div class="dashboard-content mx-auto h-full flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+            <div>
+              <h1 class="text-[30px] leading-[1.05] font-semibold text-[var(--title)] tracking-[-0.02em]">
+                Good morning
+              </h1>
+              <p class="text-[13px] text-[var(--muted)] mt-1">Ready to smash some practice questions today</p>
+            </div>
 
-          <div class="flex items-center gap-4">
-            <!-- Notifications (fire + count pill) -->
-            <button
-              type="button"
-              class="inline-flex h-9 items-center gap-2 rounded-full border border-slate-200 bg-white pl-2 pr-3 hover:bg-slate-50 text-slate-600"
-              aria-label="Notifications, 7 unread"
-            >
-              <img
-                src="../../../Images/dashboard-icons/fire-svgrepo-com.svg"
-                alt=""
-                class="h-5 w-5 shrink-0 object-contain"
-                aria-hidden="true"
-              />
-              <span class="text-[13px] font-bold tabular-nums text-slate-900 leading-none">7</span>
-            </button>
-
-            <!-- Profile pill (avatar opens settings sheet) -->
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-4">
+              <!-- Notifications (fire + count pill) -->
               <button
                 type="button"
-                id="profile-avatar"
-                class="h-9 min-w-9 rounded-full flex items-center justify-center text-sm font-bold text-white bg-[#6D28D9] overflow-hidden shrink-0 border-0 cursor-pointer px-3 hover:opacity-95 transition-opacity"
-                aria-label="Profile settings"
+                class="inline-flex h-9 items-center gap-2 rounded-full border border-slate-200 bg-white pl-2 pr-3 hover:bg-slate-50 text-slate-600"
+                aria-label="Notifications, 7 unread"
               >
-                SL
+                <img
+                  src="../../../Images/dashboard-icons/fire-svgrepo-com.svg"
+                  alt=""
+                  class="h-5 w-5 shrink-0 object-contain"
+                  aria-hidden="true"
+                />
+                <span class="text-[13px] font-bold tabular-nums text-slate-900 leading-none">7</span>
               </button>
-              <div class="flex flex-col leading-tight min-w-0">
-                <span class="text-xs font-semibold text-slate-900 truncate" id="profile-name"></span>
-                <span class="text-[11px] text-slate-400 truncate" id="profile-handle"></span>
+
+              <!-- Profile pill (avatar opens settings sheet) -->
+              <div class="flex items-center gap-3">
+                <button
+                  type="button"
+                  id="profile-avatar"
+                  class="h-9 min-w-9 rounded-full flex items-center justify-center text-sm font-bold text-white bg-[#6D28D9] overflow-hidden shrink-0 border-0 cursor-pointer px-3 hover:opacity-95 transition-opacity"
+                  aria-label="Profile settings"
+                >
+                  SL
+                </button>
+                <div class="flex flex-col leading-tight min-w-0">
+                  <span class="text-xs font-semibold text-slate-900 truncate" id="profile-name"></span>
+                  <span class="text-[11px] text-slate-400 truncate" id="profile-handle"></span>
+                </div>
               </div>
             </div>
           </div>
@@ -561,7 +951,14 @@
                   <p class="text-[clamp(1rem,2.4vw,1.625rem)] leading-[1.08] font-semibold tracking-[-0.015em] text-[var(--title)] mt-1 w-full break-words">
                     Mathematics
                   </p>
-                  <button class="mt-3 rounded-full bg-[#2563eb] px-3 py-1 text-[11px] font-semibold text-white">Start Test</button>
+                  <button
+                    class="mt-3 rounded-full bg-[#2563eb] px-3 py-1 text-[11px] font-semibold text-white"
+                    data-practice-open
+                    data-exam="WAEC"
+                    data-subject="Mathematics"
+                  >
+                    Start Test
+                  </button>
                 </div>
 
                 <div class="rounded-2xl border border-[#c8b6e8] bg-[#f5f2ff] px-4 py-4 min-h-[132px] relative shadow-[0_1px_1px_rgba(15,23,42,0.03)]">
@@ -570,7 +967,14 @@
                   <p class="text-[clamp(1rem,2.4vw,1.625rem)] leading-[1.08] font-semibold tracking-[-0.015em] text-[var(--title)] mt-1 w-full break-words">
                     Physics
                   </p>
-                  <button class="mt-3 rounded-full bg-[#9333ea] px-3 py-1 text-[11px] font-semibold text-white">Start Test</button>
+                  <button
+                    class="mt-3 rounded-full bg-[#9333ea] px-3 py-1 text-[11px] font-semibold text-white"
+                    data-practice-open
+                    data-exam="JAMB"
+                    data-subject="Physics"
+                  >
+                    Start Test
+                  </button>
                 </div>
 
                 <div class="rounded-2xl border border-[#c8b6e8] bg-[#eaf9f3] px-4 py-4 min-h-[132px] relative shadow-[0_1px_1px_rgba(15,23,42,0.03)]">
@@ -579,10 +983,23 @@
                   <p class="text-[clamp(1rem,2.4vw,1.625rem)] leading-[1.08] font-semibold tracking-[-0.015em] text-[var(--title)] mt-1 w-full break-words">
                     Chemistry
                   </p>
-                  <button class="mt-3 rounded-full bg-[#059669] px-3 py-1 text-[11px] font-semibold text-white">Start Test</button>
+                  <button
+                    class="mt-3 rounded-full bg-[#059669] px-3 py-1 text-[11px] font-semibold text-white"
+                    data-practice-open
+                    data-exam="WAEC"
+                    data-subject="Chemistry"
+                  >
+                    Start Test
+                  </button>
                 </div>
 
-                <div class="rounded-2xl border border-dashed border-[#c8b6e8] bg-[#fbfbfe] px-4 py-4 min-h-[132px] flex flex-col items-center justify-center text-[var(--muted)]">
+                <div
+                  id="open-add-practice"
+                  class="rounded-2xl border border-dashed border-[#c8b6e8] bg-[#fbfbfe] px-4 py-4 min-h-[132px] flex flex-col items-center justify-center text-[var(--muted)] card-clickable"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Add practice subject"
+                >
                   <span class="text-xl">+</span>
                   <span class="text-sm mt-1">Add</span>
                 </div>
@@ -746,12 +1163,28 @@
 
           <!-- Exam type -->
           <div>
-            <label class="modal-label" for="sch-type">Exam type</label>
-            <select id="sch-type" class="modal-input bg-white">
-              <option value="">Select type</option>
-              <option>WAEC</option>
-              <option>JAMB</option>
-            </select>
+            <label class="modal-label" for="sch-type-trigger">Exam type</label>
+            <div class="custom-select" id="sch-type-select">
+              <select id="sch-type" class="modal-input bg-white select-enhanced" tabindex="-1" aria-hidden="true">
+                <option value="">Select type</option>
+                <option value="WAEC">WAEC</option>
+                <option value="JAMB">JAMB</option>
+              </select>
+              <button
+                type="button"
+                id="sch-type-trigger"
+                class="custom-select-btn"
+                data-placeholder="true"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+              >
+                Select type
+              </button>
+              <div id="sch-type-menu" class="custom-select-menu" role="listbox" aria-label="Select exam type">
+                <button type="button" class="custom-select-option" role="option" data-sch-type-option="WAEC">WAEC</button>
+                <button type="button" class="custom-select-option" role="option" data-sch-type-option="JAMB">JAMB</button>
+              </div>
+            </div>
           </div>
 
           <!-- Date + Time row -->
@@ -785,6 +1218,135 @@
         </form>
       </div>
     </div>
+
+    <!-- Practice mode modal -->
+    <div id="practice-modal-backdrop" role="dialog" aria-modal="true" aria-label="Choose practice mode">
+      <div id="practice-modal">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p id="practice-modal-exam" class="text-[10px] uppercase tracking-[0.08em] font-semibold text-[#7c3aed]">WAEC</p>
+            <h2 id="practice-modal-subject" class="text-xl leading-tight font-semibold text-[var(--title)] mt-1">Mathematics</h2>
+          </div>
+          <button id="close-practice-modal" type="button" class="modal-close-btn" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        <p class="text-[11px] uppercase tracking-[0.08em] font-semibold text-[var(--muted)] mt-5">Choose mode</p>
+        <div class="grid grid-cols-2 gap-3 mt-2">
+          <button id="pick-topic-mode" type="button" class="mode-choice active">
+            <p class="text-sm font-semibold text-slate-900">Topic</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Tailored to weak topics</p>
+          </button>
+          <button id="pick-year-mode" type="button" class="mode-choice">
+            <p class="text-sm font-semibold text-slate-900">Year</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Classic past questions</p>
+          </button>
+        </div>
+
+        <div class="fluid-panel-wrap">
+          <div id="topic-panel" class="fluid-panel">
+            <div class="fluid-panel-body space-y-3">
+              <div>
+                <p class="modal-label mb-1">Pick topic</p>
+                <div id="topic-chip-list" class="flex flex-wrap gap-2">
+                  <button type="button" class="topic-chip" data-topic-chip data-topic="Algebra">Algebra</button>
+                  <button type="button" class="topic-chip" data-topic-chip data-topic="Trigonometry">Trigonometry</button>
+                  <button type="button" class="topic-chip" data-topic-chip data-topic="Calculus">Calculus</button>
+                  <button type="button" class="topic-chip" data-topic-chip data-topic="Statistics">Statistics</button>
+                </div>
+              </div>
+
+              <div>
+                <p class="modal-label mb-1">Difficulty</p>
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" class="difficulty-chip" data-difficulty-chip data-difficulty="Easy">Easy</button>
+                  <button type="button" class="difficulty-chip active" data-difficulty-chip data-difficulty="Medium">Medium</button>
+                  <button type="button" class="difficulty-chip" data-difficulty-chip data-difficulty="Hard">Hard</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="year-panel" class="fluid-panel">
+            <div class="fluid-panel-body">
+              <p class="modal-label mb-2">Pick year</p>
+              <div id="year-chip-list" class="flex flex-wrap gap-2">
+                <button type="button" class="year-chip" data-year-chip data-year="2025">2025</button>
+                <button type="button" class="year-chip" data-year-chip data-year="2024">2024</button>
+                <button type="button" class="year-chip" data-year-chip data-year="2023">2023</button>
+                <button type="button" class="year-chip" data-year-chip data-year="2022">2022</button>
+                <button type="button" class="year-chip" data-year-chip data-year="2021">2021</button>
+                <button type="button" class="year-chip" data-year-chip data-year="2020">2020</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button id="practice-lets-go" type="button" class="mt-5 w-full rounded-xl bg-[#2B0A6B] py-2.5 text-sm font-semibold text-white hover:bg-[#3d1299] transition-colors">
+          Let's Go! 🚀
+        </button>
+      </div>
+    </div>
+
+    <!-- Add practice card modal -->
+    <div id="add-practice-modal-backdrop" role="dialog" aria-modal="true" aria-label="Add practice card">
+      <div id="add-practice-modal">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h2 class="text-base font-semibold text-slate-900">Add Practice Card</h2>
+            <p class="text-xs text-slate-500 mt-1">Pick exam and subject for a new card.</p>
+          </div>
+          <button id="close-add-practice-modal" type="button" class="modal-close-btn" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        <form id="add-practice-form" class="space-y-4 mt-4" onsubmit="return false;">
+          <div>
+            <label class="modal-label" for="add-practice-exam">Exam</label>
+            <div class="custom-select" id="add-practice-exam-select">
+              <input id="add-practice-exam" type="hidden" value="" />
+              <button
+                type="button"
+                id="add-practice-exam-trigger"
+                class="custom-select-btn"
+                data-placeholder="true"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+              >
+                Select exam
+              </button>
+              <div id="add-practice-exam-menu" class="custom-select-menu" role="listbox" aria-label="Select exam">
+                <button type="button" class="custom-select-option" role="option" data-exam-option="WAEC">WAEC</button>
+                <button type="button" class="custom-select-option" role="option" data-exam-option="JAMB">JAMB</button>
+                <button type="button" class="custom-select-option" role="option" data-exam-option="NECO">NECO</button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="modal-label" for="add-practice-subject">Subject</label>
+            <input id="add-practice-subject" type="text" class="modal-input" placeholder="e.g. Biology" />
+          </div>
+
+          <div class="flex gap-3 pt-1">
+            <button type="button" id="cancel-add-practice-modal" class="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors">
+              Cancel
+            </button>
+            <button type="submit" class="flex-1 rounded-xl bg-[#2B0A6B] py-2.5 text-sm font-semibold text-white hover:bg-[#3d1299] transition-colors">
+              Save card
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="dashboard-toast" role="status" aria-live="polite"></div>
 
     <profile-settings-sheet></profile-settings-sheet>
 
@@ -892,9 +1454,41 @@
         const backdrop = document.getElementById("schedule-modal-backdrop");
         const openBtn  = document.getElementById("open-schedule-modal");
         const closeBtn = document.getElementById("cancel-schedule-modal");
+        const typeSelect = document.getElementById("sch-type");
+        const typeShell = document.getElementById("sch-type-select");
+        const typeTrigger = document.getElementById("sch-type-trigger");
+        const typeMenu = document.getElementById("sch-type-menu");
+
+        if (!backdrop || !openBtn || !closeBtn) return;
+
+        function openTypeMenu() {
+          if (!typeShell || !typeTrigger) return;
+          typeShell.classList.add("open");
+          typeTrigger.setAttribute("aria-expanded", "true");
+        }
+
+        function closeTypeMenu() {
+          if (!typeShell || !typeTrigger) return;
+          typeShell.classList.remove("open");
+          typeTrigger.setAttribute("aria-expanded", "false");
+        }
+
+        function selectType(val) {
+          if (!typeSelect || !typeTrigger || !typeMenu) return;
+          typeSelect.value = val;
+          typeTrigger.textContent = val || "Select type";
+          typeTrigger.dataset.placeholder = val ? "false" : "true";
+          typeMenu.querySelectorAll("[data-sch-type-option]").forEach((option) => {
+            option.classList.toggle("active", option.dataset.schTypeOption === val);
+          });
+          closeTypeMenu();
+        }
 
         function openModal() { backdrop.classList.add("open"); }
-        function closeModal() { backdrop.classList.remove("open"); }
+        function closeModal() {
+          backdrop.classList.remove("open");
+          closeTypeMenu();
+        }
 
         openBtn.addEventListener("click", openModal);
         closeBtn.addEventListener("click", closeModal);
@@ -908,6 +1502,46 @@
           if (isProfileSheetOpen()) return;
           closeModal();
         });
+
+        if (typeTrigger && typeShell && typeMenu && typeSelect) {
+          // If the native select has a pre-selected value, reflect it.
+          selectType(typeSelect.value || "");
+
+          typeTrigger.addEventListener("click", () => {
+            if (typeShell.classList.contains("open")) {
+              closeTypeMenu();
+            } else {
+              openTypeMenu();
+            }
+          });
+
+          typeTrigger.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openTypeMenu();
+              return;
+            }
+            if (e.key === "Escape") {
+              closeTypeMenu();
+            }
+          });
+
+          typeMenu.addEventListener("click", (e) => {
+            const option = e.target.closest("[data-sch-type-option]");
+            if (!option) return;
+            selectType(option.dataset.schTypeOption || "");
+          });
+
+          typeSelect.addEventListener("change", () => {
+            selectType(typeSelect.value || "");
+          });
+
+          document.addEventListener("click", (e) => {
+            if (!typeShell.contains(e.target)) {
+              closeTypeMenu();
+            }
+          });
+        }
       }
 
       function setupProfileSheetTrigger() {
@@ -917,11 +1551,306 @@
         trigger.addEventListener("click", () => sheet.open());
       }
 
+      function showDashboardToast(message) {
+        const toast = document.getElementById("dashboard-toast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(showDashboardToast._timer);
+        showDashboardToast._timer = setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2000);
+      }
+
+      function setupPracticeModeModal() {
+        const backdrop = document.getElementById("practice-modal-backdrop");
+        const closeBtn = document.getElementById("close-practice-modal");
+        const examEl = document.getElementById("practice-modal-exam");
+        const subjectEl = document.getElementById("practice-modal-subject");
+        const topicBtn = document.getElementById("pick-topic-mode");
+        const yearBtn = document.getElementById("pick-year-mode");
+        const goBtn = document.getElementById("practice-lets-go");
+        const topicPanel = document.getElementById("topic-panel");
+        const yearPanel = document.getElementById("year-panel");
+        const yearChips = document.querySelectorAll("[data-year-chip]");
+        const difficultyChips = document.querySelectorAll("[data-difficulty-chip]");
+
+        if (!backdrop || !closeBtn || !examEl || !subjectEl || !topicBtn || !yearBtn || !goBtn || !topicPanel || !yearPanel) return;
+
+        const selection = { exam: "", subject: "", mode: "topic", topic: "", year: "", difficulty: "Medium" };
+
+        const topicSuggestions = {
+          Mathematics: ["Algebra", "Trigonometry", "Statistics", "Calculus", "Geometry"],
+          Physics: ["Kinematics", "Waves", "Electricity", "Optics", "Mechanics"],
+          Chemistry: ["Organic Chemistry", "Periodic Table", "Stoichiometry", "Acids & Bases", "Chemical Bonding"],
+        };
+
+        function clearChipState(chips, cls) {
+          chips.forEach((chip) => chip.classList.remove(cls));
+        }
+
+        function refreshTopicChips() {
+          const list = topicSuggestions[selection.subject] || ["General Revision", "Past Questions", "Mock Drill"];
+          const host = document.getElementById("topic-chip-list");
+          if (!host) return;
+          host.innerHTML = list.map((topic) => (
+            `<button type="button" class="topic-chip${selection.topic === topic ? " active" : ""}" data-topic-chip data-topic="${topic}">${topic}</button>`
+          )).join("");
+        }
+
+        function setMode(mode) {
+          selection.mode = mode;
+          topicBtn.classList.toggle("active", mode === "topic");
+          yearBtn.classList.toggle("active", mode === "year");
+          topicPanel.classList.toggle("open", mode === "topic");
+          yearPanel.classList.toggle("open", mode === "year");
+
+          const chips = mode === "topic"
+            ? topicPanel.querySelectorAll(".topic-chip, .difficulty-chip")
+            : yearPanel.querySelectorAll(".year-chip");
+
+          chips.forEach((chip, idx) => {
+            chip.style.setProperty("--chip-delay", `${idx * 24}ms`);
+          });
+
+          const host = mode === "topic" ? topicPanel : yearPanel;
+          host.classList.remove("chips-animating");
+          void host.offsetWidth;
+          host.classList.add("chips-animating");
+        }
+
+        function openModal(payload) {
+          selection.exam = payload.exam || "WAEC";
+          selection.subject = payload.subject || "Subject";
+          selection.topic = "";
+          selection.year = "";
+          selection.difficulty = "Medium";
+          clearChipState(document.querySelectorAll("[data-year-chip]"), "active");
+          clearChipState(document.querySelectorAll("[data-topic-chip]"), "active");
+          clearChipState(document.querySelectorAll("[data-difficulty-chip]"), "active");
+          document.querySelector('[data-difficulty-chip][data-difficulty="Medium"]')?.classList.add("active");
+          refreshTopicChips();
+          examEl.textContent = selection.exam;
+          subjectEl.textContent = selection.subject;
+          backdrop.classList.add("open");
+          requestAnimationFrame(() => setMode("topic"));
+        }
+
+        function closeModal() {
+          backdrop.classList.remove("open");
+        }
+
+        document.addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-practice-open]");
+          if (!btn) return;
+          openModal({ exam: btn.dataset.exam, subject: btn.dataset.subject });
+        });
+
+        topicBtn.addEventListener("click", () => setMode("topic"));
+        yearBtn.addEventListener("click", () => setMode("year"));
+        closeBtn.addEventListener("click", closeModal);
+
+        document.addEventListener("click", (e) => {
+          const topicChip = e.target.closest("[data-topic-chip]");
+          if (topicChip) {
+            selection.topic = topicChip.dataset.topic || "";
+            clearChipState(document.querySelectorAll("[data-topic-chip]"), "active");
+            topicChip.classList.add("active");
+            return;
+          }
+
+          const yearChip = e.target.closest("[data-year-chip]");
+          if (yearChip) {
+            selection.year = yearChip.dataset.year || "";
+            clearChipState(document.querySelectorAll("[data-year-chip]"), "active");
+            yearChip.classList.add("active");
+            return;
+          }
+
+          const diffChip = e.target.closest("[data-difficulty-chip]");
+          if (!diffChip) return;
+          selection.difficulty = diffChip.dataset.difficulty || "Medium";
+          clearChipState(document.querySelectorAll("[data-difficulty-chip]"), "active");
+          diffChip.classList.add("active");
+        });
+
+        goBtn.addEventListener("click", () => {
+          const prettyMode = selection.mode === "topic" ? "Topic" : "Year";
+          if (selection.mode === "topic") {
+            if (!selection.topic || !selection.difficulty) {
+              showDashboardToast("Pick topic and difficulty first.");
+              return;
+            }
+            showDashboardToast(`Starting ${selection.exam} ${selection.subject} (${prettyMode}: ${selection.topic}, ${selection.difficulty})...`);
+          } else {
+            if (!selection.year) {
+              showDashboardToast("Pick a year first.");
+              return;
+            }
+            showDashboardToast(`Starting ${selection.exam} ${selection.subject} (${prettyMode}: ${selection.year})...`);
+          }
+          closeModal();
+        });
+
+        backdrop.addEventListener("click", (e) => {
+          if (e.target === backdrop) closeModal();
+        });
+      }
+
+      function setupAddPracticeCardModal() {
+        const openCard = document.getElementById("open-add-practice");
+        const backdrop = document.getElementById("add-practice-modal-backdrop");
+        const closeBtn = document.getElementById("close-add-practice-modal");
+        const cancelBtn = document.getElementById("cancel-add-practice-modal");
+        const form = document.getElementById("add-practice-form");
+        const examInput = document.getElementById("add-practice-exam");
+        const examSelect = document.getElementById("add-practice-exam-select");
+        const examTrigger = document.getElementById("add-practice-exam-trigger");
+        const examMenu = document.getElementById("add-practice-exam-menu");
+        const subjectInput = document.getElementById("add-practice-subject");
+        const cardsGrid = document.querySelector(".practice-strip-grid .grid");
+
+        if (!openCard || !backdrop || !closeBtn || !cancelBtn || !form || !examInput || !examSelect || !examTrigger || !examMenu || !subjectInput || !cardsGrid) return;
+
+        function paletteFor(exam) {
+          const val = (exam || "").toUpperCase();
+          if (val === "WAEC") {
+            return { bg: "#eef5ff", tone: "#3b82f6", btn: "#2563eb" };
+          }
+          if (val === "JAMB") {
+            return { bg: "#f5f2ff", tone: "#a855f7", btn: "#9333ea" };
+          }
+          return { bg: "#eaf9f3", tone: "#10b981", btn: "#059669" };
+        }
+
+        function openModal() {
+          backdrop.classList.add("open");
+        }
+
+        function closeModal() {
+          backdrop.classList.remove("open");
+          closeExamMenu();
+        }
+
+        function openExamMenu() {
+          examSelect.classList.add("open");
+          examTrigger.setAttribute("aria-expanded", "true");
+        }
+
+        function closeExamMenu() {
+          examSelect.classList.remove("open");
+          examTrigger.setAttribute("aria-expanded", "false");
+        }
+
+        function selectExam(exam) {
+          examInput.value = exam;
+          examTrigger.textContent = exam;
+          examTrigger.dataset.placeholder = "false";
+          examMenu.querySelectorAll("[data-exam-option]").forEach((option) => {
+            option.classList.toggle("active", option.dataset.examOption === exam);
+          });
+          closeExamMenu();
+        }
+
+        function resetExamSelect() {
+          examInput.value = "";
+          examTrigger.textContent = "Select exam";
+          examTrigger.dataset.placeholder = "true";
+          examMenu.querySelectorAll("[data-exam-option]").forEach((option) => {
+            option.classList.remove("active");
+          });
+          closeExamMenu();
+        }
+
+        function createPracticeCard(exam, subject) {
+          const palette = paletteFor(exam);
+          const wrapper = document.createElement("div");
+          wrapper.className = "rounded-2xl border border-[#c8b6e8] px-4 py-4 min-h-[132px] relative shadow-[0_1px_1px_rgba(15,23,42,0.03)]";
+          wrapper.style.backgroundColor = palette.bg;
+          wrapper.innerHTML = `
+            <img src="/Images/cool%201.png" alt="" class="absolute right-3 top-3 h-10 w-10 object-contain opacity-95" />
+            <p class="text-[10px] uppercase tracking-[0.08em] font-semibold mt-8" style="color:${palette.tone}">${exam}</p>
+            <p class="text-[clamp(1rem,2.4vw,1.625rem)] leading-[1.08] font-semibold tracking-[-0.015em] text-[var(--title)] mt-1 w-full break-words">
+              ${subject}
+            </p>
+            <button class="mt-3 rounded-full px-3 py-1 text-[11px] font-semibold text-white" style="background:${palette.btn}" data-practice-open data-exam="${exam}" data-subject="${subject}">
+              Start Test
+            </button>
+          `;
+          return wrapper;
+        }
+
+        openCard.addEventListener("click", openModal);
+        openCard.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openModal();
+          }
+        });
+
+        examTrigger.addEventListener("click", () => {
+          if (examSelect.classList.contains("open")) {
+            closeExamMenu();
+          } else {
+            openExamMenu();
+          }
+        });
+
+        examMenu.addEventListener("click", (e) => {
+          const option = e.target.closest("[data-exam-option]");
+          if (!option) return;
+          selectExam(option.dataset.examOption || "");
+        });
+
+        examTrigger.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openExamMenu();
+            return;
+          }
+          if (e.key === "Escape") {
+            closeExamMenu();
+          }
+        });
+
+        closeBtn.addEventListener("click", closeModal);
+        cancelBtn.addEventListener("click", closeModal);
+
+        form.addEventListener("submit", () => {
+          const exam = (examInput.value || "").trim();
+          const subject = (subjectInput.value || "").trim();
+          if (!exam || !subject) {
+            showDashboardToast("Pick exam and subject first.");
+            return;
+          }
+
+          const addCard = document.getElementById("open-add-practice");
+          const newCard = createPracticeCard(exam, subject);
+          cardsGrid.insertBefore(newCard, addCard);
+          form.reset();
+          resetExamSelect();
+          closeModal();
+          showDashboardToast(`${exam} ${subject} card added.`);
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!examSelect.contains(e.target)) {
+            closeExamMenu();
+          }
+        });
+
+        backdrop.addEventListener("click", (e) => {
+          if (e.target === backdrop) closeModal();
+        });
+      }
+
       window.addEventListener("load", () => {
         setTimeout(showDashboard, 800);
         setupUserProfile();
         setupScheduleModal();
         setupProfileSheetTrigger();
+        setupPracticeModeModal();
+        setupAddPracticeCardModal();
       });
     </script>
   </body>
