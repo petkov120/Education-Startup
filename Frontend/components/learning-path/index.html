@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Openxp - Learning Path</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../styles/typography.css" />
+
+    <style>
+      :root {
+        --dashboard-bg: #f7f8fc;
+        --card-bg: #ffffff;
+        --title: #1b2331;
+        --body: #596377;
+        --muted: #8a93a7;
+        --brand: #1A0A45;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", "Open Sans", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Arial, sans-serif;
+        background: var(--dashboard-bg);
+        color: var(--title);
+      }
+
+      #sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 74px;
+        background: var(--brand);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        flex-direction: column;
+        padding: 14px 10px;
+        gap: 4px;
+        z-index: 40;
+        overflow: hidden;
+        transition: width 0.22s ease-in-out;
+      }
+
+      #sidebar:hover {
+        width: 220px;
+      }
+
+      #dashboard-root {
+        padding-left: 74px;
+      }
+
+      .sidebar-logo-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 2px 2px 14px 2px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        margin-bottom: 8px;
+        min-width: 198px;
+      }
+
+      .sidebar-logo-text {
+        opacity: 0;
+        transition: opacity 0.1s ease 0s;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      #sidebar:hover .sidebar-logo-text {
+        opacity: 1;
+        transition-delay: 0.1s;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 9px 8px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.15s ease, color 0.15s ease;
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.74);
+        min-width: 198px;
+        white-space: nowrap;
+      }
+
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+
+      .nav-item.active {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+      }
+
+      .nav-item img {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        filter: brightness(0) saturate(100%) invert(100%);
+      }
+
+      .nav-item.active img {
+        filter: brightness(0) invert(1);
+      }
+
+      .nav-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        opacity: 0;
+        transition: opacity 0.1s ease 0s;
+        overflow: hidden;
+      }
+
+      #sidebar:hover .nav-label {
+        opacity: 1;
+        transition-delay: 0.1s;
+      }
+
+      .nav-spacer {
+        flex: 1;
+      }
+
+      .dashboard-content {
+        width: min(1700px, calc(100vw - 90px));
+      }
+
+      @media (max-width: 768px) {
+        #dashboard-root {
+          padding-left: 0;
+        }
+        #sidebar {
+          display: none;
+        }
+        .dashboard-content {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-[var(--dashboard-bg)]">
+    <div id="dashboard-root" class="min-h-screen flex bg-[var(--dashboard-bg)] text-slate-900">
+      <dashboard-sidebar active-item="my-learning"></dashboard-sidebar>
+
+      <main class="flex-1 flex flex-col min-h-screen">
+        <header class="bg-white border-b border-slate-100" style="height: 77px">
+          <div class="dashboard-content mx-auto h-full flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+            <div class="min-w-0">
+              <p class="text-[11px] font-extrabold tracking-[0.18em] uppercase text-violet-600">Openxp Learning</p>
+              <h1 class="text-[28px] leading-[1.05] font-semibold text-[var(--title)] tracking-[-0.02em] truncate">
+                Learning Path
+              </h1>
+            </div>
+            <a
+              href="/Frontend/components/Dashboard/dp.html"
+              class="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            >
+              Back to Dashboard
+            </a>
+          </div>
+        </header>
+
+        <section class="dashboard-content mx-auto flex-1 px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+          <div class="rounded-2xl bg-white border border-[#ebe8f2] px-5 py-5 md:px-6 md:py-6">
+            <p class="text-[18px] leading-tight font-semibold text-[var(--title)]">Coming next</p>
+            <p class="text-[13px] text-[var(--muted)] mt-1">
+              This page will house your personalized learning path generated from Exam Prep results (weak topics, next lessons, streaks,
+              and daily plan).
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="../Dashboard/sidebar-rail.js"></script>
+  </body>
+</html>
+
