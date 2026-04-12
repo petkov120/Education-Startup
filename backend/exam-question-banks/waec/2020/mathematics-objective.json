@@ -6,7 +6,12 @@
     "paperType": "Objective",
     "questionNumber": 1,
     "prompt": "Evaluate, correct to two decimal places, 75.0785 - 34.624 + 983.",
-    "options": ["30.60", "50.29", "50.28", "30.62"],
+    "options": [
+      "30.60",
+      "50.29",
+      "50.28",
+      "30.62"
+    ],
     "correctOption": 2,
     "correctLetter": "C"
   },
@@ -17,7 +22,12 @@
     "paperType": "Objective",
     "questionNumber": 2,
     "prompt": "If X = {x : x < 7} and Y = {y : y is a factor of 24}, are subsets of μ = {1, 2, 3, ..., 10}, find X ∩ Y.",
-    "options": ["{2, 3, 4, 6}", "{1, 2, 3, 4, 6}", "{2, 3, 4, 6, 8}", "{1, 2, 3, 4, 6, 8}"],
+    "options": [
+      "{2, 3, 4, 6}",
+      "{1, 2, 3, 4, 6}",
+      "{2, 3, 4, 6, 8}",
+      "{1, 2, 3, 4, 6, 8}"
+    ],
     "correctOption": 1,
     "correctLetter": "B"
   },
@@ -28,7 +38,12 @@
     "paperType": "Objective",
     "questionNumber": 3,
     "prompt": "Simplify: (16/9)^(3/2) × 16^(3/4).",
-    "options": ["3", "9/16", "3/8", "1/4"],
+    "options": [
+      "3",
+      "9/16",
+      "3/8",
+      "1/4"
+    ],
     "correctOption": 2,
     "correctLetter": "C"
   },
@@ -39,7 +54,12 @@
     "paperType": "Objective",
     "questionNumber": 4,
     "prompt": "Find the least value of x which satisfies the equation 4x ≡ 7 (mod 9).",
-    "options": ["7", "6", "5", "4"],
+    "options": [
+      "7",
+      "6",
+      "5",
+      "4"
+    ],
     "correctOption": 3,
     "correctLetter": "D"
   },
@@ -50,8 +70,742 @@
     "paperType": "Objective",
     "questionNumber": 5,
     "prompt": "Express 1 + 2 log_3 3 in the form log_q q.",
-    "options": ["log_9 90", "log_100 9", "log_9 9", "log_6 6"],
+    "options": [
+      "log_9 90",
+      "log_100 9",
+      "log_9 9",
+      "log_6 6"
+    ],
     "correctOption": 0,
     "correctLetter": "A"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 6,
+    "prompt": "If 101ₓ + 12 = 23, find the value of y.",
+    "options": [
+      "8",
+      "7",
+      "6",
+      "5"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C",
+    "note": "Source image was faint; verify notation before production use."
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 7,
+    "prompt": "An amount of ₦550,000.00 was realised when a principal, x, was saved at 2% simple interest for 5 years. Find the value of x.",
+    "options": [
+      "₦470,000.00",
+      "₦480,000.00",
+      "₦490,000.00",
+      "₦500,000.00"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 8,
+    "prompt": "Given that (3 + √5)/(3 - √5) = x + y√15, find the value of (x + y).",
+    "options": [
+      "1/5",
+      "6/5",
+      "1",
+      "0"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 9,
+    "prompt": "If x = 3 and y = -1, evaluate 2(x² - y).",
+    "options": [
+      "24",
+      "22",
+      "20",
+      "16"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 10,
+    "prompt": "Solve 3x - 2y = 10 and x + 3y = 7 simultaneously.",
+    "options": [
+      "x = -4 and y = 1",
+      "x = 1 and y = 4",
+      "x = 1 and y = -4",
+      "x = -4 and y = -1"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 11,
+    "prompt": "The implication x ⇒ y is equivalent to",
+    "options": [
+      "¬y ⇒ ¬x",
+      "y ⇒ x",
+      "x ⇒ ¬y",
+      "¬y ⇒ x"
+    ],
+    "correctOption": 0,
+    "correctLetter": "A"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 12,
+    "prompt": "The first term of a Geometric Progression (G.P.) is 3 and the 5th term is 48. Find the common ratio.",
+    "options": [
+      "2",
+      "4",
+      "8",
+      "16"
+    ],
+    "correctOption": 0,
+    "correctLetter": "A"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 13,
+    "prompt": "Solve: (1/3)(5 - 3x) < (2/7)(3 - 7x).",
+    "options": [
+      "x > 7/22",
+      "x < 7/22",
+      "x > -7/22",
+      "x < -7/22"
+    ],
+    "correctOption": 0,
+    "correctLetter": "A",
+    "note": "One option was faint in the image; normalized for consistency."
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 14,
+    "prompt": "Make m the subject of the relation k = (m - y)/(m + 1).",
+    "options": [
+      "m = (y + k)/(k - 1)",
+      "m = (y + k)/(1 - k)",
+      "m = (y - k)/(k + 1)",
+      "m = (y + 1)/(1 - k)"
+    ],
+    "correctOption": 1,
+    "correctLetter": "B",
+    "note": "Verify formula against a clearer scan before final publish."
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 15,
+    "prompt": "Find the quadratic equation whose roots are 1/2 and -1/3.",
+    "options": [
+      "3x² + x + 1 = 0",
+      "6x² + x - 1 = 0",
+      "3x² + x - 1 = 0",
+      "6x² - x - 1 = 0"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 16,
+    "prompt": "Given that x is directly proportional to y and inversely proportional to z, x = 15 when y = 10 and z = 4, find the equation connecting x, y and z.",
+    "options": [
+      "x = 6y/z",
+      "x = 12y/z",
+      "x = 3y/z",
+      "x = 3y/(2z)"
+    ],
+    "correctOption": 0,
+    "correctLetter": "A"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 17,
+    "prompt": "Two buses stand from the same station at 9:00 a.m. and travel in opposite directions along the same straight road. The first bus travels at a speed of 72 km/h and the second at 48 km/h. At what time will they be 240 km apart?",
+    "options": [
+      "1:00 p.m.",
+      "12:00 noon",
+      "11:00 a.m.",
+      "10:00 a.m."
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 18,
+    "prompt": "A solid cuboid has length 7 cm, width 5 cm and height 4 cm. Calculate its total surface area.",
+    "options": [
+      "280 cm²",
+      "186 cm²",
+      "140 cm²",
+      "83 cm²"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 19,
+    "prompt": "In the diagram, PQ ∥ SR. Find the value of x.",
+    "options": [
+      "68",
+      "57",
+      "46",
+      "34"
+    ],
+    "correctOption": 1,
+    "correctLetter": "B",
+    "diagram": true,
+    "note": "Diagram not shown in-app; options from WASSCE 2020 objective (B = 57). Verify against your official paper."
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 20,
+    "prompt": "Find the equation of the line parallel to 2y = 3(x - 2) and passes through the point (2, 3).",
+    "options": [
+      "y = 3x - 3",
+      "y = 2x - 2",
+      "y = 3x",
+      "y = -2"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 21,
+    "prompt": "The expression (5x + 3)/(6x + 1) will be undefined when x equals",
+    "options": [
+      "(0, 1)",
+      "(0, -1)",
+      "(-3, -1)",
+      "(-3, 0)"
+    ],
+    "correctOption": 1,
+    "correctLetter": "B",
+    "note": "Wording normalized from faint source."
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 22,
+    "prompt": "A man is five times as old as his son. In 1 year's time, the product of their ages will be 340. If the son's age is y, express the ages in equation form.",
+    "options": [
+      "5y² + 16y - 380 = 0",
+      "5y² + 24y - 308 = 0",
+      "5y² + 16y - 330 = 0",
+      "5y² + 24y - 324 = 0"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 23,
+    "prompt": "Simplify the algebraic expression shown in the image.",
+    "options": [
+      "(a - b + c) / ab",
+      "(ab - bc - ac) / ab",
+      "(a² - b² + ac) / ab",
+      "(a² - b² - ab) / ab"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D",
+    "note": "Prompt was too faint; options preserved from earlier best-effort extraction."
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 24,
+    "prompt": "In the diagram, XYZ is an equilateral triangle of side 6 cm and T is the midpoint of XY. Find tan(∠XZT).",
+    "options": [
+      "1/3",
+      "√3/2",
+      "√3",
+      "1/2"
+    ],
+    "correctOption": 0,
+    "correctLetter": "A"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 25,
+    "prompt": "A fence 2.4 m tall is 10 m away from a tree of height 16 m. Calculate the angle of elevation of the top of the tree from the top of the fence.",
+    "options": [
+      "76.11°",
+      "53.67°",
+      "52.40°",
+      "51.32°"
+    ],
+    "correctOption": 1,
+    "correctLetter": "B"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 26,
+    "prompt": "Fati buys milk at ₦x per tin and sells each at a profit of ₦y. If she sells 10 tins of milk, how much does she receive from the sales?",
+    "options": [
+      "₦(xy + 10)",
+      "₦(x + 10y)",
+      "₦(10x + y)",
+      "₦10(x + y)"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 27,
+    "prompt": "If tan y is positive and sin y is negative, in which quadrant would y lie?",
+    "options": [
+      "First and Third only",
+      "First and Second only",
+      "Third only",
+      "Second only"
+    ],
+    "correctOption": 0,
+    "correctLetter": "A"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 28,
+    "prompt": "The dimensions of a rectangular base of a right pyramid are 9 cm by 5 cm. If the volume of the pyramid is 105 cm³, how high is the pyramid?",
+    "options": [
+      "10 cm",
+      "6 cm",
+      "8 cm",
+      "7 cm"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 29,
+    "prompt": "Each interior angle of a regular polygon is 168°. Find the number of sides of the polygon.",
+    "options": [
+      "30",
+      "36",
+      "24",
+      "18"
+    ],
+    "correctOption": 0,
+    "correctLetter": "A"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 30,
+    "prompt": "In the diagram, MN ∥ PQ, ∠MNP = 2x and ∠NPQ = (3x - 50)°. Find the value of ∠NPQ.",
+    "options": [
+      "200",
+      "150",
+      "120",
+      "100"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 31,
+    "prompt": "The length of an arc of a circle of radius 3.5 cm is 1 11/22 cm. Calculate, correct to the nearest degree, the angle subtended by the arc at the centre. (Take π = 22/7.)",
+    "options": [
+      "55°",
+      "36°",
+      "25°",
+      "22°"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 32,
+    "prompt": "In the diagram, PU ∥ SR, PS ∥ TR, QS ∥ UR, |UR| = 15 cm, |SR| = 8 cm, |PS| = 10 cm and the area of ΔSUR = 24 cm². Calculate the area of PTRS.",
+    "options": [
+      "40 cm²",
+      "48 cm²",
+      "80 cm²",
+      "120 cm²"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 33,
+    "prompt": "In the diagram, PQR is a circle with centre O. If ∠OPQ = 48°, find m.",
+    "options": [
+      "96°",
+      "90°",
+      "68°",
+      "42°"
+    ],
+    "correctOption": 0,
+    "correctLetter": "A"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 34,
+    "prompt": "The pie chart shows the population of men, women and children in a city. If the population of the city is 1,800,000, how many men are in the city?",
+    "options": [
+      "845,000",
+      "600,000",
+      "355,000",
+      "250,000"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 35,
+    "prompt": "The mean of the numbers 15, 21, 17, 26, 18 and 29 is 21. Calculate the standard deviation.",
+    "options": [
+      "9",
+      "6",
+      "5",
+      "0"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 36,
+    "prompt": "In the diagram, O is the centre of the circle. SQ is the diameter and ∠SRP = 37°. Find ∠PSQ.",
+    "options": [
+      "127°",
+      "65°",
+      "53°",
+      "37°"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 37,
+    "prompt": "Find the sum of the interior angles of a pentagon.",
+    "options": [
+      "340°",
+      "350°",
+      "540°",
+      "550°"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 38,
+    "prompt": "The diameter of a sphere is 12 cm. Calculate, correct to the nearest cm³, the volume of the sphere. (Take π = 22/7.)",
+    "options": [
+      "903 cm³",
+      "904 cm³",
+      "905 cm³",
+      "906 cm³"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 39,
+    "prompt": "A box contains 12 identical balls, of which 5 are red, 4 are blue and the rest are green. If a ball is selected at random from the box, what is the probability that it is green?",
+    "options": [
+      "3/4",
+      "1/3",
+      "1/2",
+      "1/4"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 40,
+    "prompt": "A box contains 12 identical balls, of which 5 are red, 4 are blue and the rest are green. If two balls are selected at random one after the other with replacement, what is the probability that both are red?",
+    "options": [
+      "25/144",
+      "5/33",
+      "5/6",
+      "103/132"
+    ],
+    "correctOption": 0,
+    "correctLetter": "A"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 41,
+    "prompt": "In the diagram, PQ is a straight line. If m = 1/2 (x + y + z), find the value of m.",
+    "options": [
+      "45°",
+      "60°",
+      "90°",
+      "100°"
+    ],
+    "correctOption": 1,
+    "correctLetter": "B"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 42,
+    "prompt": "The points on a linear graph are shown in the table: x = 6.20, 6.85, 7.50 and y = 3.90, 5.20, 6.50. Find the gradient (slope) of the line.",
+    "options": [
+      "1/2",
+      "2",
+      "1",
+      "12"
+    ],
+    "correctOption": 1,
+    "correctLetter": "B",
+    "note": "Middle x-value was faint; normalized to 6.85 to preserve constant slope."
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 43,
+    "prompt": "In the diagram, O is the centre of the circle. PQ and RS are tangents to the circle. Find the value of (m + n).",
+    "options": [
+      "120°",
+      "90°",
+      "75°",
+      "60°"
+    ],
+    "correctOption": 1,
+    "correctLetter": "B"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 44,
+    "prompt": "In the diagram, O is the centre of the circle. ∠NLM = 74°, ∠LMN = 39° and ∠LOM = x. Find x.",
+    "options": [
+      "134°",
+      "126°",
+      "113°",
+      "106°"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 45,
+    "prompt": "Which of the following is not a sufficient condition for two triangles to be congruent?",
+    "options": [
+      "AAS",
+      "SSS",
+      "SAS",
+      "SSA"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 46,
+    "prompt": "A woman received a discount of 20% on a piece of cloth she purchased from a shop. If she paid $525.00, what was the original price?",
+    "options": [
+      "$675.25",
+      "$660.26",
+      "$656.25",
+      "$616.25"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 47,
+    "prompt": "The interquartile range of a distribution is 7. If the 25th percentile is 16, find the upper quartile.",
+    "options": [
+      "35",
+      "30",
+      "23",
+      "9"
+    ],
+    "correctOption": 0,
+    "correctLetter": "A"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 48,
+    "prompt": "The graphs of y = 2x + 5 and y = 2x² + x - 1 are shown. Find the points of intersection of the two graphs.",
+    "options": [
+      "(2.0, 9.0) and (-1.5, 2.0)",
+      "(2.0, 8.5) and (-1.5, 2.0)",
+      "(2.0, 8.0) and (-1.5, 2.5)",
+      "(2.0, 7.5) and (-1.5, 2.5)"
+    ],
+    "correctOption": 2,
+    "correctLetter": "C",
+    "note": "Options preserved from the photo; answer key marks C."
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 49,
+    "prompt": "If x = -2.5, what is the value of y on the curve?",
+    "options": [
+      "8.0",
+      "8.5",
+      "9.0",
+      "9.5"
+    ],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 50,
+    "prompt": "If (x + 2) is a factor of x² + px - 10, find the value of p.",
+    "options": [
+      "3",
+      "-3",
+      "7",
+      "-7"
+    ],
+    "correctOption": 1,
+    "correctLetter": "B"
   }
 ]
