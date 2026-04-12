@@ -1,9 +1,10 @@
 /**
- * Minimal in-memory question bank for MVP.
- * Later: replace with DB-backed questions + importer/scraper.
+ * In-memory question bank: seed items + JSON packs under ../exam-question-banks/
  */
 
-const questionBank = [
+const { loadExamQuestionBanks } = require("./loadExamQuestionBanks");
+
+const seedQuestions = [
   // WAEC - Mathematics - Algebra
   {
     id: "waec-math-algebra-1",
@@ -87,6 +88,9 @@ const questionBank = [
   },
 ];
 
+const loadedPackQuestions = loadExamQuestionBanks();
+const questionBank = [...seedQuestions, ...loadedPackQuestions];
+
 function getQuestionById(id) {
   return questionBank.find((q) => q.id === id) || null;
 }
@@ -95,11 +99,13 @@ function selectQuestions({ exam, subject, mode, topic, year, difficulty, questio
   const requested = questionCount ? Number(questionCount) : 10;
   const take = Number.isFinite(requested) && requested > 0 ? requested : 10;
 
+  const yearNum = year != null && year !== "" ? Number(year) : null;
+
   const baseFilter = (q) => q.exam === exam && q.subject === subject;
 
   const modeFilter = (q) => {
     if (mode === "topic") return q.topic === topic;
-    if (mode === "year") return q.year === year;
+    if (mode === "year") return yearNum != null && Number(q.year) === yearNum;
     return true;
   };
 
@@ -114,7 +120,8 @@ function selectQuestions({ exam, subject, mode, topic, year, difficulty, questio
   if (pool.length < take) {
     pool = questionBank.filter((q) => baseFilter(q) && modeFilter(q));
   }
-  if (pool.length < take) {
+  // Do not drop year/topic filters for exam+subject — would return wrong years/topics.
+  if (pool.length < take && mode !== "year" && mode !== "topic") {
     pool = questionBank.filter((q) => baseFilter(q));
   }
 
@@ -128,6 +135,8 @@ function selectQuestions({ exam, subject, mode, topic, year, difficulty, questio
     topic: q.topic,
     year: q.year,
     difficulty: q.difficulty,
+    paperType: q.paperType ?? undefined,
+    diagram: q.diagram || undefined,
   }));
 }
 
@@ -136,4 +145,3 @@ module.exports = {
   getQuestionById,
   selectQuestions,
 };
-
