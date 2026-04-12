@@ -7,6 +7,7 @@ const { selectQuestions, getQuestionById } = require('./src/questionBank');
 const { getTopicStrategy } = require('./src/topicStrategies');
 const { createAttempt, markFinished, getAttempt, upsertAnswer, getAnswers } = require('./src/attemptStore');
 const { computeFocusTopics, buildLearningPath } = require('./src/learningPath');
+const { createPracticeTimer, getPracticeTimerStatus } = require('./src/practiceTimerStore');
 const app = express();
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -120,6 +121,80 @@ app.post('/api/auth/login', (req, res) => {
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
+});
+
+/** Exam-prep: server-authoritative practice countdown (no auth; pair with real attempts API when users log in). */
+const PRACTICE_TIMER_MIN_SECONDS = 60;
+const PRACTICE_TIMER_MAX_SECONDS = 24 * 60 * 60;
+
+app.post('/api/exam-prep/practice-timers', (req, res) => {
+  const raw = req.body?.durationSeconds;
+  const durationSeconds = Number(raw);
+  if (
+    !Number.isFinite(durationSeconds) ||
+    durationSeconds < PRACTICE_TIMER_MIN_SECONDS ||
+    durationSeconds > PRACTICE_TIMER_MAX_SECONDS
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: `durationSeconds must be between ${PRACTICE_TIMER_MIN_SECONDS} and ${PRACTICE_TIMER_MAX_SECONDS}.`,
+    });
+  }
+  const row = createPracticeTimer(Math.floor(durationSeconds));
+  return res.status(201).json({
+    success: true,
+    practiceTimerId: row.practiceTimerId,
+    serverTimeIso: row.serverTimeIso,
+    endsAtIso: row.endsAtIso,
+    durationSeconds: row.durationSeconds,
+  });
+});
+
+app.get('/api/exam-prep/practice-timers/:practiceTimerId', (req, res) => {
+  const { practiceTimerId } = req.params;
+  const status = getPracticeTimerStatus(practiceTimerId);
+  if (!status) {
+    return res.status(404).json({ success: false, message: 'Practice timer not found.' });
+  }
+  return res.json({ success: true, ...status });
+});
+
+/**
+ * Exam-prep: fetch scored MCQ set for practice UI (no auth — same selector as attempts/start).
+ * Body: exam, subject, mode ("topic" | "year"), optional topic, year, difficulty, questionCount | questions
+ */
+app.post('/api/exam-prep/practice-questions', (req, res) => {
+  if (!requireRequestBodyFields(req, res, ["exam", "subject", "mode"])) return;
+
+  const exam = String(req.body.exam).trim().toUpperCase();
+  const subject = String(req.body.subject).trim();
+  const mode = String(req.body.mode).trim().toLowerCase();
+  const topic = req.body.topic ? String(req.body.topic).trim() : null;
+  const year = req.body.year ? String(req.body.year).trim() : null;
+  const difficulty = req.body.difficulty ? String(req.body.difficulty).trim() : null;
+  const questionCount = req.body.questionCount ?? req.body.questions ?? 10;
+
+  if (!["topic", "year"].includes(mode)) {
+    return res.status(400).json({ success: false, message: "Invalid mode. Use 'topic' or 'year'." });
+  }
+  if (mode === "topic" && !topic) {
+    return res.status(400).json({ success: false, message: "Missing topic for topic mode." });
+  }
+  if (mode === "year" && !year) {
+    return res.status(400).json({ success: false, message: "Missing year for year mode." });
+  }
+
+  const questions = selectQuestions({
+    exam,
+    subject,
+    mode,
+    topic,
+    year: year ? Number(year) : null,
+    difficulty,
+    questionCount,
+  });
+
+  return res.json({ success: true, questions });
 });
 
 /**
