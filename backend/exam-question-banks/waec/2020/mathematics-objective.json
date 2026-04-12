@@ -1,0 +1,57 @@
+[
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 1,
+    "prompt": "Evaluate, correct to two decimal places, 75.0785 - 34.624 + 983.",
+    "options": ["30.60", "50.29", "50.28", "30.62"],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 2,
+    "prompt": "If X = {x : x < 7} and Y = {y : y is a factor of 24}, are subsets of μ = {1, 2, 3, ..., 10}, find X ∩ Y.",
+    "options": ["{2, 3, 4, 6}", "{1, 2, 3, 4, 6}", "{2, 3, 4, 6, 8}", "{1, 2, 3, 4, 6, 8}"],
+    "correctOption": 1,
+    "correctLetter": "B"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 3,
+    "prompt": "Simplify: (16/9)^(3/2) × 16^(3/4).",
+    "options": ["3", "9/16", "3/8", "1/4"],
+    "correctOption": 2,
+    "correctLetter": "C"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 4,
+    "prompt": "Find the least value of x which satisfies the equation 4x ≡ 7 (mod 9).",
+    "options": ["7", "6", "5", "4"],
+    "correctOption": 3,
+    "correctLetter": "D"
+  },
+  {
+    "exam": "WASSCE",
+    "year": 2020,
+    "subject": "Mathematics",
+    "paperType": "Objective",
+    "questionNumber": 5,
+    "prompt": "Express 1 + 2 log_3 3 in the form log_q q.",
+    "options": ["log_9 90", "log_100 9", "log_9 9", "log_6 6"],
+    "correctOption": 0,
+    "correctLetter": "A"
+  }
+]
