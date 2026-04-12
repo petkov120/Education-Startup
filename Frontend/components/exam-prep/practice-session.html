@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- When using Live Server on another port, set content to your API origin, e.g. http://localhost:3000 -->
+    <meta name="openxp-api-base" content="http://localhost:3000" />
+    <title>Openxp — Practice</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../styles/typography.css" />
+    <style>
+      :root {
+        --openxp-purple: #2b0a6b;
+        --openxp-purple-mid: #6d28d9;
+        --openxp-sky: #2d9cdb;
+        --openxp-sky-deep: #1a7aad;
+        --openxp-sky-soft: rgba(45, 156, 219, 0.12);
+        --title: #1b2331;
+        --muted: #64748b;
+      }
+
+      body {
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+        background: #f7f8fc;
+        color: var(--title);
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      /* Splash — same language as dp.html dashboard loader */
+      #practice-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at top, #3c127f 0, #2b0a6b 40%, #1a063f 100%);
+        transition: opacity 0.35s ease;
+      }
+
+      #practice-splash.is-hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .splash-inner {
+        max-width: 22rem;
+        padding: 1.5rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .splash-logo {
+        width: 120px;
+        height: auto;
+        animation: splash-bounce 1.2s ease-in-out infinite;
+      }
+
+      @keyframes splash-bounce {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-10px) scale(1.03);
+        }
+      }
+
+      .splash-headline {
+        color: #f8fafc;
+        font-size: 1.25rem;
+        font-weight: 800;
+        line-height: 1.35;
+        letter-spacing: -0.02em;
+      }
+
+      .splash-copy {
+        color: rgba(248, 250, 252, 0.88);
+        font-size: 0.875rem;
+        line-height: 1.55;
+      }
+
+      .btn-sky {
+        background: var(--openxp-sky);
+        color: #fff;
+        font-weight: 800;
+        font-size: 0.875rem;
+        padding: 0.65rem 1.5rem;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(45, 156, 219, 0.35);
+        transition: transform 0.15s ease, filter 0.15s ease;
+      }
+
+      .btn-sky:hover {
+        filter: brightness(1.06);
+        transform: translateY(-1px);
+      }
+
+      .practice-play-canvas {
+        background: linear-gradient(165deg, #e8f4fc 0%, #f7f8fc 42%, #f0ecfb 100%);
+      }
+
+      .practice-play-main {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-top: 1.5rem;
+        padding-bottom: 2rem;
+      }
+
+      @media (min-width: 640px) {
+        .practice-play-main {
+          padding-top: 2rem;
+          padding-bottom: 2.5rem;
+        }
+      }
+
+      /* Chunky “lesson card” panel */
+      .practice-play-card {
+        background: #fff;
+        border-radius: 1.5rem;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06), 0 8px 0 0 #e8ecf1;
+        padding: 1.25rem 1.2rem 1.35rem;
+        max-width: 42rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      @media (min-width: 640px) {
+        .practice-play-card {
+          padding: 1.65rem 1.75rem 1.75rem;
+          border-radius: 1.75rem;
+        }
+      }
+
+      /* Tip banner — label + body hierarchy (lighter than question stem) */
+      .practice-tip {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        border: 2px solid rgba(45, 156, 219, 0.35);
+        background: linear-gradient(135deg, rgba(45, 156, 219, 0.14) 0%, rgba(109, 40, 217, 0.08) 100%);
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .practice-tip-mascot {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        margin-top: 0.125rem;
+        animation: tip-mascot-bounce 1.35s ease-in-out infinite;
+      }
+
+      @keyframes tip-mascot-bounce {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-5px) scale(1.03);
+        }
+      }
+
+      .practice-tip-content {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .practice-tip-label {
+        font-size: 0.625rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #64748b;
+        line-height: 1.2;
+      }
+
+      .practice-tip-text {
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.55;
+        letter-spacing: -0.01em;
+        color: #64748b;
+      }
+
+      .practice-q-title {
+        font-size: clamp(1.15rem, 2.8vw, 1.35rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #0f172a;
+        line-height: 1.25;
+      }
+
+      .practice-q-stem {
+        margin-top: 0.85rem;
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        color: #334155;
+        font-weight: 500;
+      }
+
+      /* Answer rows — calm OpenXP surface (aligned with .q-grid-btn / exam-home cards) */
+      .option-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        padding: 0.85rem 1rem;
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        text-align: left;
+        background: #fff;
+        cursor: pointer;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .option-card:hover {
+        border-color: #cbd5e1;
+        background: #f8fafc;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+      }
+
+      .option-card:active {
+        background: #f1f5f9;
+      }
+
+      .option-card.is-selected {
+        border-color: var(--openxp-purple);
+        background: #f5f3ff;
+        box-shadow: 0 1px 2px rgba(43, 10, 107, 0.08);
+      }
+
+      .option-key {
+        flex-shrink: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.5rem;
+        border: 1px solid #e2e8f0;
+        background: #fff;
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      }
+
+      .option-card.is-selected .option-key {
+        background: #f5f3ff;
+        color: var(--openxp-purple);
+        border-color: var(--openxp-purple-mid);
+      }
+
+      .option-card-label {
+        display: block;
+        flex: 1;
+        min-width: 0;
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.5;
+        color: #475569;
+      }
+
+      .option-card.is-selected .option-card-label {
+        color: #1e293b;
+      }
+
+      .practice-next-btn {
+        box-shadow: 0 5px 0 0 var(--openxp-sky-deep);
+        transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.15s ease;
+      }
+
+      .practice-next-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 0 0 var(--openxp-sky-deep);
+      }
+
+      .practice-next-btn:active {
+        transform: translateY(3px);
+        box-shadow: 0 2px 0 0 var(--openxp-sky-deep);
+      }
+
+      .practice-done-card {
+        border: 2px dashed rgba(45, 156, 219, 0.45);
+        background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+        box-shadow: none;
+      }
+
+      .drawer-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.35);
+        z-index: 40;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+
+      .drawer-backdrop.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .drawer-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: min(100%, 320px);
+        height: 100%;
+        background: #fff;
+        z-index: 50;
+        box-shadow: -8px 0 24px rgba(15, 23, 42, 0.12);
+        transform: translateX(100%);
+        transition: transform 0.22s ease;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .drawer-panel.open {
+        transform: translateX(0);
+      }
+
+      .q-grid-btn {
+        aspect-ratio: 1;
+        min-height: 40px;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        font-size: 0.75rem;
+        font-weight: 800;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .q-grid-btn.is-current {
+        border-color: var(--openxp-purple);
+        background: #f5f3ff;
+        color: var(--openxp-purple);
+      }
+
+      .q-grid-btn.is-done {
+        background: #f1f5f9;
+        color: #64748b;
+      }
+
+      .practice-timer-chip {
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.02em;
+      }
+
+      .practice-timer-chip.is-low {
+        color: #b45309;
+      }
+
+      .practice-timer-chip.is-expired {
+        color: #b91c1c;
+        font-weight: 800;
+      }
+
+      /* —— Formula & strategy hints (FAB + bottom sheet) —— */
+      .hint-fab {
+        position: fixed;
+        left: 50%;
+        bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+        transform: translateX(-50%);
+        z-index: 45;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.15rem 0.65rem 0.65rem;
+        border-radius: 999px;
+        border: 1px solid rgba(43, 10, 107, 0.2);
+        background: linear-gradient(135deg, #2b0a6b 0%, #5b21b6 100%);
+        color: #f8fafc;
+        font-size: 0.8125rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        cursor: pointer;
+        box-shadow: 0 8px 28px rgba(43, 10, 107, 0.38), 0 2px 0 rgba(0, 0, 0, 0.12) inset;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.15s ease;
+      }
+
+      .hint-fab:hover {
+        filter: brightness(1.06);
+        transform: translateX(-50%) translateY(-2px);
+        box-shadow: 0 12px 32px rgba(43, 10, 107, 0.42), 0 2px 0 rgba(0, 0, 0, 0.1) inset;
+      }
+
+      .hint-fab:active {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .hint-fab-icon {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .hint-fab-icon img {
+        width: 1.65rem;
+        height: 1.65rem;
+        object-fit: contain;
+      }
+
+      .hint-sheet-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 55;
+        background: rgba(15, 23, 42, 0.45);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.22s ease;
+      }
+
+      .hint-sheet-backdrop.is-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .hint-sheet {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 56;
+        max-height: min(78vh, 560px);
+        background: #fff;
+        border-radius: 1.25rem 1.25rem 0 0;
+        box-shadow: 0 -12px 40px rgba(15, 23, 42, 0.14);
+        transform: translateY(105%);
+        transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        display: flex;
+        flex-direction: column;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+
+      .hint-sheet.is-open {
+        transform: translateY(0);
+      }
+
+      .hint-sheet-grab {
+        flex-shrink: 0;
+        padding: 0.65rem 1rem 0.25rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .hint-sheet-grab-bar {
+        width: 2.5rem;
+        height: 4px;
+        border-radius: 999px;
+        background: #e2e8f0;
+      }
+
+      .hint-sheet-head {
+        flex-shrink: 0;
+        padding: 0.35rem 1.15rem 0.85rem;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.75rem;
+      }
+
+      .hint-sheet-title-wrap {
+        min-width: 0;
+      }
+
+      .hint-sheet-title {
+        font-size: 1.05rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #0f172a;
+        margin: 0;
+        line-height: 1.25;
+      }
+
+      .hint-sheet-sub {
+        margin: 0.35rem 0 0;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #64748b;
+        line-height: 1.45;
+      }
+
+      .hint-sheet-close {
+        flex-shrink: 0;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.65rem;
+        border: 1px solid #e2e8f0;
+        background: #fff;
+        color: #64748b;
+        font-size: 1.25rem;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.15s ease, color 0.15s ease;
+      }
+
+      .hint-sheet-close:hover {
+        background: #f8fafc;
+        color: #0f172a;
+      }
+
+      .hint-context-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.65rem;
+      }
+
+      .hint-chip {
+        font-size: 0.625rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 0.3rem 0.55rem;
+        border-radius: 999px;
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+      }
+
+      .hint-chip.is-accent {
+        background: linear-gradient(135deg, rgba(45, 156, 219, 0.14) 0%, rgba(109, 40, 217, 0.1) 100%);
+        border-color: rgba(45, 156, 219, 0.35);
+        color: #1e40af;
+      }
+
+      .hint-mock-note {
+        margin-top: 0.5rem;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        color: #b45309;
+        line-height: 1.4;
+      }
+
+      .hint-sheet-body {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+        padding: 1rem 1.15rem 1.25rem;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .hint-topic-label {
+        font-size: 0.625rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #64748b;
+        margin-bottom: 0.5rem;
+      }
+
+      .hint-steps {
+        margin: 0;
+        padding-left: 1.15rem;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        color: #334155;
+      }
+
+      .hint-steps li {
+        margin-bottom: 0.45rem;
+      }
+
+      .hint-reveal-wrap {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px dashed #e2e8f0;
+      }
+
+      .btn-hint-reveal {
+        width: 100%;
+        padding: 0.65rem 1rem;
+        border-radius: 0.85rem;
+        border: 1px solid rgba(45, 156, 219, 0.45);
+        background: linear-gradient(180deg, #f0f9ff 0%, #fff 100%);
+        color: #0369a1;
+        font-size: 0.8125rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: filter 0.15s ease, transform 0.12s ease;
+      }
+
+      .btn-hint-reveal:hover {
+        filter: brightness(1.02);
+      }
+
+      .hint-example {
+        margin-top: 0.75rem;
+        padding: 0.85rem 1rem;
+        border-radius: 0.85rem;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        font-size: 0.8125rem;
+        line-height: 1.55;
+        color: #475569;
+      }
+
+      .hint-example-label {
+        font-size: 0.625rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #94a3b8;
+        margin-bottom: 0.35rem;
+      }
+
+      /* Extra scroll room so Next + FAB don’t fight */
+      .practice-play-main.has-hint-fab {
+        padding-bottom: 5.5rem;
+      }
+
+      @media (min-width: 640px) {
+        .practice-play-main.has-hint-fab {
+          padding-bottom: 6rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      if (window.parent !== window) document.body.classList.add("openxp-embed");
+    </script>
+
+    <!-- Splash -->
+    <div id="practice-splash" aria-hidden="false">
+      <div class="splash-inner">
+        <img src="/Images/dashboard-icons/openxp%20practice%20icon.svg" alt="" class="splash-logo" width="120" height="120" />
+        <h1 class="splash-headline">You’ve got this.</h1>
+        <p class="splash-copy">
+          Stay calm and treat this like training. Everything you practise here builds habits for the real exam — pacing,
+          focus, and smart skipping count too.
+        </p>
+        <button type="button" class="btn-sky" id="splash-begin">Begin session</button>
+      </div>
+    </div>
+
+    <!-- Player -->
+    <div id="practice-app" class="hidden min-h-screen flex flex-col">
+      <header class="shrink-0 bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3">
+        <a
+          href="exam-home.html"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
+          aria-label="Back to Exam Home"
+        >
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <div class="flex-1 min-w-0">
+          <div class="h-2 rounded-full bg-slate-100 overflow-hidden">
+            <div id="progress-fill" class="h-full rounded-full bg-gradient-to-r from-[#2b0a6b] to-[#6d28d9] transition-[width] duration-300" style="width: 0%"></div>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1 font-semibold" id="progress-label">Question 1 of —</p>
+        </div>
+        <div
+          id="practice-timer-chip"
+          class="practice-timer-chip shrink-0 text-sm font-extrabold text-slate-700 min-w-[4.25rem] text-right"
+          role="timer"
+          aria-live="polite"
+          aria-label="Time remaining"
+        >
+          —:—
+        </div>
+        <button
+          type="button"
+          id="open-drawer"
+          class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
+          aria-label="Open question list"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+      </header>
+      <div
+        id="time-up-banner"
+        class="hidden shrink-0 border-b border-amber-200 bg-amber-50 px-4 py-2 text-center text-xs font-bold text-amber-900"
+        role="status"
+      >
+        Time’s up — you can still finish this demo round.
+      </div>
+
+      <div class="flex-1 flex min-h-0 practice-play-canvas">
+        <main id="practice-play-main" class="practice-play-main flex-1 overflow-auto w-full max-w-3xl mx-auto">
+          <section class="practice-play-card" aria-label="Practice question">
+            <div class="practice-tip" id="tip-strip" role="status">
+              <img
+                src="/Images/dashboard-icons/openxp%20practice%20icon.svg"
+                alt=""
+                class="practice-tip-mascot"
+                width="40"
+                height="40"
+                decoding="async"
+              />
+              <div class="practice-tip-content">
+                <span class="practice-tip-label">Coach tip</span>
+                <span id="tip-text" class="practice-tip-text"></span>
+              </div>
+            </div>
+
+            <h2 class="practice-q-title" id="q-title">Question 1</h2>
+            <p class="practice-q-stem" id="q-stem"></p>
+
+            <div class="mt-6 space-y-3.5" id="q-options" role="radiogroup" aria-labelledby="q-title"></div>
+
+            <div class="mt-9 flex justify-end">
+              <button type="button" id="btn-next" class="btn-sky practice-next-btn rounded-2xl px-8 py-3.5 text-[15px]">Next</button>
+            </div>
+
+            <div
+              id="practice-done"
+              class="hidden mt-8 rounded-2xl p-6 sm:p-8 text-center practice-done-card"
+            >
+              <p class="text-lg font-extrabold text-slate-900">Demo round complete</p>
+              <p class="mt-2 text-sm text-slate-600">
+                Real sessions will load from your question API. Starting again from Exam Home overwrites the saved setup in your browser.
+              </p>
+              <a href="exam-home.html" class="mt-5 btn-sky practice-next-btn rounded-2xl px-8 py-3.5 inline-block no-underline text-[15px]"
+                >Back to Exam Home</a
+              >
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <!-- Hints: FAB opens bottom sheet (topic + session-aware) -->
+      <button type="button" id="hint-fab" class="hint-fab hidden" aria-haspopup="dialog" aria-expanded="false" aria-controls="hint-sheet">
+        <span class="hint-fab-icon" aria-hidden="true">
+          <img src="/Images/dashboard-icons/openxp%20practice%20icon.svg" alt="" width="26" height="26" decoding="async" />
+        </span>
+        <span>Hints &amp; formulas</span>
+      </button>
+      <div id="hint-backdrop" class="hint-sheet-backdrop" aria-hidden="true"></div>
+      <div
+        id="hint-sheet"
+        class="hint-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="hint-sheet-title"
+        aria-hidden="true"
+      >
+        <div class="hint-sheet-grab" aria-hidden="true"><div class="hint-sheet-grab-bar"></div></div>
+        <div class="hint-sheet-head">
+          <div class="hint-sheet-title-wrap">
+            <h2 id="hint-sheet-title" class="hint-sheet-title">Hints &amp; formulas</h2>
+            <p id="hint-sheet-sub" class="hint-sheet-sub">Grounded in your session — tap outside or × to close.</p>
+            <div id="hint-context-chips" class="hint-context-row" aria-label="Session context"></div>
+            <p id="hint-mock-note" class="hint-mock-note hidden"></p>
+          </div>
+          <button type="button" id="hint-close" class="hint-sheet-close" aria-label="Close hints">×</button>
+        </div>
+        <div class="hint-sheet-body">
+          <p id="hint-topic-label" class="hint-topic-label">Strategy</p>
+          <ol id="hint-steps" class="hint-steps"></ol>
+          <div id="hint-reveal-wrap" class="hint-reveal-wrap hidden">
+            <button type="button" id="hint-reveal-btn" class="btn-hint-reveal">Reveal worked example</button>
+            <div id="hint-example" class="hint-example hidden">
+              <div class="hint-example-label">Micro-example</div>
+              <p id="hint-example-text" class="m-0"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drawer -->
+    <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+    <aside id="drawer-panel" class="drawer-panel" aria-hidden="true" aria-labelledby="drawer-title">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-[#2b0a6b] text-white">
+        <h2 id="drawer-title" class="text-sm font-extrabold">All questions</h2>
+        <button type="button" id="close-drawer" class="text-white/90 hover:text-white text-xl leading-none px-2" aria-label="Close">×</button>
+      </div>
+      <div class="p-4 overflow-auto flex-1">
+        <div class="grid grid-cols-5 gap-2" id="q-grid"></div>
+      </div>
+    </aside>
+
+    <!-- No session fallback -->
+    <div id="practice-missing" class="hidden min-h-screen flex flex-col items-center justify-center px-6 text-center">
+      <p class="text-slate-600 font-medium max-w-sm">No practice session found. Start from Exam Home.</p>
+      <a href="exam-home.html" class="mt-4 btn-sky rounded-xl px-5 py-2.5 no-underline inline-block">Go to Exam Home</a>
+    </div>
+
+    <script>
+      const SESSION_KEY = "openxp-practice-session";
+
+      const TIPS = [
+        "If the first questions feel heavy, move on and come back — easy marks might be ahead.",
+        "Watch the clock: aim for steady pace, not perfection on every item.",
+        "Eliminate wrong answers first; guessing after that is still informed.",
+        "Flag mentally and skip — finishing strong beats getting stuck early.",
+      ];
+
+      /**
+       * Mirrors backend/src/topicStrategies.js — keep in sync when expanding the bank.
+       * Used for in-session “Hints & formulas” (same spirit as /api/explanation-sheet strategySheet).
+       */
+      const TOPIC_STRATEGY_FALLBACK = {
+        steps: ["Review the topic notes.", "Solve similar questions.", "Retry after a short break."],
+        microExample: "Focus on identifying the exact method used to reach the correct option.",
+      };
+
+      const TOPIC_STRATEGIES = {
+        Algebra: {
+          steps: [
+            "Rewrite the equation so the variable is on one side.",
+            "Undo operations in reverse order (add/subtract, then multiply/divide).",
+            "Check your answer by substituting back into the original equation.",
+          ],
+          microExample: "If x + 3 = 7, subtract 3 from both sides: x = 4.",
+        },
+        Trigonometry: {
+          steps: [
+            "Identify the right triangle and label hypotenuse vs legs.",
+            "Use Pythagoras: a^2 + b^2 = c^2.",
+            "Take the square root and verify the units/value.",
+          ],
+          microExample: "If hypotenuse is 10 and one leg is 6: other^2 = 10^2 - 6^2 = 64, so other = 8.",
+        },
+        Statistics: {
+          steps: [
+            "Recall: mean = total ÷ number of values.",
+            "Compute total = mean × count.",
+            "Write the final answer with correct units.",
+          ],
+          microExample: "Mean 6 for 3 numbers => total = 6 × 3 = 18.",
+        },
+        "Organic Chemistry": {
+          steps: [
+            "Organic compounds contain carbon-hydrogen (C–H) structures.",
+            "Identify examples like alcohols, acids, alkanes/alkenes (as taught).",
+            "Eliminate obvious inorganic alternatives (salts, water).",
+          ],
+          microExample: "Ethanol is an organic compound (an alcohol).",
+        },
+        Kinematics: {
+          steps: [
+            "Pick the right kinematics formula for the given information.",
+            "If starting from rest, use v = u + at (u = 0).",
+            "Rearrange to solve for a, then check reasonableness.",
+          ],
+          microExample: "u = 0, v = 20, t = 5 => a = (20-0)/5 = 4 m/s^2.",
+        },
+      };
+
+      function getTopicStrategy(topic) {
+        if (!topic) return TOPIC_STRATEGY_FALLBACK;
+        return TOPIC_STRATEGIES[topic] || TOPIC_STRATEGY_FALLBACK;
+      }
+
+      const STUB_BANK = [
+        {
+          stem: "Which of the following statements about the properties of waves is correct?",
+          choices: [
+            { k: "A", t: "The frequency of a wave is the number of crests passing a point per unit time." },
+            { k: "B", t: "The amplitude of a wave is the distance between two consecutive crests." },
+            { k: "C", t: "The speed of a wave is always independent of the medium it travels through." },
+            { k: "D", t: "The wavelength is the time taken for one complete oscillation." },
+          ],
+        },
+        {
+          topic: "Algebra",
+          stem: "If x² − 5x + 6 = 0, what are the roots of the equation?",
+          choices: [
+            { k: "A", t: "1 and 6" },
+            { k: "B", t: "2 and 3" },
+            { k: "C", t: "−2 and −3" },
+            { k: "D", t: "−1 and −6" },
+          ],
+        },
+        {
+          topic: "Statistics",
+          stem: "A demand curve slopes downward mainly because:",
+          choices: [
+            { k: "A", t: "Higher prices increase supply automatically." },
+            { k: "B", t: "Consumers typically buy less at higher prices, ceteris paribus." },
+            { k: "C", t: "Government fixes all market prices." },
+            { k: "D", t: "Producers always prefer lower output." },
+          ],
+        },
+        {
+          stem: "In a democracy, the primary role of the legislature is often to:",
+          choices: [
+            { k: "A", t: "Appoint judges only." },
+            { k: "B", t: "Make and amend laws and oversee the executive." },
+            { k: "C", t: "Dissolve all political parties." },
+            { k: "D", t: "Replace elections with referendums only." },
+          ],
+        },
+        {
+          stem: "Photosynthesis primarily produces which gas as a by-product?",
+          choices: [
+            { k: "A", t: "Carbon dioxide" },
+            { k: "B", t: "Nitrogen" },
+            { k: "C", t: "Oxygen" },
+            { k: "D", t: "Methane" },
+          ],
+        },
+        {
+          stem: "This is the last demo question. The real bank will load from your API next.",
+          choices: [
+            { k: "A", t: "Got it — ship the API contract." },
+            { k: "B", t: "I’ll review session JSON in sessionStorage." },
+            { k: "C", t: "Back to Exam Home to tweak setup." },
+            { k: "D", t: "All of the above." },
+          ],
+        },
+      ];
+
+      /** Mapped server questions ({ questionId, stem, choices, topic? }) or null → use STUB_BANK */
+      let serverPracticeBank = null;
+
+      function mapServerQuestionToPracticeItem(q) {
+        const letters = ["A", "B", "C", "D", "E"];
+        const choices = [];
+        for (const L of letters) {
+          if (q.options && q.options[L] != null && String(q.options[L]).trim() !== "") {
+            choices.push({ k: L, t: String(q.options[L]) });
+          }
+        }
+        return {
+          questionId: q.questionId,
+          stem: String(q.prompt || ""),
+          choices,
+          topic: q.topic != null ? String(q.topic) : null,
+        };
+      }
+
+      function getPracticeBank() {
+        return serverPracticeBank && serverPracticeBank.length > 0 ? serverPracticeBank : STUB_BANK;
+      }
+
+      function practiceBankLabel() {
+        return serverPracticeBank && serverPracticeBank.length > 0 ? "exam bank" : "demo bank";
+      }
+
+      async function fetchServerPracticeBank() {
+        const apiBase = resolveOpenxpApiBase();
+        if (!session) return true;
+        const mode = String(session.mode || "").toLowerCase();
+        if (mode === "mock") return true;
+
+        if (!["topic", "year"].includes(mode)) return false;
+        if (!apiBase) {
+          console.warn("[openxp] Set meta openxp-api-base (or __OPENXP_API_BASE__) to load real questions.");
+          return false;
+        }
+
+        try {
+          const res = await fetch(`${apiBase}/api/exam-prep/practice-questions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              exam: session.exam,
+              subject: session.subject,
+              mode: session.mode,
+              topic: session.topic || undefined,
+              year: session.year != null && session.year !== "" ? String(session.year) : undefined,
+              questionCount: Number(session.questions) || 10,
+            }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.success || !Array.isArray(data.questions)) {
+            console.warn("[openxp] practice-questions failed", res.status, data);
+            return false;
+          }
+          const mapped = data.questions
+            .map(mapServerQuestionToPracticeItem)
+            .filter((row) => row.choices && row.choices.length > 0);
+          if (mapped.length === 0) {
+            console.warn("[openxp] practice-questions: empty after map");
+            return false;
+          }
+          serverPracticeBank = mapped;
+          return true;
+        } catch (e) {
+          console.warn("[openxp] practice-questions error", e);
+          return false;
+        }
+      }
+
+      function loadSession() {
+        try {
+          const raw = sessionStorage.getItem(SESSION_KEY);
+          if (!raw) return null;
+          return JSON.parse(raw);
+        } catch {
+          return null;
+        }
+      }
+
+      let session = loadSession();
+      let idx = 0;
+      let selectedKey = null;
+      let tipIndex = 0;
+
+      const MIN_PRACTICE_DURATION_SECONDS = 60;
+      const MAX_PRACTICE_DURATION_SECONDS = 24 * 60 * 60;
+      const DEFAULT_PRACTICE_DURATION_SECONDS = 30 * 60;
+
+      let practiceTimerId = null;
+      let authoritativeEndsAtMs = null;
+      let timerIntervalId = null;
+      let resyncIntervalId = null;
+      let timeExpired = false;
+
+      const splash = document.getElementById("practice-splash");
+      const app = document.getElementById("practice-app");
+      const missing = document.getElementById("practice-missing");
+
+      function resolveOpenxpApiBase() {
+        if (typeof window.__OPENXP_API_BASE__ === "string" && window.__OPENXP_API_BASE__.trim()) {
+          return window.__OPENXP_API_BASE__.trim().replace(/\/$/, "");
+        }
+        const meta = document.querySelector('meta[name="openxp-api-base"]');
+        const content = meta?.getAttribute("content");
+        if (content && content.trim()) return content.trim().replace(/\/$/, "");
+        return "";
+      }
+
+      function clampPracticeDurationSeconds(raw) {
+        let n = Math.floor(Number(raw));
+        if (!Number.isFinite(n) || n < MIN_PRACTICE_DURATION_SECONDS) {
+          n = DEFAULT_PRACTICE_DURATION_SECONDS;
+        }
+        return Math.min(n, MAX_PRACTICE_DURATION_SECONDS);
+      }
+
+      function formatMmSs(totalSeconds) {
+        const m = Math.floor(totalSeconds / 60);
+        const s = totalSeconds % 60;
+        return `${m}:${String(s).padStart(2, "0")}`;
+      }
+
+      function stopPracticeTimerTick() {
+        if (timerIntervalId) {
+          clearInterval(timerIntervalId);
+          timerIntervalId = null;
+        }
+        if (resyncIntervalId) {
+          clearInterval(resyncIntervalId);
+          resyncIntervalId = null;
+        }
+      }
+
+      function updatePracticeTimerDisplay() {
+        const el = document.getElementById("practice-timer-chip");
+        if (!el || authoritativeEndsAtMs == null) return;
+        const remainingSec = Math.max(0, Math.ceil((authoritativeEndsAtMs - Date.now()) / 1000));
+        el.textContent = formatMmSs(remainingSec);
+        el.classList.remove("is-low", "is-expired");
+        if (remainingSec <= 0) {
+          el.classList.add("is-expired");
+          el.textContent = "0:00";
+          return;
+        }
+        if (remainingSec <= 120) el.classList.add("is-low");
+      }
+
+      function onPracticeTimerExpired() {
+        if (timeExpired) return;
+        timeExpired = true;
+        const banner = document.getElementById("time-up-banner");
+        if (banner) banner.classList.remove("hidden");
+      }
+
+      function startPracticeTimerTick() {
+        stopPracticeTimerTick();
+        updatePracticeTimerDisplay();
+        timerIntervalId = setInterval(() => {
+          updatePracticeTimerDisplay();
+          const remainingSec = Math.max(0, Math.ceil((authoritativeEndsAtMs - Date.now()) / 1000));
+          if (remainingSec <= 0) onPracticeTimerExpired();
+        }, 1000);
+
+        const apiBase = resolveOpenxpApiBase();
+        if (practiceTimerId && apiBase) {
+          resyncIntervalId = setInterval(async () => {
+            try {
+              const res = await fetch(`${apiBase}/api/exam-prep/practice-timers/${encodeURIComponent(practiceTimerId)}`);
+              const data = await res.json().catch(() => ({}));
+              if (res.ok && data.success && data.endsAtIso) {
+                authoritativeEndsAtMs = Date.parse(data.endsAtIso);
+              }
+            } catch (_) {
+              /* keep last known endsAt */
+            }
+          }, 60000);
+        }
+      }
+
+      async function requestServerPracticeTimer(durationSeconds) {
+        const apiBase = resolveOpenxpApiBase();
+        if (!apiBase) {
+          return {
+            fallback: true,
+            endsAtMs: Date.now() + durationSeconds * 1000,
+            practiceTimerId: null,
+          };
+        }
+        try {
+          const res = await fetch(`${apiBase}/api/exam-prep/practice-timers`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ durationSeconds }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.success || !data.endsAtIso) {
+            console.warn("[openxp] practice timer API failed", res.status, data);
+            return {
+              fallback: true,
+              endsAtMs: Date.now() + durationSeconds * 1000,
+              practiceTimerId: null,
+            };
+          }
+          return {
+            fallback: false,
+            endsAtMs: Date.parse(data.endsAtIso),
+            practiceTimerId: data.practiceTimerId,
+          };
+        } catch (e) {
+          console.warn("[openxp] practice timer request error", e);
+          return {
+            fallback: true,
+            endsAtMs: Date.now() + durationSeconds * 1000,
+            practiceTimerId: null,
+          };
+        }
+      }
+
+      function totalQuestions() {
+        return getPracticeBank().length;
+      }
+
+      function renderTip() {
+        const el = document.getElementById("tip-text");
+        if (el) el.textContent = TIPS[tipIndex % TIPS.length];
+      }
+
+      function renderQuestion() {
+        const bank = getPracticeBank();
+        const total = bank.length;
+        const q = bank[Math.min(idx, Math.max(0, total - 1))];
+        const displayNum = idx + 1;
+        const denom = Math.max(1, total);
+
+        document.getElementById("q-title").textContent = `Question ${displayNum}`;
+        document.getElementById("progress-label").textContent = `Question ${displayNum} of ${denom} · ${practiceBankLabel()}`;
+        document.getElementById("progress-fill").style.width = `${(displayNum / denom) * 100}%`;
+
+        document.getElementById("q-stem").textContent = q.stem;
+        selectedKey = null;
+        const wrap = document.getElementById("q-options");
+        if (!q.choices || q.choices.length === 0) {
+          wrap.innerHTML =
+            '<p class="text-sm text-slate-600 py-2">No multiple-choice options for this item.</p>';
+        } else {
+          wrap.innerHTML = q.choices
+            .map(
+              (c) => `
+          <button type="button" class="option-card w-full" data-key="${c.k}" role="radio" aria-checked="false">
+            <span class="option-key">${c.k}</span>
+            <span class="option-card-label">${escapeHtml(c.t)}</span>
+          </button>`
+            )
+            .join("");
+        }
+
+        wrap.querySelectorAll(".option-card").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            wrap.querySelectorAll(".option-card").forEach((b) => {
+              b.classList.remove("is-selected");
+              b.setAttribute("aria-checked", "false");
+            });
+            btn.classList.add("is-selected");
+            btn.setAttribute("aria-checked", "true");
+            selectedKey = btn.dataset.key;
+          });
+        });
+
+        tipIndex = idx % TIPS.length;
+        renderTip();
+        renderGrid();
+        if (practicePlayMain) practicePlayMain.classList.add("has-hint-fab");
+        if (hintSheet?.classList.contains("is-open")) renderHintSheetContent();
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      const hintFab = document.getElementById("hint-fab");
+      const hintBackdrop = document.getElementById("hint-backdrop");
+      const hintSheet = document.getElementById("hint-sheet");
+      const hintContextChips = document.getElementById("hint-context-chips");
+      const hintMockNote = document.getElementById("hint-mock-note");
+      const hintTopicLabel = document.getElementById("hint-topic-label");
+      const hintSteps = document.getElementById("hint-steps");
+      const hintRevealWrap = document.getElementById("hint-reveal-wrap");
+      const hintRevealBtn = document.getElementById("hint-reveal-btn");
+      const hintExample = document.getElementById("hint-example");
+      const hintExampleText = document.getElementById("hint-example-text");
+      const practicePlayMain = document.getElementById("practice-play-main");
+
+      function formatModeLabel(mode) {
+        if (mode === "year") return "Year";
+        if (mode === "mock") return "Mock";
+        if (mode === "topic") return "Topic";
+        return mode ? String(mode) : "";
+      }
+
+      function resolveHintTopic(q) {
+        if (!q) return session?.topic || null;
+        return q.topic || session?.topic || null;
+      }
+
+      function resetHintRevealUi() {
+        if (hintExample) hintExample.classList.add("hidden");
+        if (hintRevealBtn) hintRevealBtn.classList.remove("hidden");
+      }
+
+      function renderHintContextChips() {
+        if (!hintContextChips) return;
+        const chips = [];
+        if (session?.exam) chips.push({ text: session.exam, accent: false });
+        if (session?.subject) chips.push({ text: session.subject, accent: false });
+        const ml = formatModeLabel(session?.mode);
+        if (ml) chips.push({ text: ml, accent: true });
+        if (session?.year) chips.push({ text: `Year ${session.year}`, accent: false });
+        if (session?.topic) chips.push({ text: session.topic, accent: false });
+        hintContextChips.innerHTML = chips
+          .map(
+            (c) =>
+              `<span class="hint-chip${c.accent ? " is-accent" : ""}">${escapeHtml(c.text)}</span>`
+          )
+          .join("");
+      }
+
+      function renderHintSheetContent() {
+        const bank = getPracticeBank();
+        const q = bank[Math.min(idx, Math.max(0, bank.length - 1))];
+        const topic = resolveHintTopic(q);
+        const strat = getTopicStrategy(topic);
+
+        if (hintTopicLabel) {
+          hintTopicLabel.textContent = topic ? `Topic · ${topic}` : "General strategy";
+        }
+        if (hintSteps) {
+          hintSteps.innerHTML = strat.steps.map((s) => `<li>${escapeHtml(s)}</li>`).join("");
+        }
+
+        const hasExample = Boolean(strat.microExample && String(strat.microExample).trim());
+        if (hintRevealWrap) {
+          hintRevealWrap.classList.toggle("hidden", !hasExample);
+        }
+        if (hintExampleText) hintExampleText.textContent = hasExample ? strat.microExample : "";
+        resetHintRevealUi();
+
+        if (hintMockNote) {
+          const isMock = session?.mode === "mock";
+          hintMockNote.classList.toggle("hidden", !isMock);
+          if (isMock) {
+            hintMockNote.textContent =
+              "Timed mock: use hints sparingly if you want exam-like pressure.";
+          }
+        }
+        renderHintContextChips();
+      }
+
+      function openHintSheet() {
+        renderHintSheetContent();
+        hintBackdrop?.classList.add("is-open");
+        hintSheet?.classList.add("is-open");
+        hintBackdrop?.setAttribute("aria-hidden", "false");
+        hintSheet?.setAttribute("aria-hidden", "false");
+        hintFab?.setAttribute("aria-expanded", "true");
+        document.getElementById("hint-close")?.focus();
+      }
+
+      function closeHintSheet() {
+        hintBackdrop?.classList.remove("is-open");
+        hintSheet?.classList.remove("is-open");
+        hintBackdrop?.setAttribute("aria-hidden", "true");
+        hintSheet?.setAttribute("aria-hidden", "true");
+        hintFab?.setAttribute("aria-expanded", "false");
+      }
+
+      function renderGrid() {
+        const total = getPracticeBank().length;
+        const grid = document.getElementById("q-grid");
+        grid.innerHTML = Array.from({ length: total }, (_, i) => {
+          let cls = "q-grid-btn";
+          if (i === idx) cls += " is-current";
+          else if (i < idx) cls += " is-done";
+          return `<button type="button" class="${cls}" data-go="${i}">${i + 1}</button>`;
+        }).join("");
+
+        grid.querySelectorAll("[data-go]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            idx = Number(btn.dataset.go);
+            closeDrawer();
+            renderQuestion();
+          });
+        });
+      }
+
+      function openDrawer() {
+        document.getElementById("drawer-backdrop").classList.add("open");
+        document.getElementById("drawer-panel").classList.add("open");
+        document.getElementById("drawer-backdrop").setAttribute("aria-hidden", "false");
+        document.getElementById("drawer-panel").setAttribute("aria-hidden", "false");
+        renderGrid();
+      }
+
+      function closeDrawer() {
+        document.getElementById("drawer-backdrop").classList.remove("open");
+        document.getElementById("drawer-panel").classList.remove("open");
+        document.getElementById("drawer-backdrop").setAttribute("aria-hidden", "true");
+        document.getElementById("drawer-panel").setAttribute("aria-hidden", "true");
+      }
+
+      document.getElementById("splash-begin").addEventListener("click", async () => {
+        const beginBtn = document.getElementById("splash-begin");
+        beginBtn.disabled = true;
+        idx = 0;
+        serverPracticeBank = null;
+        const loaded = await fetchServerPracticeBank();
+        if (!loaded) {
+          beginBtn.disabled = false;
+          alert(
+            "Could not load exam questions. Start the API (e.g. npm run dev in /backend) and ensure this page’s meta openxp-api-base points at it (e.g. http://localhost:3000). Mock practice still uses the local demo set."
+          );
+          return;
+        }
+        const durationSeconds = clampPracticeDurationSeconds(session?.timerSeconds);
+        const timerResult = await requestServerPracticeTimer(durationSeconds);
+        authoritativeEndsAtMs = timerResult.endsAtMs;
+        practiceTimerId = timerResult.practiceTimerId;
+        if (timerResult.fallback) {
+          console.info("[openxp] practice timer: client fallback (set meta openxp-api-base or __OPENXP_API_BASE__ for server authority)");
+        }
+        timeExpired = false;
+        startPracticeTimerTick();
+        splash.classList.add("is-hidden");
+        setTimeout(() => {
+          splash.style.display = "none";
+          app.classList.remove("hidden");
+          if (hintFab) hintFab.classList.remove("hidden");
+          renderQuestion();
+          beginBtn.disabled = false;
+        }, 360);
+      });
+
+      document.getElementById("btn-next").addEventListener("click", () => {
+        const total = getPracticeBank().length;
+        if (idx < total - 1) {
+          idx += 1;
+          renderQuestion();
+          return;
+        }
+        document.getElementById("q-title").classList.add("hidden");
+        document.getElementById("q-stem").classList.add("hidden");
+        document.getElementById("q-options").classList.add("hidden");
+        document.getElementById("btn-next").classList.add("hidden");
+        document.getElementById("tip-strip").classList.add("hidden");
+        document.getElementById("practice-done").classList.remove("hidden");
+        document.getElementById("progress-fill").style.width = "100%";
+        document.getElementById("progress-label").textContent =
+          serverPracticeBank && serverPracticeBank.length ? "Session complete" : "Demo complete";
+        stopPracticeTimerTick();
+        closeDrawer();
+        closeHintSheet();
+        if (hintFab) hintFab.classList.add("hidden");
+        if (practicePlayMain) practicePlayMain.classList.remove("has-hint-fab");
+      });
+
+      document.getElementById("open-drawer").addEventListener("click", openDrawer);
+      document.getElementById("close-drawer").addEventListener("click", closeDrawer);
+      document.getElementById("drawer-backdrop").addEventListener("click", closeDrawer);
+
+      hintFab?.addEventListener("click", openHintSheet);
+      hintBackdrop?.addEventListener("click", closeHintSheet);
+      document.getElementById("hint-close")?.addEventListener("click", closeHintSheet);
+      hintRevealBtn?.addEventListener("click", () => {
+        hintExample?.classList.remove("hidden");
+        hintRevealBtn?.classList.add("hidden");
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape") return;
+        if (hintSheet?.classList.contains("is-open")) closeHintSheet();
+      });
+
+      if (!session) {
+        splash.style.display = "none";
+        missing.classList.remove("hidden");
+      } else {
+        console.info("[openxp] practice session payload", session);
+      }
+    </script>
+  </body>
+</html>
