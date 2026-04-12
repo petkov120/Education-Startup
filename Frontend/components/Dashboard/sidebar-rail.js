@@ -2,11 +2,40 @@ class DashboardSidebar extends HTMLElement {
   static observedAttributes = ["active-item"];
 
   connectedCallback() {
+    this._onSidebarClick = this._onSidebarClick.bind(this);
+    this.addEventListener("click", this._onSidebarClick);
     this.render();
+  }
+
+  disconnectedCallback() {
+    this.removeEventListener("click", this._onSidebarClick);
   }
 
   attributeChangedCallback() {
     this.render();
+  }
+
+  _onSidebarClick(e) {
+    const logout = e.target.closest("[data-sidebar-logout]");
+    if (!logout) return;
+    e.preventDefault();
+    this.handleLogout();
+  }
+
+  async handleLogout() {
+    try {
+      if (
+        typeof SUPABASE_URL !== "undefined" &&
+        typeof SUPABASE_ANON_KEY !== "undefined" &&
+        window.supabase?.createClient
+      ) {
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        await client.auth.signOut();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    window.location.href = new URL("/Frontend/components/onboarding/login.html", window.location.origin).href;
   }
 
   render() {
@@ -22,7 +51,7 @@ class DashboardSidebar extends HTMLElement {
       },
       {
         id: "exam-home",
-        label: "Exam Home",
+        label: "Exam Prep",
         icon: "/Images/dashboard-icons/Exam Prep.svg",
         href: "/Frontend/components/exam-prep/exam-home.html",
       },
@@ -87,6 +116,10 @@ class DashboardSidebar extends HTMLElement {
           <img src="/Images/dashboard-icons/Gear.svg" alt="" />
           <span class="nav-label">Settings</span>
         </a>
+        <button type="button" class="nav-item" data-sidebar-logout aria-label="Log out">
+          <img src="/Images/dashboard-icons/SignOut.svg" alt="" />
+          <span class="nav-label">Log out</span>
+        </button>
       </nav>
     `;
   }
