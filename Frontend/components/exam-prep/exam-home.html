@@ -105,6 +105,14 @@
         white-space: nowrap;
       }
 
+      button.nav-item {
+        font: inherit;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+      }
+
       .nav-item:hover {
         background: rgba(255, 255, 255, 0.08);
         color: #fff;
@@ -124,6 +132,14 @@
 
       .nav-item.active img {
         filter: brightness(0) invert(1);
+      }
+
+      .sidebar-logo-title {
+        color: #fff;
+      }
+
+      .sidebar-logo-subtitle {
+        color: rgba(255, 255, 255, 0.7);
       }
 
       .nav-label {
@@ -160,7 +176,7 @@
         }
       }
 
-      /* Pills + segmented mode tabs (dashboard language) */
+      /* Pills (dashboard language) — default; mock segment rows use this too */
       .exam-pill {
         border: 1px solid #e2e8f0;
         border-radius: 999px;
@@ -171,97 +187,27 @@
         text-transform: uppercase;
         color: #64748b;
         background: #fff;
-        transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+        transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
       }
 
       .exam-pill:hover {
         border-color: #cbd5e1;
-        transform: translateY(-1px);
-        box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+        background: #f8fafc;
       }
 
       .exam-pill.active {
         color: #fff;
         border-color: #2b0a6b;
-        background: linear-gradient(135deg, #2b0a6b 0%, #7c3aed 100%);
-        box-shadow: 0 14px 22px rgba(43, 10, 107, 0.18);
+        background: linear-gradient(135deg, #2b0a6b 0%, #6d28d9 100%);
       }
 
-      .segmented {
-        --seg-bg: #f4f1ff;
-        --seg-border: #e8ddff;
-        --seg-text: #3b2a69;
-        --seg-muted: rgba(59, 42, 105, 0.72);
-        --seg-accent: #2b0a6b;
-        --seg-thumb: #ffffff;
-        --seg-index: 0;
-
-        padding: 6px;
-        border-radius: 999px;
-        background: var(--seg-bg);
-        border: 1px solid var(--seg-border);
-        position: relative;
-        width: min(520px, 100%);
+      .exam-pill:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(124, 58, 237, 0.4);
       }
 
-      .segmented-modes {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-        position: relative;
-        z-index: 1;
-      }
-
-      /* Real element (not ::before): smoother transform transitions across browsers when using --seg-index */
-      .segmented-thumb {
-        position: absolute;
-        inset: 6px;
-        width: calc((100% - 12px - 12px) / 3);
-        border-radius: 999px;
-        background: var(--seg-thumb);
-        box-shadow:
-          0 16px 30px rgba(43, 10, 107, 0.12),
-          0 3px 8px rgba(43, 10, 107, 0.08);
-        transform: translateX(calc(var(--seg-index) * (100% + 6px)));
-        transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .segmented-thumb {
-          transition-duration: 0.01ms;
-        }
-      }
-
-      .mode-chip {
-        position: relative;
-        z-index: 1;
-        border: 0;
-        border-radius: 999px;
-        padding: 10px 14px;
-        background: transparent;
-        font-size: 13px;
-        font-weight: 800;
-        letter-spacing: -0.01em;
-        color: var(--seg-muted);
-        transition: color 140ms ease, transform 140ms ease;
-        justify-content: center;
-        cursor: pointer;
-      }
-
-      .mode-chip:hover {
-        color: var(--seg-text);
-        transform: translateY(-1px);
-      }
-
-      .mode-chip.active {
-        color: var(--seg-accent);
-      }
-
-      .mode-chip:focus-visible {
-        outline: 2px solid rgba(43, 10, 107, 0.35);
-        outline-offset: 2px;
+      .exam-pill.active:focus-visible {
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(124, 58, 237, 0.45);
       }
 
       /* Custom select (copied/compatible with dp.html) */
@@ -295,6 +241,12 @@
 
       .custom-select {
         position: relative;
+        z-index: 1;
+      }
+
+      /* Open select stacks above siblings (card transforms create stacking contexts). */
+      .custom-select.open {
+        z-index: 200;
       }
 
       .custom-select-btn {
@@ -366,10 +318,28 @@
         overflow: auto;
       }
 
-      .custom-select.open .custom-select-menu {
+      .custom-select.open .custom-select-menu:not(.custom-select-menu--floating) {
         opacity: 1;
         transform: translateY(0) scale(1);
         pointer-events: auto;
+      }
+
+      /* Portaled to document.body — escapes card overflow / transform; scrollable. */
+      .custom-select-menu.custom-select-menu--floating {
+        position: fixed !important;
+        left: 0;
+        top: 0;
+        right: auto;
+        margin: 0;
+        min-height: 0;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+        transition: none;
+        z-index: 10050;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
       }
 
       .custom-select-option {
@@ -440,18 +410,89 @@
       }
 
       .xp-illu-well--lg {
-        width: 64px;
-        height: 64px;
+        width: 96px;
+        height: 96px;
       }
 
       .xp-illu-well--lg img {
-        width: 44px;
-        height: 44px;
+        width: 66px;
+        height: 66px;
       }
 
       .xp-illu-well--aside {
         border-color: rgba(202, 138, 4, 0.35);
         background: linear-gradient(145deg, rgba(250, 204, 21, 0.14), rgba(255, 251, 235, 0.95));
+      }
+
+      /* Question preview (session setup aside) */
+      .xp-q-preview {
+        border-radius: 14px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: #fff;
+        box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+      }
+      .xp-q-preview-badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 3px 10px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        background: rgba(43, 10, 107, 0.08);
+        color: #2b0a6b;
+        border: 1px solid rgba(43, 10, 107, 0.12);
+      }
+      .xp-q-preview-option {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        background: #fafafa;
+        font-size: 13px;
+        line-height: 1.35;
+        color: #334155;
+      }
+      .xp-q-preview-option--active {
+        border-color: rgba(109, 40, 217, 0.45);
+        background: #f6f2ff;
+        box-shadow: 0 0 0 1px rgba(109, 40, 217, 0.12);
+      }
+      .xp-q-preview-key {
+        flex-shrink: 0;
+        width: 22px;
+        height: 22px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 800;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+      }
+      .xp-q-preview-option--active .xp-q-preview-key {
+        background: #6d28d9;
+        border-color: #6d28d9;
+        color: #fff;
+      }
+      .xp-q-preview-mascot {
+        width: 76px;
+        height: 76px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+      .xp-q-preview-mascot img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: bottom center;
       }
 
       /* Profile settings sheet — must match Dashboard (dp.html) so <profile-settings-sheet> displays */
@@ -541,49 +582,88 @@
         display: block;
       }
 
-      /* Fullscreen loader (matches Dashboard dp.html) */
-      #dashboard-loader {
-        position: fixed;
-        inset: 0;
-        z-index: 50;
+      /* JAMB / WAEC mock: one paper expanded at a time */
+      .mock-seg-accordion {
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+        background: #fff;
+        overflow: hidden;
+      }
+      .mock-seg-acc-item + .mock-seg-acc-item {
+        border-top: 1px solid #f1f5f9;
+      }
+      .mock-seg-acc-trigger {
+        width: 100%;
         display: flex;
         align-items: center;
-        justify-content: center;
-        background: radial-gradient(
-          circle at top,
-          #3c127f 0,
-          #2b0a6b 40%,
-          #1a063f 100%
-        );
-        transition: opacity 0.3s ease;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border: 0;
+        background: #fafafa;
+        cursor: pointer;
+        text-align: left;
+        font: inherit;
+        transition: background 0.15s ease;
       }
-
-      #dashboard-loader .loader-inner {
+      .mock-seg-acc-trigger:hover {
+        background: #f4f4f5;
+      }
+      .mock-seg-acc-item.is-open .mock-seg-acc-trigger {
+        background: #f8f5ff;
+      }
+      .mock-seg-acc-trigger-main {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 0.75rem;
+        gap: 2px;
+        min-width: 0;
+        flex: 1;
+      }
+      .mock-seg-acc-chevron {
+        flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+        background: center / 18px 18px no-repeat
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%2364748b' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        transition: transform 0.18s ease;
+      }
+      .mock-seg-acc-item.is-open .mock-seg-acc-chevron {
+        transform: rotate(180deg);
+      }
+      .mock-seg-acc-panel {
+        border-top: 1px solid #f1f5f9;
+        background: #fff;
+        padding: 0 14px 14px;
+      }
+      .mock-seg-acc-panel[hidden] {
+        display: none !important;
       }
 
-      .loader-logo {
-        width: 120px;
-        height: auto;
-        animation: loader-bounce 1.2s ease-in-out infinite;
+      /* Lightweight skeletons (preferred vs full-page splash for internal pages) */
+      .xp-skel {
+        background: linear-gradient(90deg, #eef2ff 0%, #f1f5f9 40%, #eef2ff 80%);
+        background-size: 200% 100%;
+        animation: xp-skel-shimmer 1.1s ease-in-out infinite;
+        border-radius: 999px;
       }
-
-      .loader-text {
-        color: #f5f7fb;
-        font-size: 0.875rem;
+      .xp-skel--line {
+        height: 10px;
+        width: 130px;
+      }
+      .xp-skel--subline {
+        height: 9px;
+        width: 92px;
         opacity: 0.85;
       }
-
-      @keyframes loader-bounce {
-        0%,
-        100% {
-          transform: translateY(0) scale(1);
+      .xp-skel--circle {
+        border-radius: 999px;
+      }
+      @keyframes xp-skel-shimmer {
+        0% {
+          background-position: 0% 0%;
         }
-        50% {
-          transform: translateY(-10px) scale(1.03);
+        100% {
+          background-position: 200% 0%;
         }
       }
 
@@ -617,7 +697,7 @@
           opacity: 1;
           transform: none;
         }
-        .loader-logo {
+        .xp-skel {
           animation: none;
         }
       }
@@ -629,17 +709,9 @@
       if (window.parent !== window) document.body.classList.add("openxp-embed");
     </script>
 
-    <!-- Loader overlay (same flow as dp.html) -->
-    <div id="dashboard-loader">
-      <div class="loader-inner">
-        <img src="/Images/cool%201.png" alt="Openxp Mascot" class="loader-logo" />
-        <p class="loader-text">Preparing your study space…</p>
-      </div>
-    </div>
-
     <div
       id="dashboard-root"
-      class="hidden min-h-screen flex bg-[var(--dashboard-bg)] text-slate-900"
+      class="min-h-screen flex bg-[var(--dashboard-bg)] text-slate-900"
     >
       <dashboard-sidebar active-item="exam-home"></dashboard-sidebar>
 
@@ -676,16 +748,17 @@
                 tabindex="0"
                 class="flex items-center gap-3 rounded-xl px-1 py-1 -mr-1 cursor-pointer hover:bg-slate-50 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2"
                 aria-label="Profile settings"
+                aria-busy="true"
               >
                 <div
                   id="profile-avatar"
-                  class="h-9 min-w-9 rounded-full flex items-center justify-center text-sm font-bold text-white bg-[#6D28D9] overflow-hidden shrink-0 px-3"
+                  class="h-9 w-9 rounded-full flex items-center justify-center text-sm font-bold text-white bg-[#6D28D9] overflow-hidden shrink-0 xp-skel xp-skel--circle"
                 >
-                  SL
+                  <span class="sr-only">Loading profile</span>
                 </div>
                 <div class="flex flex-col leading-tight min-w-0 max-w-[120px] sm:max-w-[180px]">
-                  <span class="text-xs font-semibold text-slate-900 truncate" id="profile-name"></span>
-                  <span class="text-[11px] text-slate-400 truncate" id="profile-handle"></span>
+                  <span class="xp-skel xp-skel--line" id="profile-name"></span>
+                  <span class="xp-skel xp-skel--subline mt-1" id="profile-handle"></span>
                 </div>
               </div>
             </div>
@@ -697,9 +770,9 @@
             <div class="flex flex-col sm:flex-row gap-4 sm:items-start">
               <div class="xp-illu-well xp-illu-well--lg shrink-0">
                 <img
-                  src="/Images/exam-prep/openxp-exam-prep--practice-intro.svg"
-                  width="56"
-                  height="56"
+                  src="/Images/dashboard-icons/openxp practice icon.svg"
+                  width="66"
+                  height="66"
                   alt=""
                   data-xp-asset="practice-intro"
                 />
@@ -709,19 +782,26 @@
                   Choose how you want to practice. <span class="font-semibold text-slate-700">Every session is timed.</span>
                 </p>
 
-                <div class="mt-5 flex flex-wrap items-center gap-2">
+                <div class="mt-5 flex flex-wrap items-center gap-2" role="group" aria-label="Choose exam">
                   <button type="button" class="exam-pill active" data-exam="WAEC">WAEC</button>
                   <button type="button" class="exam-pill" data-exam="JAMB">JAMB</button>
                 </div>
 
-                <div class="mt-5">
-                  <div class="segmented">
-                    <span class="segmented-thumb" aria-hidden="true"></span>
-                    <div class="segmented-modes" role="tablist" aria-label="Practice mode">
-                      <button type="button" class="mode-chip active" role="tab" aria-selected="true" tabindex="0" data-mode="topic">Topic</button>
-                      <button type="button" class="mode-chip" role="tab" aria-selected="false" tabindex="-1" data-mode="year">Year</button>
-                      <button type="button" class="mode-chip" role="tab" aria-selected="false" tabindex="-1" data-mode="mock">Mock</button>
-                    </div>
+                <div class="mt-5 max-w-md">
+                  <label class="modal-label" for="mode-trigger">Practice mode</label>
+                  <div class="custom-select" id="mode-select">
+                    <input id="mode-value" type="hidden" value="Topic" />
+                    <button
+                      type="button"
+                      id="mode-trigger"
+                      class="custom-select-btn"
+                      data-placeholder="false"
+                      aria-haspopup="listbox"
+                      aria-expanded="false"
+                    >
+                      Topic
+                    </button>
+                    <div id="mode-menu" class="custom-select-menu" role="listbox" aria-label="Practice mode"></div>
                   </div>
                 </div>
               </div>
@@ -731,29 +811,17 @@
           <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(320px,34%)] gap-5">
             <div class="card-in card-in-2 rounded-2xl bg-white border border-[#ebe8f2] px-5 py-5 md:px-6 md:py-6">
               <div class="flex gap-3 items-start">
-                <div class="xp-illu-well shrink-0">
+                <div class="xp-illu-well xp-illu-well--lg shrink-0">
                   <img
-                    src="/Images/exam-prep/openxp-exam-prep--session-setup.svg"
-                    width="48"
-                    height="48"
+                    src="/Images/dashboard-icons/openxp time icon.svg"
+                    width="66"
+                    height="66"
                     alt=""
                     data-xp-asset="session-setup"
                   />
                 </div>
                 <div class="min-w-0 flex-1">
-                  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                    <div>
-                      <p class="text-[18px] leading-tight font-semibold text-[var(--title)]">Session setup</p>
-                      <p id="session-setup-subtitle" class="text-[13px] text-[var(--muted)] mt-0.5">
-                        Pick subject, questions and timing.
-                      </p>
-                    </div>
-                    <div class="text-left sm:text-right shrink-0">
-                      <p class="text-[10px] uppercase tracking-[0.14em] font-extrabold text-slate-400">Timer</p>
-                      <p class="text-sm font-extrabold text-slate-900" id="timer-summary">—</p>
-                      <p class="text-[11px] text-slate-500" id="timer-hint">Recommended based on exam</p>
-                    </div>
-                  </div>
+                  <p class="text-[18px] leading-tight font-semibold text-[var(--title)]">Session setup</p>
 
               <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div id="session-subject-row">
@@ -821,53 +889,35 @@
               </div>
 
               <div id="topic-timer-field" class="mt-5">
-                <p class="modal-label mb-2">Custom timer (Topic mode)</p>
-                <div class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
-                  <div class="flex flex-col gap-3">
-                    <div>
-                      <p class="text-sm font-extrabold text-slate-900">Duration</p>
-                      <p class="text-[12px] text-slate-500">Adjust if you want more/less pressure.</p>
-                    </div>
-
-                    <div>
-                      <label class="modal-label" for="topic-duration-trigger">Timer</label>
-                      <div class="custom-select" id="topic-duration-select">
-                        <input id="topic-duration-value" type="hidden" value="" />
-                        <button
-                          type="button"
-                          id="topic-duration-trigger"
-                          class="custom-select-btn"
-                          data-placeholder="false"
-                          aria-haspopup="listbox"
-                          aria-expanded="false"
-                        >
-                          Recommended · —
-                        </button>
-                        <div
-                          id="topic-duration-menu"
-                          class="custom-select-menu"
-                          role="listbox"
-                          aria-label="Select timer duration"
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
+                <label class="modal-label" for="topic-duration-trigger">Timer (topic mode)</label>
+                <div class="custom-select" id="topic-duration-select">
+                  <input id="topic-duration-value" type="hidden" value="" />
+                  <button
+                    type="button"
+                    id="topic-duration-trigger"
+                    class="custom-select-btn"
+                    data-placeholder="false"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
+                  >
+                    Recommended · —
+                  </button>
+                  <div
+                    id="topic-duration-menu"
+                    class="custom-select-menu"
+                    role="listbox"
+                    aria-label="Select timer duration"
+                  ></div>
                 </div>
               </div>
 
               <div id="mock-field" class="panel mt-6">
-                <div class="flex items-center justify-between gap-3">
-                  <div>
-                    <p class="text-sm font-extrabold text-slate-900">Mock segments</p>
-                    <p id="mock-field-hint" class="text-[12px] text-slate-500">
-                      Pick up to 3 exam + subject segments (timed per segment).
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    id="add-segment"
-                    class="rounded-xl bg-[#2B0A6B] px-4 py-2 text-sm font-semibold text-white hover:bg-[#3d1299]"
-                  >
+                <div>
+                  <p class="text-sm font-extrabold text-slate-900">Mock segments</p>
+                  <p id="mock-field-hint" class="text-[12px] text-slate-500 mt-0.5">
+                    Fixed papers for your exam type — set subject per paper below.
+                  </p>
+                  <button type="button" id="add-segment" class="hidden" aria-hidden="true" tabindex="-1">
                     Add segment
                   </button>
                 </div>
@@ -875,55 +925,78 @@
                 <div class="mt-4 space-y-3" id="segments"></div>
               </div>
 
-              <div class="mt-6 flex flex-col sm:flex-row gap-3">
+              <div class="mt-6">
                 <button
                   type="button"
                   id="start-btn"
-                  class="flex-1 rounded-xl bg-[#2B0A6B] py-3 text-sm font-extrabold text-white hover:bg-[#3d1299] transition-colors"
+                  class="w-full rounded-xl bg-[#2B0A6B] py-3 text-sm font-extrabold text-white hover:bg-[#3d1299] transition-colors"
                 >
                   Start Practice
-                </button>
-                <button
-                  type="button"
-                  id="preview-btn"
-                  class="flex-1 rounded-xl border border-slate-200 py-3 text-sm font-extrabold text-slate-700 hover:bg-slate-50 transition-colors"
-                >
-                  Preview config
                 </button>
               </div>
                 </div>
               </div>
             </div>
 
-            <aside class="card-in card-in-3 rounded-2xl border border-[#e8dfb0] bg-[#faf7e6] px-5 py-5 md:px-6 md:py-6">
+            <aside
+              id="question-preview-aside"
+              class="card-in card-in-3 rounded-2xl border border-[#e4e0f5] bg-gradient-to-b from-[#faf9ff] to-[#f4f0ff] px-5 py-5 md:px-6 md:py-6"
+              aria-labelledby="question-preview-heading"
+            >
               <div class="flex gap-3 items-start">
-                <div class="xp-illu-well xp-illu-well--aside shrink-0">
+                <div class="min-w-0 flex-1">
+                  <p
+                    id="question-preview-heading"
+                    class="text-xs font-extrabold text-[var(--title)] uppercase tracking-[0.12em]"
+                  >
+                    Question preview
+                  </p>
+                  <p class="text-[12px] text-slate-600 mt-1 leading-snug">
+                    Example layout — not your actual first question.
+                  </p>
+                </div>
+                <div class="xp-q-preview-mascot flex shrink-0" aria-hidden="true">
                   <img
-                    src="/Images/exam-prep/openxp-exam-prep--timing-aside.svg"
-                    width="48"
-                    height="48"
+                    src="../../../Images/fullopenxp.png"
+                    width="76"
+                    height="76"
                     alt=""
-                    data-xp-asset="timing-aside"
+                    decoding="async"
                   />
                 </div>
-                <div class="min-w-0 flex-1">
-              <p class="text-xs font-extrabold text-[var(--title)] uppercase tracking-[0.12em]">Recommended timing</p>
-              <div class="mt-3 space-y-2 text-sm text-[var(--body)]">
-                <div class="flex items-center justify-between">
-                  <span class="font-semibold text-slate-800">WAEC</span>
-                  <span class="text-slate-600">75s / question</span>
-                </div>
-                <div class="flex items-center justify-between">
-                  <span class="font-semibold text-slate-800">JAMB</span>
-                  <span class="text-slate-600">90s / question</span>
-                </div>
               </div>
-              <p class="mt-4 text-[12px] text-slate-600">
-                Year &amp; Mock use the standard timer automatically. Topic lets you customize—still starts with a recommended
-                default.
-              </p>
+
+              <div class="xp-q-preview mt-4 p-4">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <span id="qp-exam-badge" class="xp-q-preview-badge">WAEC</span>
+                  <span id="qp-per-q" class="text-[11px] font-semibold tabular-nums text-slate-500">~75s / question</span>
                 </div>
+                <p id="qp-stem" class="mt-3 text-sm font-semibold text-slate-800 leading-snug">
+                  If x² − 5x + 6 = 0, what are the roots of the equation?
+                </p>
+                <ul id="qp-options" class="mt-3 space-y-2 list-none p-0 m-0" aria-hidden="true">
+                  <li class="xp-q-preview-option">
+                    <span class="xp-q-preview-key">A</span>
+                    <span>1 and 6</span>
+                  </li>
+                  <li class="xp-q-preview-option xp-q-preview-option--active">
+                    <span class="xp-q-preview-key">B</span>
+                    <span>2 and 3</span>
+                  </li>
+                  <li class="xp-q-preview-option">
+                    <span class="xp-q-preview-key">C</span>
+                    <span>−2 and −3</span>
+                  </li>
+                  <li class="xp-q-preview-option">
+                    <span class="xp-q-preview-key">D</span>
+                    <span>−1 and −6</span>
+                  </li>
+                </ul>
+                <p id="qp-context" class="mt-3 text-[11px] text-slate-500 leading-relaxed">
+                  Choose session options — preview updates as you go.
+                </p>
               </div>
+
             </aside>
           </div>
         </section>
@@ -931,32 +1004,6 @@
     </div>
 
     <profile-settings-sheet></profile-settings-sheet>
-
-    <script>
-      function showExamHome() {
-        const loader = document.getElementById("dashboard-loader");
-        const root = document.getElementById("dashboard-root");
-        if (!loader || !root) return;
-        if (document.body.classList.contains("openxp-embed")) {
-          loader.style.display = "none";
-          root.classList.remove("hidden");
-          return;
-        }
-        loader.style.opacity = "0";
-        setTimeout(() => {
-          loader.style.display = "none";
-          root.classList.remove("hidden");
-        }, 300);
-      }
-
-      window.addEventListener("load", () => {
-        if (document.body.classList.contains("openxp-embed")) {
-          showExamHome();
-        } else {
-          setTimeout(showExamHome, 800);
-        }
-      });
-    </script>
 
     <script type="module" src="../Dashboard/sidebar-rail.js"></script>
     <script type="module" src="../Dashboard/profile-settings-sheet.js"></script>
@@ -987,11 +1034,21 @@
         const nameEl = document.getElementById("profile-name");
         const handleEl = document.getElementById("profile-handle");
         const avatarEl = document.getElementById("profile-avatar");
+        const clusterEl = document.getElementById("profile-header-cluster");
         if (!nameEl || !handleEl || !avatarEl) return;
 
         try {
           if (typeof SUPABASE_URL === "undefined" || typeof SUPABASE_ANON_KEY === "undefined") {
             console.warn("Supabase config missing: expected SUPABASE_URL and SUPABASE_ANON_KEY in onboarding/config.js");
+            // If config is missing, stop skeleton state so header doesn't look broken.
+            nameEl.className = "text-xs font-semibold text-slate-900 truncate";
+            handleEl.className = "text-[11px] text-slate-400 truncate";
+            nameEl.textContent = "Guest";
+            handleEl.textContent = "";
+            avatarEl.classList.remove("xp-skel");
+            avatarEl.classList.add("px-3");
+            avatarEl.textContent = "SL";
+            if (clusterEl) clusterEl.setAttribute("aria-busy", "false");
             return;
           }
 
@@ -1028,6 +1085,12 @@
                 : "SL";
 
           renderProfileAvatarButton(avatarEl, avatarUrl, initials);
+
+          // Turn off skeletons once content is ready.
+          nameEl.className = "text-xs font-semibold text-slate-900 truncate";
+          handleEl.className = "text-[11px] text-slate-400 truncate";
+          avatarEl.classList.remove("xp-skel");
+          if (clusterEl) clusterEl.setAttribute("aria-busy", "false");
         } catch (e) {
           console.error("Failed to load exam-prep profile:", e);
         }
@@ -1063,7 +1126,35 @@
     <script>
       const EXAMS = ["WAEC", "JAMB"];
       const SUBJECTS = {
-        WAEC: ["Mathematics", "English", "Physics", "Chemistry", "Biology", "Economics", "Government"],
+        WAEC: [
+          "Accounting",
+          "Agricultural Science",
+          "Biology",
+          "Chemistry",
+          "Christian Religious Studies",
+          "Civic Education",
+          "Commerce",
+          "Computer Studies",
+          "Data Processing",
+          "Economics",
+          "English",
+          "Food and Nutrition",
+          "French",
+          "Further Mathematics",
+          "Geography",
+          "Government",
+          "Hausa",
+          "History",
+          "Igbo",
+          "Islamic Religious Studies",
+          "Literature in English",
+          "Mathematics",
+          "Music",
+          "Physics",
+          "Technical Drawing",
+          "Visual Arts",
+          "Yoruba",
+        ],
         JAMB: ["Mathematics", "English", "Physics", "Chemistry", "Biology", "Economics", "Government"],
       };
       const TOPICS = {
@@ -1074,9 +1165,107 @@
         Biology: ["Genetics", "Ecology", "Cell Biology", "Physiology"],
         Economics: ["Demand & Supply", "Market Structures", "National Income", "Inflation"],
         Government: ["Constitution", "Democracy", "Legislature", "Public Policy"],
+        "Further Mathematics": ["Matrices", "Complex Numbers", "Mechanics", "Statistics", "Calculus"],
+        Geography: ["Physical Geography", "Human Geography", "Map Skills", "Climate & Vegetation"],
+        "Agricultural Science": ["Crop Production", "Animal Husbandry", "Soil Science", "Farm Management"],
+        "Literature in English": ["Prose", "Poetry", "Drama", "Literary Devices"],
+        Commerce: ["Trade", "Advertising", "Insurance", "Transport & Communication"],
+        Accounting: ["Bookkeeping", "Financial Statements", "Ratio Analysis", "Cost Accounting"],
+        "Civic Education": ["Citizenship", "Human Rights", "Democracy", "National Values"],
+        "Christian Religious Studies": ["Synoptic Gospels", "Acts", "Epistles", "Christian Ethics"],
+        "Islamic Religious Studies": ["Quranic Studies", "Hadith", "Fiqh", "Islamic History"],
+        "Computer Studies": ["Programming Basics", "Hardware", "Networking", "Data Representation"],
+        "Data Processing": ["Information Systems", "Databases", "Spreadsheets", "ICT in Society"],
+        French: ["Grammar", "Comprehension", "Composition", "Oral"],
+        History: ["West African History", "Nigeria Since Independence", "World History", "Source Analysis"],
+        "Technical Drawing": ["Orthographic Projection", "Sections", "Developments", "CAD"],
+        "Food and Nutrition": ["Nutrition", "Food Preparation", "Preservation", "Consumer Education"],
+        "Visual Arts": ["Drawing", "Painting", "Design", "Art Appreciation"],
+        Music: ["Theory", "Aural Skills", "Composition", "Music History"],
+        Yoruba: ["Grammar", "Literature", "Oral", "Composition"],
+        Igbo: ["Grammar", "Literature", "Oral", "Composition"],
+        Hausa: ["Grammar", "Literature", "Oral", "Composition"],
       };
 
       const STANDARD_SECONDS_PER_Q = { WAEC: 75, JAMB: 90 };
+
+      /** Sample MCQ for the aside preview (format only — not live bank items). */
+      const PREVIEW_SAMPLES = {
+        WAEC: {
+          stem: "If x² − 5x + 6 = 0, what are the roots of the equation?",
+          choices: [
+            { k: "A", t: "1 and 6", active: false },
+            { k: "B", t: "2 and 3", active: true },
+            { k: "C", t: "−2 and −3", active: false },
+            { k: "D", t: "−1 and −6", active: false },
+          ],
+        },
+        JAMB: {
+          stem: "If log₁₀ 2 = 0.3010, what is log₁₀ 8?",
+          choices: [
+            { k: "A", t: "0.3010", active: false },
+            { k: "B", t: "0.6020", active: false },
+            { k: "C", t: "0.9030", active: true },
+            { k: "D", t: "1.2040", active: false },
+          ],
+        },
+      };
+
+      function escapePreviewHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function refreshQuestionPreview() {
+        const badge = document.getElementById("qp-exam-badge");
+        const perQ = document.getElementById("qp-per-q");
+        const stemEl = document.getElementById("qp-stem");
+        const ctx = document.getElementById("qp-context");
+        const list = document.getElementById("qp-options");
+        if (!badge || !perQ || !stemEl || !ctx || !list) return;
+
+        const exam = state.exam === "JAMB" ? "JAMB" : "WAEC";
+        const sample = PREVIEW_SAMPLES[exam];
+        const sec = STANDARD_SECONDS_PER_Q[exam] || 75;
+
+        badge.textContent = exam;
+        perQ.textContent = `~${sec}s / question`;
+        stemEl.textContent = sample.stem;
+
+        list.innerHTML = sample.choices
+          .map(
+            (c) => `
+          <li class="xp-q-preview-option${c.active ? " xp-q-preview-option--active" : ""}">
+            <span class="xp-q-preview-key">${escapePreviewHtml(c.k)}</span>
+            <span>${escapePreviewHtml(c.t)}</span>
+          </li>`
+          )
+          .join("")
+          .trim();
+
+        let ctxLine = "Choose session options — preview updates as you go.";
+        if (state.mode === "topic") {
+          if (state.subject || state.topic) {
+            const p = ["Topic"];
+            if (state.subject) p.push(state.subject);
+            if (state.topic) p.push(state.topic);
+            ctxLine = p.join(" · ");
+          }
+        } else if (state.mode === "year") {
+          if (state.subject || state.year) {
+            const p = ["Year paper"];
+            if (state.subject) p.push(state.subject);
+            if (state.year) p.push(state.year);
+            ctxLine = p.join(" · ");
+          }
+        } else {
+          ctxLine = state.exam === "JAMB" ? "Mock · UTME · 4 papers" : "Mock · Multi-paper";
+        }
+        ctx.textContent = ctxLine;
+      }
 
       /** UTME-style: 4 subjects × 50 questions (400 aggregate scoring). */
       const JAMB_MOCK_QUESTIONS_PER_PAPER = 50;
@@ -1098,11 +1287,15 @@
         q: 50,
         topicDurationMins: 30,
         segments: [],
+        /** JAMB mock accordion: which paper row is expanded (0–3). */
+        mockAccordionIdx: 0,
       };
 
       const $ = (sel) => document.querySelector(sel);
       const $$ = (sel) => Array.from(document.querySelectorAll(sel));
       let _lastRecommendedLabel = "—";
+      /** Syncs practice mode dropdown; assigned after `initSelect` for mode. */
+      let modeRender = () => {};
 
       function minsLabel(totalSeconds) {
         const mins = Math.round(totalSeconds / 60);
@@ -1121,12 +1314,75 @@
         $$(groupSel).forEach((btn) => btn.classList.toggle("active", activePredicate(btn)));
       }
 
-      function openSelect(selectEl, triggerEl) {
-        selectEl.classList.add("open");
-        triggerEl.setAttribute("aria-expanded", "true");
+      const FLOATING_MENU_MAX_PX = 280;
+
+      function positionFloatingMenu(triggerEl, menuEl) {
+        const r = triggerEl.getBoundingClientRect();
+        const gap = 6;
+        const pad = 8;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const width = Math.min(Math.max(r.width, 160), vw - pad * 2);
+        let left = r.left;
+        if (left + width > vw - pad) left = Math.max(pad, vw - width - pad);
+        if (left < pad) left = pad;
+
+        const availBelow = vh - r.bottom - gap - pad;
+        const availAbove = r.top - gap - pad;
+        let top;
+        let maxH;
+        if (availBelow >= Math.min(FLOATING_MENU_MAX_PX, 120) || availBelow >= availAbove) {
+          top = r.bottom + gap;
+          maxH = Math.min(FLOATING_MENU_MAX_PX, vh - top - pad);
+        } else {
+          maxH = Math.min(FLOATING_MENU_MAX_PX, availAbove);
+          top = r.top - gap - maxH;
+          if (top < pad) {
+            top = pad;
+            maxH = Math.min(FLOATING_MENU_MAX_PX, vh - pad - top);
+          }
+        }
+
+        menuEl.style.left = `${Math.round(left)}px`;
+        menuEl.style.top = `${Math.round(top)}px`;
+        menuEl.style.width = `${Math.round(width)}px`;
+        menuEl.style.maxHeight = `${Math.max(80, Math.round(maxH))}px`;
       }
 
-      function closeSelect(selectEl, triggerEl) {
+      function attachFloatingMenu(shell, triggerEl, menuEl) {
+        menuEl._floatCleanup?.();
+        menuEl.classList.add("custom-select-menu--floating");
+        document.body.appendChild(menuEl);
+        positionFloatingMenu(triggerEl, menuEl);
+        const onReposition = () => positionFloatingMenu(triggerEl, menuEl);
+        window.addEventListener("scroll", onReposition, true);
+        window.addEventListener("resize", onReposition);
+        menuEl._floatCleanup = () => {
+          window.removeEventListener("scroll", onReposition, true);
+          window.removeEventListener("resize", onReposition);
+          menuEl._floatCleanup = null;
+        };
+      }
+
+      function detachFloatingMenu(shell, menuEl) {
+        if (!menuEl.classList.contains("custom-select-menu--floating")) return;
+        menuEl._floatCleanup?.();
+        menuEl.classList.remove("custom-select-menu--floating");
+        menuEl.style.left = "";
+        menuEl.style.top = "";
+        menuEl.style.width = "";
+        menuEl.style.maxHeight = "";
+        shell.appendChild(menuEl);
+      }
+
+      function openSelect(selectEl, triggerEl, menuEl) {
+        selectEl.classList.add("open");
+        triggerEl.setAttribute("aria-expanded", "true");
+        if (menuEl) attachFloatingMenu(selectEl, triggerEl, menuEl);
+      }
+
+      function closeSelect(selectEl, triggerEl, menuEl) {
+        if (menuEl) detachFloatingMenu(selectEl, menuEl);
         selectEl.classList.remove("open");
         triggerEl.setAttribute("aria-expanded", "false");
       }
@@ -1156,12 +1412,12 @@
           value.value = opt;
           onPick(opt);
           render();
-          closeSelect(shell, trigger);
+          closeSelect(shell, trigger, menu);
         }
 
         trigger.addEventListener("click", () => {
-          if (shell.classList.contains("open")) closeSelect(shell, trigger);
-          else openSelect(shell, trigger);
+          if (shell.classList.contains("open")) closeSelect(shell, trigger, menu);
+          else openSelect(shell, trigger, menu);
         });
 
         menu.addEventListener("click", (e) => {
@@ -1171,7 +1427,7 @@
         });
 
         document.addEventListener("click", (e) => {
-          if (!shell.contains(e.target)) closeSelect(shell, trigger);
+          if (!shell.contains(e.target) && !menu.contains(e.target)) closeSelect(shell, trigger, menu);
         });
 
         render();
@@ -1205,28 +1461,25 @@
           }
           state.segments = next;
         } else {
-          state.segments = state.segments.slice(0, WAEC_MOCK_MAX_SEGMENTS).map((s) => ({
-            exam: s.exam || "WAEC",
-            subject: s.subject || "",
-            q: [50, 75, 100].includes(Number(s.q)) ? Number(s.q) : 50,
-          }));
+          const next = [];
+          for (let i = 0; i < WAEC_MOCK_MAX_SEGMENTS; i++) {
+            const prev = state.segments[i];
+            next.push({
+              exam: "WAEC",
+              subject: (prev && prev.subject) || "",
+              q: [50, 75, 100].includes(Number(prev && prev.q)) ? Number(prev.q) : 50,
+            });
+          }
+          state.segments = next;
         }
       }
 
       function updateSessionChrome() {
         const row = $("#session-questions-row");
         const subjectRow = $("#session-subject-row");
-        const subtitle = $("#session-setup-subtitle");
-        const addBtn = $("#add-segment");
         const hint = $("#mock-field-hint");
         if (subjectRow) {
           subjectRow.style.display = state.mode === "mock" ? "none" : "";
-        }
-        if (subtitle) {
-          subtitle.textContent =
-            state.mode === "mock"
-              ? "Subjects are set per paper below."
-              : "Pick subject, questions and timing.";
         }
         if (row) {
           row.style.display = state.mode === "mock" ? "none" : "";
@@ -1236,13 +1489,8 @@
             hint.textContent =
               `UTME-style: ${JAMB_MOCK_SEGMENT_COUNT} subjects × ${JAMB_MOCK_QUESTIONS_PER_PAPER} questions each (fixed). No question count chips.`;
           } else {
-            hint.textContent =
-              `Up to ${WAEC_MOCK_MAX_SEGMENTS} papers in one day. Choose 50 / 75 / 100 questions per paper.`;
+            hint.textContent = `WASSCE mock: ${WAEC_MOCK_MAX_SEGMENTS} papers in one day (fixed). Choose 50 / 75 / 100 questions per paper.`;
           }
-        }
-        if (addBtn) {
-          const hideAdd = state.mode === "mock" && state.exam === "JAMB";
-          addBtn.style.display = hideAdd ? "none" : "";
         }
       }
 
@@ -1250,31 +1498,36 @@
         if (state.mode === "topic") return Math.max(0, state.topicDurationMins) * 60;
         if (state.mode === "year") return recommendedSeconds(state.exam, state.q);
         if (state.mode === "mock") {
-          return state.segments.reduce((sum, seg) => sum + recommendedSeconds(seg.exam, seg.q), 0);
+          return state.segments
+            .filter((s) => String(s.subject || "").trim())
+            .reduce((sum, seg) => sum + recommendedSeconds(seg.exam, seg.q), 0);
         }
         return 0;
       }
 
       function refreshTimerUI() {
         const seconds = currentTimerSeconds();
-        $("#timer-summary").textContent = seconds ? minsLabel(seconds) : "—";
+        const ts = $("#timer-summary");
+        const th = $("#timer-hint");
+        if (ts) ts.textContent = seconds ? minsLabel(seconds) : "—";
 
         const rec = recommendedSeconds(state.exam, state.q);
         const recLabel = minsLabel(rec);
         _lastRecommendedLabel = rec ? recLabel : "—";
 
-        if (state.mode === "topic") {
-          $("#timer-hint").textContent = `Recommended: ${minsLabel(rec)} (you can customize)`;
-        } else if (state.mode === "year") {
-          $("#timer-hint").textContent = `Standard: ${minsLabel(rec)} (locked)`;
-        } else {
-          if (state.exam === "JAMB") {
-            $("#timer-hint").textContent = `UTME: ${JAMB_MOCK_SEGMENT_COUNT} × ${JAMB_MOCK_QUESTIONS_PER_PAPER} questions · ${STANDARD_SECONDS_PER_Q.JAMB}s per question (locked)`;
+        if (th) {
+          if (state.mode === "topic") {
+            th.textContent = `Recommended: ${minsLabel(rec)} (you can customize)`;
+          } else if (state.mode === "year") {
+            th.textContent = `Standard: ${minsLabel(rec)} (locked)`;
+          } else if (state.exam === "JAMB") {
+            th.textContent = `UTME: ${JAMB_MOCK_SEGMENT_COUNT} × ${JAMB_MOCK_QUESTIONS_PER_PAPER} questions · ${STANDARD_SECONDS_PER_Q.JAMB}s per question (locked)`;
           } else {
-            $("#timer-hint").textContent = `Segmented standard timing (locked)`;
+            th.textContent = `Segmented standard timing (locked)`;
           }
         }
         updateSessionChrome();
+        refreshQuestionPreview();
       }
 
       function resetDependentFields() {
@@ -1286,25 +1539,151 @@
         $("#year-value").value = "";
       }
 
+      function escapeSegAttr(val) {
+        return String(val || "")
+          .replace(/&/g, "&amp;")
+          .replace(/"/g, "&quot;")
+          .replace(/</g, "&lt;");
+      }
+
       function renderSegments() {
         const host = $("#segments");
         if (!host) return;
-        const isJambMock = state.mode === "mock" && state.exam === "JAMB";
+        const isMockAccordion =
+          state.mode === "mock" && (state.exam === "JAMB" || state.exam === "WAEC");
+
+        if (isMockAccordion) {
+          const isJamb = state.exam === "JAMB";
+          const maxPaper = isJamb ? JAMB_MOCK_SEGMENT_COUNT : WAEC_MOCK_MAX_SEGMENTS;
+          const n = state.segments.length;
+          let openIdx = n ? Math.min(Math.max(0, state.mockAccordionIdx), n - 1) : 0;
+          state.mockAccordionIdx = openIdx;
+          const ariaLabel = isJamb ? "UTME mock papers" : "WASSCE mock papers";
+
+          host.innerHTML = `
+            <div class="mock-seg-accordion" role="region" aria-label="${ariaLabel}">
+              ${state.segments
+                .map((seg, idx) => {
+                  const segRec = minsLabel(recommendedSeconds(seg.exam, seg.q));
+                  const isOpen = idx === openIdx;
+                  const subj = String(seg.subject || "").trim();
+                  const summary = subj || "Tap to set subject";
+                  const panelBody = isJamb
+                    ? `<p class="text-[11px] text-slate-500 pt-3 pb-1">
+                        JAMB · UTME · ${JAMB_MOCK_QUESTIONS_PER_PAPER} questions · ${segRec} (standard timing)
+                      </p>
+                      <div>
+                        <label class="modal-label" for="mock-seg-subj-${idx}">Subject</label>
+                        <input
+                          id="mock-seg-subj-${idx}"
+                          class="modal-input"
+                          value="${escapeSegAttr(seg.subject)}"
+                          placeholder="e.g. Use of English"
+                          data-seg-subject="${idx}"
+                          autocomplete="off"
+                        />
+                      </div>`
+                    : `<p class="text-[11px] text-slate-500 pt-3 pb-1">
+                        WAEC · WASSCE · ${segRec} at ${seg.q} questions (standard timing)
+                      </p>
+                      <div>
+                        <p class="modal-label mb-2">Questions</p>
+                        <div class="flex flex-wrap gap-2">
+                          ${[50, 75, 100]
+                            .map(
+                              (q) => `
+                            <button type="button" class="q-chip ${q === seg.q ? "active" : ""}" data-seg-q="${idx}" data-q="${q}">${q}</button>`
+                            )
+                            .join("")}
+                        </div>
+                      </div>
+                      <div class="mt-3">
+                        <label class="modal-label" for="mock-seg-subj-${idx}">Subject</label>
+                        <input
+                          id="mock-seg-subj-${idx}"
+                          class="modal-input"
+                          value="${escapeSegAttr(seg.subject)}"
+                          placeholder="e.g. Mathematics"
+                          data-seg-subject="${idx}"
+                          autocomplete="off"
+                        />
+                      </div>`;
+
+                  return `
+                <div class="mock-seg-acc-item${isOpen ? " is-open" : ""}">
+                  <button
+                    type="button"
+                    class="mock-seg-acc-trigger"
+                    data-mock-acc="${idx}"
+                    aria-expanded="${isOpen}"
+                    id="mock-acc-head-${idx}"
+                  >
+                    <span class="mock-seg-acc-trigger-main">
+                      <span class="text-sm font-extrabold text-slate-900">Paper ${idx + 1} of ${maxPaper}</span>
+                      <span class="text-xs text-slate-500 truncate">${escapeSegAttr(summary)}</span>
+                    </span>
+                    <span class="mock-seg-acc-chevron" aria-hidden="true"></span>
+                  </button>
+                  <div
+                    class="mock-seg-acc-panel"
+                    id="mock-acc-panel-${idx}"
+                    role="region"
+                    aria-labelledby="mock-acc-head-${idx}"
+                    ${isOpen ? "" : "hidden"}
+                  >
+                    ${panelBody}
+                  </div>
+                </div>`;
+                })
+                .join("")}
+            </div>`;
+
+          host.querySelectorAll("[data-mock-acc]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const idx = Number(btn.dataset.mockAcc);
+              if (Number.isNaN(idx)) return;
+              state.mockAccordionIdx = idx;
+              renderSegments();
+              refreshTimerUI();
+            });
+          });
+
+          host.querySelectorAll("[data-seg-subject]").forEach((input) => {
+            input.addEventListener("input", () => {
+              const idx = Number(input.dataset.segSubject);
+              if (!state.segments[idx]) return;
+              state.segments[idx].subject = input.value;
+              const row = input.closest(".mock-seg-acc-item");
+              const sum = row && row.querySelector(".mock-seg-acc-trigger-main .truncate");
+              if (sum) {
+                const t = String(input.value || "").trim();
+                sum.textContent = t || "Tap to set subject";
+              }
+              refreshTimerUI();
+            });
+          });
+
+          if (!isJamb) {
+            host.querySelectorAll("[data-seg-q]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const idx = Number(btn.dataset.segQ);
+                const q = Number(btn.dataset.q);
+                if (!state.segments[idx] || !q) return;
+                state.segments[idx].q = q;
+                renderSegments();
+                refreshTimerUI();
+              });
+            });
+          }
+          return;
+        }
 
         host.innerHTML = state.segments
           .map((seg, idx) => {
             const segRec = minsLabel(recommendedSeconds(seg.exam, seg.q));
-            const removeBtn = isJambMock
-              ? ""
-              : `<button type="button" class="text-sm font-extrabold text-rose-600 hover:text-rose-700" data-remove="${idx}">Remove</button>`;
+            const removeBtn = `<button type="button" class="text-sm font-extrabold text-rose-600 hover:text-rose-700" data-remove="${idx}">Remove</button>`;
 
-            const examBlock = isJambMock
-              ? `<div>
-                    <label class="modal-label">Exam</label>
-                    <p class="text-sm font-extrabold text-slate-900">JAMB · UTME</p>
-                    <p class="text-[11px] text-slate-500 mt-0.5">${JAMB_MOCK_QUESTIONS_PER_PAPER} questions per paper (standard)</p>
-                  </div>`
-              : `<div>
+            const examBlock = `<div>
                     <label class="modal-label">Exam</label>
                     <div class="flex flex-wrap gap-2">
                       ${EXAMS.map((ex) => `
@@ -1313,12 +1692,7 @@
                     </div>
                   </div>`;
 
-            const questionsBlock = isJambMock
-              ? `<div>
-                    <p class="modal-label mb-1">Questions</p>
-                    <p class="text-sm font-extrabold text-slate-900">${JAMB_MOCK_QUESTIONS_PER_PAPER} <span class="font-semibold text-slate-500">(fixed)</span></p>
-                  </div>`
-              : `<div>
+            const questionsBlock = `<div>
                     <p class="modal-label mb-2">Questions</p>
                     <div class="flex flex-wrap gap-2">
                       ${[50, 75, 100].map((q) => `
@@ -1335,14 +1709,14 @@
                   </div>
                   <div class="min-w-0 flex-1 space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-3">
-                  <p class="text-sm font-extrabold text-slate-900">Paper ${idx + 1}${isJambMock ? " of 4" : ""}</p>
+                  <p class="text-sm font-extrabold text-slate-900">Paper ${idx + 1}</p>
                   ${removeBtn}
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   ${examBlock}
                   <div>
                     <label class="modal-label">Subject</label>
-                    <input class="modal-input" value="${(seg.subject || "").replace(/"/g, "&quot;")}" placeholder="e.g. Use of English" data-seg-subject="${idx}" />
+                    <input class="modal-input" value="${escapeSegAttr(seg.subject)}" placeholder="e.g. Use of English" data-seg-subject="${idx}" />
                   </div>
                 </div>
                 <div class="flex flex-wrap items-center justify-between gap-3">
@@ -1401,24 +1775,23 @@
 
       function applyMode(mode) {
         state.mode = mode;
-        setActivePills("[data-mode]", (btn) => btn.dataset.mode === mode);
-        $$(("[data-mode]")).forEach((btn) => {
-          const isActive = btn.dataset.mode === mode;
-          btn.setAttribute("aria-selected", isActive ? "true" : "false");
-          btn.tabIndex = isActive ? 0 : -1;
-        });
 
-        const seg = document.querySelector(".segmented");
-        if (seg) {
-          const idx = mode === "topic" ? 0 : mode === "year" ? 1 : 2;
-          seg.style.setProperty("--seg-index", String(idx));
+        const mv = $("#mode-value");
+        const mt = $("#mode-trigger");
+        if (mv && mt) {
+          const label = mode === "year" ? "Year" : mode === "mock" ? "Mock" : "Topic";
+          mv.value = label;
+          mt.textContent = label;
+          mt.dataset.placeholder = "false";
         }
 
         // Mode-specific resets
         if (mode !== "mock") state.segments = [];
         else syncMockSegmentsForExam();
+        if (mode === "mock") state.mockAccordionIdx = 0;
         syncPanels();
         renderSegments();
+        modeRender();
         refreshTimerUI();
       }
 
@@ -1432,12 +1805,11 @@
             if (empty) return "Fill a subject for each of the 4 papers.";
             return "";
           }
-          if (!state.segments.length) return "Add at least 1 paper.";
-          if (state.segments.length > WAEC_MOCK_MAX_SEGMENTS) {
-            return `WAEC mock supports up to ${WAEC_MOCK_MAX_SEGMENTS} papers per day.`;
+          if (state.segments.length !== WAEC_MOCK_MAX_SEGMENTS) {
+            return `WAEC mock uses exactly ${WAEC_MOCK_MAX_SEGMENTS} papers.`;
           }
-          const invalid = state.segments.find((s) => !String(s.subject || "").trim());
-          if (invalid) return "Fill a subject for each paper.";
+          const waecFilled = state.segments.filter((s) => String(s.subject || "").trim());
+          if (!waecFilled.length) return "Add a subject for at least one paper.";
           return "";
         }
         if (!state.subject) return "Pick a subject.";
@@ -1449,10 +1821,14 @@
       // Wire exam pills
       $$(".exam-pill[data-exam]").forEach((btn) => {
         btn.addEventListener("click", () => {
+          const prevExam = state.exam;
           state.exam = btn.dataset.exam;
           setActivePills(".exam-pill[data-exam]", (b) => b.dataset.exam === state.exam);
           resetDependentFields();
-          if (state.mode === "mock") syncMockSegmentsForExam();
+          if (state.mode === "mock") {
+            syncMockSegmentsForExam();
+            if (state.exam !== prevExam) state.mockAccordionIdx = 0;
+          }
           subjectRender();
           topicRender();
           yearRender();
@@ -1461,9 +1837,6 @@
           refreshTimerUI();
         });
       });
-
-      // Mode tabs
-      $$(".mode-chip[data-mode]").forEach((btn) => btn.addEventListener("click", () => applyMode(btn.dataset.mode)));
 
       // Question chips
       $$(".q-chip[data-q]").forEach((btn) => {
@@ -1493,9 +1866,9 @@
         return ["Recommended", ...list];
       }
 
-      // Mock segment add
+      // Mock segment add (legacy; mock uses fixed paper slots — button hidden)
       $("#add-segment").addEventListener("click", () => {
-        if (state.exam === "JAMB") return;
+        if (state.mode === "mock") return;
         if (state.segments.length >= mockMaxSegments()) return;
         state.segments.push({ exam: state.exam, subject: "", q: state.q });
         renderSegments();
@@ -1519,6 +1892,7 @@
           $("#year-value").value = "";
           topicRender();
           yearRender();
+          refreshQuestionPreview();
         },
       });
 
@@ -1529,7 +1903,10 @@
         valueId: "topic-value",
         placeholder: "Select topic…",
         options: () => TOPICS[state.subject] || ["General Revision", "Past Questions", "Mock Drill"],
-        onPick: (val) => (state.topic = val),
+        onPick: (val) => {
+          state.topic = val;
+          refreshQuestionPreview();
+        },
       });
 
       const yearRender = initSelect({
@@ -1539,7 +1916,23 @@
         valueId: "year-value",
         placeholder: "Select year…",
         options: () => ["2025", "2024", "2023", "2022", "2021", "2020"],
-        onPick: (val) => (state.year = val),
+        onPick: (val) => {
+          state.year = val;
+          refreshQuestionPreview();
+        },
+      });
+
+      modeRender = initSelect({
+        selectId: "mode-select",
+        triggerId: "mode-trigger",
+        menuId: "mode-menu",
+        valueId: "mode-value",
+        placeholder: "Practice mode",
+        options: () => ["Topic", "Year", "Mock"],
+        onPick: (opt) => {
+          const m = { Topic: "topic", Year: "year", Mock: "mock" }[opt];
+          if (m) applyMode(m);
+        },
       });
 
       // Topic duration uses a single “text + dropdown” trigger label (Recommended · 1h 3m).
@@ -1576,13 +1969,13 @@
             if (Number.isFinite(parsed) && parsed > 0) state.topicDurationMins = Math.min(180, Math.max(10, parsed));
           }
           render();
-          closeSelect(shell, trigger);
+          closeSelect(shell, trigger, menu);
           refreshTimerUI();
         }
 
         trigger.addEventListener("click", () => {
-          if (shell.classList.contains("open")) closeSelect(shell, trigger);
-          else openSelect(shell, trigger);
+          if (shell.classList.contains("open")) closeSelect(shell, trigger, menu);
+          else openSelect(shell, trigger, menu);
         });
 
         menu.addEventListener("click", (e) => {
@@ -1592,7 +1985,7 @@
         });
 
         document.addEventListener("click", (e) => {
-          if (!shell.contains(e.target)) closeSelect(shell, trigger);
+          if (!shell.contains(e.target) && !menu.contains(e.target)) closeSelect(shell, trigger, menu);
         });
 
         render();
@@ -1624,9 +2017,12 @@
       });
       */
 
-      // Buttons
-      $("#preview-btn").addEventListener("click", () => {
-        const config = {
+      $("#start-btn").addEventListener("click", () => {
+        const err = validateStart();
+        if (err) return alert(err);
+        const payload = {
+          version: 1,
+          startedAt: new Date().toISOString(),
           exam: state.exam,
           mode: state.mode,
           subject: state.subject || null,
@@ -1634,18 +2030,18 @@
           year: state.year || null,
           questions: state.q,
           timerSeconds: currentTimerSeconds(),
-          segments: state.segments,
+          topicDurationMins: state.mode === "topic" ? state.topicDurationMins : null,
+          segments: JSON.parse(JSON.stringify(state.segments || [])),
         };
-        alert(JSON.stringify(config, null, 2));
+        try {
+          sessionStorage.setItem("openxp-practice-session", JSON.stringify(payload));
+        } catch (e) {
+          console.warn("openxp-practice-session", e);
+        }
+        window.location.href = "practice-session.html";
       });
 
-      $("#start-btn").addEventListener("click", () => {
-        const err = validateStart();
-        if (err) return alert(err);
-        alert("Starting timed session (UI stub) — next step is wiring to question player + results.");
-      });
-
-      // Initial state — applyMode syncs --seg-index + panels (syncPanels alone skipped thumb animation state)
+      // Initial state — applyMode syncs panels + mode dropdown
       applyMode(state.mode);
       // default topic duration = recommended
       state.topicDurationMins = Math.round(recommendedSeconds(state.exam, state.q) / 60);
